@@ -12,7 +12,7 @@ load_dotenv()
 from app.config import config
 from app.navigation import render_sidebar, resolve_provider_label
 from app.state import init_state
-from app.storage.repository import list_studies, list_universes
+from app.storage.repository import list_studies, list_universes, set_active_user
 from app.theme import GLOBAL_CSS
 from app.pages.home import render_home_page
 from app.pages.audiencias import render_audiencias_page
@@ -31,6 +31,7 @@ _params = st.query_params
 _user_id = _params.get("uid", "")
 if _user_id:
     config.set_user(_user_id)
+    set_active_user(_user_id)
 else:
     config.ensure_directories()
 

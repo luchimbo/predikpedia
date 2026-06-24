@@ -3,3 +3,4 @@ openai
 python-dotenv
 pydantic
 colorama
+supabase
