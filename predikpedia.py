@@ -26,7 +26,14 @@ from app.services.credits_service import CreditsService
 
 # ── Inicialización ──────────────────────────────────────────────────────────
 
-config.ensure_directories()
+# Leer user_id del query param (pasado desde Vercel al hacer redirect)
+_params = st.query_params
+_user_id = _params.get("uid", "")
+if _user_id:
+    config.set_user(_user_id)
+else:
+    config.ensure_directories()
+
 init_state()
 
 saved_key = st.session_state.get("saved_api_key", "")

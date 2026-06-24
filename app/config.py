@@ -56,6 +56,16 @@ class PredikpediaConfig:
         self.results_dir = self.data_dir / "resultados"
         self.ledger_file = self.data_dir / "credits_ledger.json"
 
+    def set_user(self, user_id: str):
+        """Cambia las rutas de datos al subdirectorio del usuario."""
+        self.data_dir = REPO_ROOT / "data" / user_id
+        self.universes_dir = self.data_dir / "universos"
+        self.expansions_dir = self.universes_dir / "expansiones"
+        self.studies_dir = self.data_dir / "estudios"
+        self.results_dir = self.data_dir / "resultados"
+        self.ledger_file = self.data_dir / "credits_ledger.json"
+        self.ensure_directories()
+
     def ensure_directories(self):
         """Crea los directorios de datos si no existen."""
         for path in (

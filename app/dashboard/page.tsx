@@ -8,9 +8,9 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Once Streamlit URL is set, redirect directly
+  // Once Streamlit URL is set, redirect with user id
   if (STREAMLIT_URL !== '#') {
-    redirect(STREAMLIT_URL)
+    redirect(`${STREAMLIT_URL}?uid=${user.id}`)
   }
 
   return (
