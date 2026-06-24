@@ -1,0 +1,8 @@
+ESPECIFICACIONES TÉCNICAS - MONITORES MS6
+- Woofer de 6 pulgadas de cono compuesto (Kevlar/Fibra).
+- Tweeter de domo de seda de 1 pulgada para agudos suaves.
+- Amplificación Clase D Bi-amplificada (60W graves + 30W agudos).
+- Respuesta en frecuencia: 45Hz - 22kHz.
+- DSP integrado para ajuste fino acústico (Room Control EQ).
+- Entradas combinadas XLR/TRS balanceadas y RCA desbalanceadas.
+- Gabinete de MDF de alta densidad para reducir resonancias.

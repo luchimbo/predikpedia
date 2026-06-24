@@ -1,0 +1,10 @@
+ARTURIA MINILAB 3 - NUEVO PRODUCTO RUMOREADO
+- Teclado controlador MIDI de 25 teclas slim sensibles a la velocidad.
+- 2 bancos de 8 pads RGB sensibles a la presión.
+- 8 encoders rotativos y 4 faders integrados.
+- Mini pantalla OLED nativa para feedback visual de parámetros (VST y DAW).
+- Salida MIDI tradicional de 5 pines (Out).
+- Nuevo conector USB-C compatible con bus-power.
+- Se integra automáticamente con Ableton Live, Logic Pro, FL Studio.
+- Viene con Analog Lab V, Ableton Live Lite, UVI Model D.
+- Precio Sugerido Retail: 149 USD (MSRP). En Argentina, precio estimado de importación: ~280,000 ARS.

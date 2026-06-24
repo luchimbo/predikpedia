@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: predikpedia-app
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run predikpedia.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: QUOTA_LIMIT
+        value: "500000"
+      - key: MODEL_NAME
+        value: "google/gemini-2.5-flash-lite"

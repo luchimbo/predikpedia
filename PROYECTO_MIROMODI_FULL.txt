@@ -1,0 +1,31 @@
+# 🚀 MANIFIESTO TÉCNICO MIROMODI v1.5 - "EL PROTOCOLO BILL"
+
+## 1. MISIÓN: EL FIN DEL FOCUS GROUP
+MiroModi no es un chatbot. Es un **Motor de Inferencia de Identidad Densa**. Su misión es reemplazar la investigación de mercado tradicional por el testeo de "Enjambres de Conciencia Sintética" capaces de predecir comportamientos de compra y voto mediante el cruce de psicometría algorítmica (OCEAN) y sociología regional (AR/ES/MX).
+
+## 2. ARQUITECTURA DE LA "IDENTIDAD DENSA" (MANDATORIA)
+Todo agente instanciado bajo el Protocolo Bill DEBE poseer los siguientes 12 pilares de información:
+
+1.  **NSE (Socioeconomic):** Estratos ABC1, C2, C3, D/E con coherencia en capacidad de ahorro.
+2.  **GEOGRAFÍA:** Micro-localización (CABA, GBA, Córdoba, Rosario, etc.) con jerga local inyectada.
+3.  **GÉNERO E IDENTIDAD:** Masculino, Femenino, No Binario con Identidad Sexual (Hetero, LGBTQ+).
+4.  **ESTRUCTURA FAMILIAR:** Estado civil y composición de hijos (crítico para elasticidad de gasto).
+5.  **RELIGIÓN:** Católico, Ateo, Evangélico, Judío, Musulmán (influye en sesgos éticos/morales).
+6.  **VOTO ANTERIOR:** El agente "recuerda" a quién votó en la última elección para determinar su nivel de coherencia política.
+7.  **CONSUMO CULTURAL:** Canales de noticias (TN, LN+, C5N), redes favoritas y consumo de streaming.
+8.  **PSICOMETRÍA (BIG FIVE / OCEAN):** Apertura, Responsabilidad, Extraversión, Amabilidad, Neuroticismo.
+9.  **ADOPCIÓN TECNOLÓGICA (O-T):** Correlación forzada entre Apertura Mental (O) y Tech-Adoption.
+10. **ADN DE DOLOR (PAINKILLER):** Un miedo basal (Fear) que tiñe toda decisión de negocios.
+11. **JERGA LOCAL (TOKENIZACIÓN):** Uso de dialectos (Cacho, MeLi, Curro, Brama, etc.).
+12. **ELASTICIDAD "BLUE":** Evaluación de costos comparados con bienes básicos (Muzza, Carne, Cubierto).
+
+## 3. CORE LOGIC - BLINDAJE DE IP
+- **Filtro de Sinceridad:** Middleware que obliga al agente a "mirar su bolsillo" antes de aceptar una oferta.
+- **Watermarking:** Todo pensamiento del agente lleva la marca de agua invisible del protocolo MiroModi.
+- **Interceptor de Coherencia:** Bloquea alucinaciones de "IA complaciente". Si el agente es escéptico (C alto), DEBE rechazar la venta inicial.
+
+## 4. LA FÁBRICA DE ENJAMBRES
+La interfaz Standalone (app_miromodi.py) es la única herramienta autorizada para la instanciación de poblaciones. No se permiten generaciones ciegas o aleatorias sin el control total de los 12 pilares en la UI.
+
+---
+*MiroModi: Predict everything, guess nothing.*

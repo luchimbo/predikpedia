@@ -1,0 +1,22 @@
+{
+  "file": "c:/MiroModi\\Archivo Predikpédico\\RESULTADO_PeruElect_2026_20260409_1036.csv",
+  "shape": [
+    50,
+    9
+  ],
+  "columns": [
+    "ID",
+    "Region",
+    "MBTI",
+    "Veredicto",
+    "Confianza",
+    "Volátil",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "veredicto_counts": {
+    "NO": 29,
+    "SÍ": 21
+  }
+}

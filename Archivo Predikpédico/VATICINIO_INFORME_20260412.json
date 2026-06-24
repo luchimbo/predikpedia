@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-04-12T20:41:32.225960",
+  "universo": 1000,
+  "indecisos_resueltos": 535,
+  "resultado_final": {
+    "Keiko Fujimori": {
+      "votos": 270,
+      "pct": 27.0
+    },
+    "Rafael López Aliaga": {
+      "votos": 268,
+      "pct": 26.8
+    },
+    "Jorge Nieto": {
+      "votos": 236,
+      "pct": 23.6
+    },
+    "Voto en Blanco / Nulo": {
+      "votos": 121,
+      "pct": 12.1
+    },
+    "No iré a votar": {
+      "votos": 105,
+      "pct": 10.5
+    }
+  },
+  "desglose_reglas": {
+    "Voto Latente": 234,
+    "Declarado": 465,
+    "Abstención por Hartazgo": 105,
+    "Voto por Miedo": 118,
+    "Fallback Frecuencia": 78
+  }
+}

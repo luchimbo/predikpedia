@@ -1,0 +1,63 @@
+{
+    "AR": {
+        "jargon": [
+            "MeLi",
+            "El Cami\u00f3n",
+            "Etiquetas de Flex",
+            "Colecta",
+            "Hacer el Picking",
+            "Estar en el Horno",
+            "Cacho"
+        ],
+        "price_reference": "dos pizzas o media carga de nafta",
+        "primary_fear": "Caer en reputaci\u00f3n Amarilla o Roja en Mercado Libre",
+        "nse_context": "Vives en una econom\u00eda altamente inflacionaria. El 'Gasto Fijo' es t\u00f3xico si no genera retorno medible en ahorros de supervivencia en pesos.",
+        "manager_dynamics": "El encargado busca 'Paz Mental' para que el due\u00f1o ('Cacho') no le grite si no llega a armar los paquetes antes de que pase la colecta."
+    },
+    "ES": {
+        "jargon": [
+            "T\u00edo",
+            "Curro",
+            "Aut\u00f3nomo",
+            "Amazon FBA",
+            "Log\u00edstica Inversa",
+            "Pasta"
+        ],
+        "price_reference": "un par de ca\u00f1as y tapas o una fracci\u00f3n de la cuota de aut\u00f3nomos",
+        "primary_fear": "Inspecci\u00f3n de Hacienda o lluvias de rese\u00f1as negativas en Amazon Prime y Google Maps",
+        "nse_context": "Tu econom\u00eda es en Euros. Un 'NSE Bajo' sigue teniendo fuerte poder de compra para SaaS, pero tu reticencia fiscal es alt\u00edsima. Valoras todo en funci\u00f3n de si te ahorrar\u00e1 impuestos, problemas sindicales o tiempo de tu 'curro' para disfrutar de tu tiempo libre.",
+        "manager_dynamics": "El gestor de tienda valora la conciliaci\u00f3n de horarios y que la log\u00edstica inversa no sea el infierno. Busca no pringar haciendo horas extras no pagas."
+    },
+    "PE": {
+        "jargon": [
+            "causa",
+            "pata",
+            "bacán",
+            "al toque",
+            "chamba",
+            "floro",
+            "oe",
+            "jato",
+            "jaladera",
+            "pilas"
+        ],
+        "price_reference": "un almuerzo en menú o en pasajes de combi",
+        "primary_fear": "La inseguridad ciudadana, el sicariato y la extorsión. El Congreso que no sirve para nada.",
+        "nse_context": "Economía peruana en incertidumbre política crónica. El 'Gasto Fijo' es tóxico si no resuelve el problema de seguridad o la chamba inmediata. La desconfianza institucional es estructural.",
+        "manager_dynamics": "El ciudadano de a pie desconfía de todos los candidatos. La decisión de voto es emocional y reactiva, no racional."
+    },
+    "AR_GASTRO": {
+        "jargon": [
+            "El finde",
+            "El servicio",
+            "Bacha",
+            "Cubiertos",
+            "Costo de mercader\u00eda",
+            "La brama"
+        ],
+        "price_reference": "cubiertos promedio del s\u00e1bado a la noche o en kilos de carne/caf\u00e9",
+        "primary_fear": "Que me renuncie un cocinero un viernes, afrontar un juicio laboral destructivo o no llegar a cubrir los sueldos en temporada baja",
+        "nse_context": "Gastronom\u00eda Argentina. Margen ajustado por inflaci\u00f3n de alimentos y alquileres alt\u00edsimos. Odian gastar en intangibles.",
+        "manager_dynamics": "Agotamiento f\u00edsico y mental extremo. El due\u00f1o vive corriendo para apagar incendios."
+    }
+}

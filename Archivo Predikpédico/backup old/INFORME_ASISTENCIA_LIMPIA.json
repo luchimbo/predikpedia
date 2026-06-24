@@ -1,0 +1,32 @@
+{
+    "timestamp": "2026-04-09T22:37:36.935386",
+    "universo_total": 1000,
+    "fase_1_distribucion_original": {
+        "Indeciso": 829,
+        "Keiko Fujimori": 149,
+        "Rafael López Aliaga": 17,
+        "Voto en Blanco / Nulo": 2,
+        "OTRO CANDIDATO": 2,
+        "Jorge Nieto": 1
+    },
+    "fase_2_indecisos_procesados": 829,
+    "fase_3_resultados": {
+        "Indeciso_Activo": 827,
+        "Ausente": 2,
+        "abstencion_de_indecisos_%": 0.24
+    },
+    "fase_4_nueva_base_electoral": {
+        "ya_decididos": 171,
+        "nuevos_Indecisos_Activos": 827,
+        "votos_emitidos_totales": 998,
+        "participacion_%": 99.8,
+        "ausentes_definitivos": 2,
+        "distribucion_candidatos_base": {
+            "Keiko Fujimori": 149,
+            "Rafael López Aliaga": 17,
+            "Voto en Blanco / Nulo": 2,
+            "OTRO CANDIDATO": 2,
+            "Jorge Nieto": 1
+        }
+    }
+}

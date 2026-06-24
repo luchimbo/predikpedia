@@ -1,0 +1,12 @@
+﻿Total agentes    : 1000
+Indecisos        : 829
+Ya decididos     : 171
+Distribucion OK  :
+  Indeciso                            829
+  Keiko Fujimori                      149
+  Rafael L¾pez Aliaga                 17
+  Voto en Blanco / Nulo               2
+  OTRO CANDIDATO                      2
+  Jorge Nieto                         1
+
+SCRIPT LISTO - ejecutar con: python asistencia_filter.py

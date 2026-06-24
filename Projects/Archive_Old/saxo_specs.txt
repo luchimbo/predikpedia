@@ -1,0 +1,9 @@
+Producto: Saxo Alto Chateau Cheverny CAS-21L.
+
+Precio actual: $1.267.188 ARS (o el valor de preventa actual).
+
+Contexto: Instrumento de bronce (no electrónico), marca nueva en el país, disponible en preventa para Julio 2026.
+
+Ubicación: Showroom de PC MIDI Center (Almagro).
+
+Marcas a testear: Chateau (actual), Midiplus (marca propia conocida), Kressmer (marca nueva ficticia)

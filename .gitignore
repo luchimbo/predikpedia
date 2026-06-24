@@ -1,0 +1,24 @@
+# Next.js
+.next/
+out/
+node_modules/
+
+# Env
+.env.local
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
+
+# Logs
+*.log

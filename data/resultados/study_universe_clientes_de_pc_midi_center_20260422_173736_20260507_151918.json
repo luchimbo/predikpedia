@@ -1,0 +1,19 @@
+[
+  {
+    "estudio_id": "study_universe_clientes_de_pc_midi_center_20260422_173736_20260507_151918",
+    "persona_id": "P_000001",
+    "perfil": "General",
+    "repeticion": 1,
+    "pregunta": "Que color te gusta más amarillo o verde para un teclado?",
+    "contexto": "",
+    "respuesta": "Mirá, la verdad es que soy más de los colores neutros, como el negro o el gris para un teclado. Me parece que se adaptan mejor a cualquier setup y no me distraen tanto al concentrarme en la música. Lo del verde o amarillo me parece un poco juguetón, no es mi estilo para un equipo de trabajo, digamos. Prefiero que el equipo sea práctico antes que vistoso.",
+    "sintesis": "Mirá, la verdad es que soy más de los colores neutros, como el negro o el gris para un teclado. Me parece que se adaptan mejor a cualquier setup y no me distraen tanto al concentra",
+    "sentiment": "neutral",
+    "intent": "explorar",
+    "main_objection": "No me convencen los colores llamativos para equipamiento musical.",
+    "main_driver": "Priorizo la funcionalidad y la estética sobria en mis herramientas.",
+    "confidence": "high",
+    "price_sensitivity": "",
+    "quote": "Prefiero que el equipo sea práctico antes que vistoso."
+  }
+]

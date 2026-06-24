@@ -1,0 +1,92 @@
+[
+  {
+    "file": "c:/MiroModi/outputs\\Reporte_Megan V2_20260407_1314.csv",
+    "rows": 50,
+    "veredicto_counts": {
+      "NO": 44,
+      "SÍ": 6
+    }
+  },
+  {
+    "file": "c:/MiroModi/outputs\\Reporte_Megan_V1.csv",
+    "rows": 3,
+    "veredicto_counts": {}
+  },
+  {
+    "file": "c:/MiroModi/outputs\\Reporte_Megan_V1_Tension_Error.csv.csv",
+    "rows": 15,
+    "veredicto_counts": {
+      "NO": 15
+    }
+  },
+  {
+    "file": "c:/MiroModi/outputs\\checkpoints\\CKP_Megan_V2_Industrial_500.csv",
+    "rows": 80,
+    "veredicto_counts": {
+      "NO": 44,
+      "SÍ": 36
+    }
+  },
+  {
+    "file": "c:/MiroModi/outputs\\checkpoints\\CKP_Megan_V3_Libertad_Total.csv",
+    "rows": 100,
+    "veredicto_counts": {
+      "SÍ": 77,
+      "NO": 23
+    }
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESULTADO_PeruElect_2026_20260409_1036.csv",
+    "rows": 50,
+    "veredicto_counts": {
+      "NO": 29,
+      "SÍ": 21
+    }
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESULTADO_Peru_prueba_nombres_20260409_1107.csv",
+    "rows": 50,
+    "veredicto_counts": {
+      "Indeciso": 40,
+      "Keiko Fujimori": 9,
+      "Rafael López Aliaga": 1
+    }
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESULTADO_Peru_prueba_nombres_20260409_1430.csv",
+    "rows": 1000,
+    "veredicto_counts": {
+      "Indeciso": 829,
+      "Keiko Fujimori": 149,
+      "Rafael López Aliaga": 17,
+      "Voto en Blanco / Nulo": 2,
+      "OTRO CANDIDATO": 2,
+      "Jorge Nieto": 1
+    }
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESUMEN_Peru2026_1000_20260408_2337.csv",
+    "rows": 1000,
+    "veredicto_counts": {}
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESUMEN_Peru2026_1000_20260409_0001.csv",
+    "rows": 1000,
+    "veredicto_counts": {}
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESUMEN_Peru2026_1000_20260409_0015.csv",
+    "rows": 1000,
+    "veredicto_counts": {}
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESUMEN_Peru2026_1000_20260409_0016.csv",
+    "rows": 1000,
+    "veredicto_counts": {}
+  },
+  {
+    "file": "c:/MiroModi\\Archivo Predikpédico\\RESUMEN_Peru2026_1000_20260409_0951.csv",
+    "rows": 1000,
+    "veredicto_counts": {}
+  }
+]

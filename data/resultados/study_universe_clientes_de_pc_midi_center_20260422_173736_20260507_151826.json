@@ -1,0 +1,19 @@
+[
+  {
+    "estudio_id": "study_universe_clientes_de_pc_midi_center_20260422_173736_20260507_151826",
+    "persona_id": "P_000001",
+    "perfil": "General",
+    "repeticion": 1,
+    "pregunta": "",
+    "contexto": "",
+    "respuesta": "Che, yo soy más de CABA, tengo 35 y estoy arrancando con la música para relajarme y sacarle el estrés del laburo. Me copan los teclados, algo así como un órgano meike o un piano, y me re serviría un controlador midi que no sea muy complicado. Los de Arturia me suenan bien, pero a veces me marean los nombres. Lo que más me preocupa es gastar guita en algo que después no entienda o que sea muy pro para mí ahora.",
+    "sintesis": "Che, yo soy más de CABA, tengo 35 y estoy arrancando con la música para relajarme y sacarle el estrés del laburo. Me copan los teclados, algo así como un órgano meike o un piano, y",
+    "sentiment": "mixed",
+    "intent": "explorar",
+    "main_objection": "Complejidad y costo para principiantes",
+    "main_driver": "Relajación y aprendizaje musical como hobby",
+    "confidence": "low",
+    "price_sensitivity": "",
+    "quote": "Lo que más me preocupa es gastar guita en algo que después no entienda o que sea muy pro para mí ahora."
+  }
+]

@@ -1,0 +1,399 @@
+{
+    "users": {
+        "demo_user": {
+            "balance_credits": 355.575000000003,
+            "total_loaded_usd": 20.0,
+            "total_consumed_credits": 1644.425,
+            "transactions": [
+                {
+                    "type": "CARGA",
+                    "usd": 5.0,
+                    "credits": 500.0,
+                    "balance_after": 500.0,
+                    "ts": "2026-04-20T13:49:45.194898"
+                },
+                {
+                    "type": "CARGA",
+                    "usd": 5.0,
+                    "credits": 500.0,
+                    "balance_after": 1000.0,
+                    "ts": "2026-04-20T13:50:27.377015"
+                },
+                {
+                    "type": "CARGA",
+                    "usd": 5.0,
+                    "credits": 500.0,
+                    "balance_after": 1500.0,
+                    "ts": "2026-04-20T13:50:29.341447"
+                },
+                {
+                    "type": "CARGA",
+                    "usd": 5.0,
+                    "credits": 500.0,
+                    "balance_after": 2000.0,
+                    "ts": "2026-04-20T13:50:29.824937"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Génesis de Universo",
+                    "quantity": 1,
+                    "credits_deducted": 5.0,
+                    "balance_after": 1995.0,
+                    "ts": "2026-04-20T13:54:28.961678"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1994.775,
+                    "ts": "2026-04-20T14:01:32.932624"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1994.5500000000002,
+                    "ts": "2026-04-20T14:03:13.633767"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1994.3250000000003,
+                    "ts": "2026-04-20T14:04:47.906948"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1994.1000000000004,
+                    "ts": "2026-04-20T14:06:26.483942"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1993.8750000000005,
+                    "ts": "2026-04-20T14:08:04.324938"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1993.6500000000005,
+                    "ts": "2026-04-20T14:09:43.917114"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1993.4250000000006,
+                    "ts": "2026-04-20T15:05:15.709045"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1993.2000000000007,
+                    "ts": "2026-04-20T15:07:08.230202"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1992.9750000000008,
+                    "ts": "2026-04-20T15:08:45.411334"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1992.750000000001,
+                    "ts": "2026-04-20T15:13:55.168630"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1992.525000000001,
+                    "ts": "2026-04-20T15:14:06.955329"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1992.300000000001,
+                    "ts": "2026-04-20T15:14:16.172630"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1992.0750000000012,
+                    "ts": "2026-04-20T15:14:24.276360"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1991.8500000000013,
+                    "ts": "2026-04-20T15:14:38.271362"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1991.6250000000014,
+                    "ts": "2026-04-20T15:14:50.858751"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1991.4000000000015,
+                    "ts": "2026-04-20T15:15:02.818876"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1991.1750000000015,
+                    "ts": "2026-04-20T15:15:11.310212"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1990.9500000000016,
+                    "ts": "2026-04-20T15:15:21.111737"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1990.7250000000017,
+                    "ts": "2026-04-20T15:15:32.506752"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1990.5000000000018,
+                    "ts": "2026-04-20T15:15:43.423770"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1990.275000000002,
+                    "ts": "2026-04-20T15:15:51.286128"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1990.050000000002,
+                    "ts": "2026-04-20T15:16:01.673597"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1989.825000000002,
+                    "ts": "2026-04-20T15:16:09.799682"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1989.6000000000022,
+                    "ts": "2026-04-20T15:16:31.972812"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1989.3750000000023,
+                    "ts": "2026-04-20T15:16:38.317590"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1989.1500000000024,
+                    "ts": "2026-04-20T15:16:50.519245"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1988.9250000000025,
+                    "ts": "2026-04-20T15:17:02.398385"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1988.7000000000025,
+                    "ts": "2026-04-20T15:17:15.633462"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1988.4750000000026,
+                    "ts": "2026-04-20T15:17:26.350926"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1988.2500000000027,
+                    "ts": "2026-04-20T15:17:38.878205"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Micro-Simulación OASIS (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1988.0250000000028,
+                    "ts": "2026-04-20T15:17:48.070437"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Generación de Reporte Predikpédico",
+                    "quantity": 1,
+                    "credits_deducted": 10.0,
+                    "balance_after": 1978.0250000000028,
+                    "ts": "2026-04-20T15:17:48.090735"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Generación de Reporte Predikpédico",
+                    "quantity": 1,
+                    "credits_deducted": 10.0,
+                    "balance_after": 1968.0250000000028,
+                    "ts": "2026-04-20T15:20:52.075223"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Generación de Reporte Predikpédico",
+                    "quantity": 1,
+                    "credits_deducted": 10.0,
+                    "balance_after": 1958.0250000000028,
+                    "ts": "2026-04-20T15:21:10.229991"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 120,
+                    "credits_deducted": 27.0,
+                    "balance_after": 1931.0250000000028,
+                    "ts": "2026-05-07T15:07:14.341155"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1930.800000000003,
+                    "ts": "2026-05-07T15:18:29.971193"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1,
+                    "credits_deducted": 0.225,
+                    "balance_after": 1930.575000000003,
+                    "ts": "2026-05-07T15:19:21.198490"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 1705.575000000003,
+                    "ts": "2026-05-18T17:10:27.557725"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 1480.575000000003,
+                    "ts": "2026-05-27T17:36:52.716494"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 1255.575000000003,
+                    "ts": "2026-05-30T14:28:51.691388"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 1030.575000000003,
+                    "ts": "2026-05-30T15:56:13.968633"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 805.575000000003,
+                    "ts": "2026-06-01T13:58:03.974660"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 580.575000000003,
+                    "ts": "2026-06-04T12:46:14.033073"
+                },
+                {
+                    "type": "CONSUMO",
+                    "operation": "Simulación de estudio (1 agente)",
+                    "quantity": 1000,
+                    "credits_deducted": 225.0,
+                    "balance_after": 355.575000000003,
+                    "ts": "2026-06-12T16:36:04.466266"
+                }
+            ]
+        }
+    }
+}

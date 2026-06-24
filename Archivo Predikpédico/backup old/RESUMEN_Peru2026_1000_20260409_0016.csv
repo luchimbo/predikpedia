@@ -1,0 +1,1001 @@
+Agent_ID,Region,NSE,Age,Gender,MBTI,VotoIntención,VotoBronca,InseguridadFocus,Volátil
+PREDIK-PE-0287,Lima,Medio,68,No Binario,ISTP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0620,Sierra,Medio,55,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0326,Lima,Medio,18,Masculino,INFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0825,Selva,Medio,69,Femenino,ENFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0169,Lima,Medio-Alto,56,No Binario,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0908,Selva,Bajo,62,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0467,Costa,Bajo,30,Masculino,INTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0446,Costa,Bajo,67,Masculino,ISFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0246,Lima,Medio,42,Femenino,INFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0191,Lima,Medio,49,Femenino,INTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0293,Lima,Bajo,67,Femenino,ISFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0565,Sierra,Medio,27,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0261,Lima,Medio,69,Masculino,ESFJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0517,Costa,Medio-Alto,18,Masculino,ENFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0206,Lima,Bajo,43,Masculino,ESFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0390,Costa,Medio,56,Femenino,INFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0882,Selva,Bajo,64,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0023,Lima,Bajo,49,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0570,Sierra,Bajo,31,Masculino,ENTP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0779,Sierra,Bajo,43,Femenino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0205,Lima,Alto,23,Masculino,ENFP,Candidato B (Derecha Tradicional),True,False,False
+PREDIK-PE-0222,Lima,Alto,57,Masculino,INFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0742,Sierra,Bajo,61,Femenino,ENTJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0119,Lima,Bajo,41,Femenino,INFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0233,Lima,Medio,54,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0514,Costa,Bajo,19,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0877,Selva,Medio,55,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0317,Lima,Bajo,35,Masculino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0313,Lima,Medio,39,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0937,Selva,Bajo,51,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0487,Costa,Bajo,49,Femenino,INTJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0695,Sierra,Bajo,21,Masculino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0314,Lima,Alto,34,Masculino,ESTJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0171,Lima,Medio-Alto,45,Masculino,INFP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0566,Sierra,Bajo,63,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0386,Costa,Medio,40,Masculino,ISFJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0192,Lima,Bajo,24,Masculino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0807,Selva,Medio,60,Masculino,ESFP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0585,Sierra,Bajo,58,Masculino,ESFJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0175,Lima,Medio-Alto,22,Masculino,INFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0993,Selva,Medio,63,Femenino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0803,Selva,Bajo,22,Femenino,INFP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0056,Lima,Alto,62,Femenino,ISFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0068,Lima,Medio-Alto,60,Femenino,INFJ,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0018,Lima,Medio,55,Masculino,ENFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0322,Lima,Medio-Alto,31,Femenino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0237,Lima,Medio-Alto,45,Femenino,ENFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0410,Costa,Medio,46,Femenino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0850,Selva,Medio,43,Masculino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0901,Selva,Medio,50,Femenino,INTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0459,Costa,Medio,35,Masculino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0364,Costa,Medio,30,Femenino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0820,Selva,Medio,43,Femenino,ESFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0621,Sierra,Bajo,47,Femenino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0726,Sierra,Bajo,47,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0393,Costa,Medio,24,Femenino,INFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0434,Costa,Bajo,42,Femenino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0198,Lima,Medio,28,Femenino,INFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0887,Selva,Medio,68,Femenino,ISFP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0442,Costa,Bajo,56,Femenino,ENFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0782,Sierra,Bajo,53,Masculino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0796,Sierra,Bajo,52,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0678,Sierra,Bajo,63,Masculino,ESFJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0012,Lima,Medio-Alto,38,Femenino,INFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0766,Sierra,Medio,27,Femenino,ISTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0712,Sierra,Bajo,68,Masculino,ESFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0642,Sierra,Medio,32,Femenino,INFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0391,Costa,Medio,67,Femenino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0723,Sierra,Bajo,30,Femenino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0417,Costa,Medio,63,Femenino,ESTP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0241,Lima,Medio,65,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0703,Sierra,Bajo,55,Masculino,ESTP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0942,Selva,Bajo,51,Femenino,INFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0207,Lima,Alto,57,Masculino,INTJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0289,Lima,Bajo,55,Femenino,ENTP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0266,Lima,Bajo,28,Femenino,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0791,Sierra,Medio,43,Masculino,ENFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0468,Costa,Bajo,42,Masculino,ENFP,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0813,Selva,Medio,69,Masculino,ENFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0430,Costa,Bajo,50,Masculino,ENFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0084,Lima,Medio-Alto,27,Masculino,INFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0462,Costa,Bajo,65,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0415,Costa,Medio,71,Femenino,INTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0564,Sierra,Medio,40,Masculino,ENFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0033,Lima,Medio,33,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0547,Costa,Bajo,57,Masculino,ENTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0290,Lima,Bajo,50,Femenino,ESTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0139,Lima,Medio-Alto,65,Masculino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0513,Costa,Medio,57,Masculino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0553,Sierra,Bajo,55,Femenino,INFP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0271,Lima,Medio-Alto,36,Femenino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0641,Sierra,Medio,20,Femenino,ESFJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0554,Sierra,Medio,54,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0527,Costa,Medio,66,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0432,Costa,Medio-Alto,56,Masculino,ISFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0182,Lima,Medio,71,No Binario,ISFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0357,Costa,Bajo,41,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0861,Selva,Bajo,29,Femenino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0469,Costa,Medio,18,Femenino,ISFP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0294,Lima,Bajo,20,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0584,Sierra,Bajo,70,No Binario,ESTJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0662,Sierra,Bajo,37,Femenino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0496,Costa,Bajo,60,Femenino,ESTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0848,Selva,Medio,58,Masculino,ESFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0058,Lima,Medio,40,No Binario,ESFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0188,Lima,Medio,26,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0731,Sierra,Medio,65,Femenino,INTP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0603,Sierra,Bajo,51,Femenino,ESTP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0608,Sierra,Bajo,30,Femenino,INTJ,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0081,Lima,Bajo,65,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0184,Lima,Medio-Alto,45,Femenino,ISTP,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0344,Lima,Bajo,37,Femenino,ENFP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0438,Costa,Bajo,51,Femenino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0365,Costa,Bajo,60,Masculino,ENFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0489,Costa,Medio,54,Femenino,ESFP,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0306,Lima,Medio,63,Femenino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0115,Lima,Medio-Alto,68,Femenino,INFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0810,Selva,Bajo,34,Masculino,INTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0333,Lima,Medio-Alto,20,Femenino,INTJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0839,Selva,Medio,31,Masculino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0484,Costa,Medio,51,Femenino,ENFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0422,Costa,Bajo,62,Masculino,ENFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0777,Sierra,Bajo,44,Masculino,ENFJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0651,Sierra,Medio,46,Femenino,ESTJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0789,Sierra,Medio,35,Femenino,ISFJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0147,Lima,Bajo,34,Masculino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0586,Sierra,Bajo,33,Masculino,ISTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0121,Lima,Alto,30,Masculino,ESFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0563,Sierra,Bajo,40,Masculino,ENTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0123,Lima,Alto,44,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0034,Lima,Medio,46,Femenino,ESFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0784,Sierra,Medio,38,Masculino,ISFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0102,Lima,Medio-Alto,28,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0763,Sierra,Bajo,20,Femenino,ISFJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0510,Costa,Medio-Alto,21,Masculino,ISFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0991,Selva,Bajo,44,Femenino,ESTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0727,Sierra,Bajo,71,Femenino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0312,Lima,Medio-Alto,37,Masculino,ENTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0021,Lima,Bajo,59,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0448,Costa,Medio-Alto,57,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0064,Lima,Medio-Alto,42,No Binario,INFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0675,Sierra,Medio,71,Masculino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0894,Selva,Bajo,31,Masculino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0953,Selva,Bajo,72,Masculino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0057,Lima,Medio,58,No Binario,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0406,Costa,Bajo,51,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0193,Lima,Medio,23,Masculino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0556,Sierra,Bajo,60,Masculino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0616,Sierra,Bajo,69,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0100,Lima,Medio,47,Femenino,INTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0028,Lima,Medio,26,Masculino,INFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0607,Sierra,Bajo,35,Masculino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0339,Lima,Medio-Alto,43,Femenino,ISFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0507,Costa,Bajo,27,Masculino,ENTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0172,Lima,Medio-Alto,25,Masculino,ENTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0235,Lima,Bajo,55,No Binario,INTJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0666,Sierra,Bajo,42,Femenino,ESTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0748,Sierra,Bajo,19,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0767,Sierra,Medio,47,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0633,Sierra,Bajo,67,Masculino,ISFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0309,Lima,Medio,39,Masculino,ISTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0747,Sierra,Medio,50,Femenino,ENFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0087,Lima,Bajo,47,Femenino,ESFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0027,Lima,Medio,48,Masculino,ESTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0083,Lima,Bajo,20,Femenino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0199,Lima,Bajo,33,Masculino,ENFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0279,Lima,Bajo,41,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0394,Costa,Medio,60,Masculino,INTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0716,Sierra,Bajo,53,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0136,Lima,Bajo,67,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0730,Sierra,Bajo,46,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0360,Costa,Medio,27,Masculino,ISFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0164,Lima,Medio,58,Masculino,ENTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0829,Selva,Medio,43,Masculino,INFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0545,Costa,Bajo,23,Masculino,ISTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0817,Selva,Bajo,59,Masculino,ENTP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0519,Costa,Bajo,20,Masculino,ESTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0059,Lima,Medio-Alto,19,Femenino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0660,Sierra,Bajo,58,Femenino,ENTJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0264,Lima,Medio,64,Masculino,ESTP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0210,Lima,Alto,57,Femenino,ISTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0538,Costa,Medio,62,Femenino,INFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0103,Lima,Bajo,42,Masculino,ESTP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0356,Costa,Medio,40,Femenino,ESTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0751,Sierra,Medio,58,Femenino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0283,Lima,Bajo,66,Femenino,ISTJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0956,Selva,Bajo,34,Masculino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0875,Selva,Bajo,25,Femenino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0323,Lima,Bajo,29,Masculino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0909,Selva,Bajo,63,Masculino,ENTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0224,Lima,Medio-Alto,43,Femenino,INFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0047,Lima,Bajo,31,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0844,Selva,Bajo,46,Femenino,INFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0355,Costa,Medio-Alto,72,Masculino,ENTJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0914,Selva,Bajo,38,Masculino,INFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0693,Sierra,Medio,30,Masculino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0601,Sierra,Bajo,22,Masculino,ENFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0501,Costa,Bajo,50,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0752,Sierra,Medio,65,Femenino,ESTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0690,Sierra,Medio,56,Femenino,ENTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0521,Costa,Medio,53,Masculino,ESTJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0242,Lima,Medio-Alto,72,Femenino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0457,Costa,Bajo,35,Femenino,ESTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0466,Costa,Medio-Alto,47,Femenino,ISTJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0952,Selva,Bajo,41,Masculino,ENFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0930,Selva,Bajo,18,Femenino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0853,Selva,Medio,62,Masculino,ENFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0149,Lima,Alto,49,Femenino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0331,Lima,Medio-Alto,39,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0739,Sierra,Medio,50,Femenino,ISFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0254,Lima,Alto,42,Femenino,INTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0855,Selva,Bajo,71,Masculino,ISFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0954,Selva,Bajo,60,Masculino,ESFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0720,Sierra,Bajo,62,Masculino,INTP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0833,Selva,Bajo,50,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0790,Sierra,Bajo,65,Femenino,ENTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0060,Lima,Medio,30,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0617,Sierra,Bajo,19,Masculino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0113,Lima,Medio-Alto,29,No Binario,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0840,Selva,Bajo,54,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0533,Costa,Bajo,58,Masculino,ISTJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0692,Sierra,Bajo,68,Masculino,ESTJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0949,Selva,Bajo,19,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0409,Costa,Medio,70,Masculino,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0262,Lima,Bajo,66,Masculino,ISTP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0085,Lima,Medio,42,Femenino,ESFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0918,Selva,Bajo,35,Masculino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0111,Lima,Bajo,19,Masculino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0755,Sierra,Bajo,51,Masculino,ISTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0614,Sierra,Bajo,47,Masculino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0865,Selva,Bajo,55,Femenino,INTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0529,Costa,Medio,54,Femenino,ESTJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0114,Lima,Medio,51,Femenino,ESFJ,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0707,Sierra,Bajo,26,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0691,Sierra,Bajo,31,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0783,Sierra,Bajo,57,Masculino,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0015,Lima,Medio,25,No Binario,ESTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0040,Lima,Medio,68,Masculino,ISTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0724,Sierra,Medio,45,No Binario,INTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0679,Sierra,Medio,26,Masculino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0808,Selva,Bajo,69,Masculino,ISFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0450,Costa,Medio,55,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0382,Costa,Bajo,72,No Binario,INTP,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0959,Selva,Bajo,27,Masculino,ENFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0277,Lima,Medio,44,No Binario,ISTP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0867,Selva,Bajo,57,No Binario,ISTJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0284,Lima,Alto,35,Masculino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0812,Selva,Bajo,38,Masculino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0985,Selva,Medio,64,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0332,Lima,Medio-Alto,41,Masculino,ISFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0140,Lima,Medio-Alto,69,No Binario,ENTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0572,Sierra,Medio,58,Masculino,ENFJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0795,Sierra,Bajo,61,Masculino,ENTJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0162,Lima,Bajo,50,Masculino,ESFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0995,Selva,Bajo,33,Femenino,ENTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0879,Selva,Bajo,71,Femenino,ENFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0969,Selva,Medio,26,Masculino,INTJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0854,Selva,Bajo,55,Femenino,INFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0439,Costa,Medio-Alto,42,Femenino,INFP,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0989,Selva,Bajo,38,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0824,Selva,Bajo,41,Masculino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0037,Lima,Bajo,21,Masculino,INTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0689,Sierra,Bajo,65,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0857,Selva,Bajo,28,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0774,Sierra,Bajo,68,Masculino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0729,Sierra,Bajo,18,Femenino,ESFP,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0042,Lima,Medio-Alto,38,Masculino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0821,Selva,Medio,47,Masculino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0543,Costa,Bajo,27,Femenino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0934,Selva,Medio,70,Femenino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0097,Lima,Medio,34,Femenino,ENTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0163,Lima,Alto,24,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0945,Selva,Bajo,65,Femenino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0505,Costa,Bajo,40,Femenino,ISFJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0546,Costa,Medio,47,Femenino,ISFJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0907,Selva,Bajo,58,Masculino,ENFJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0471,Costa,Medio,36,Femenino,ENFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0185,Lima,Medio-Alto,55,Femenino,INTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0980,Selva,Bajo,68,Masculino,ENFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0686,Sierra,Medio,37,Femenino,ENFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0598,Sierra,Bajo,40,Femenino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0960,Selva,Bajo,66,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0590,Sierra,Medio,58,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0933,Selva,Bajo,49,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0961,Selva,Bajo,30,Femenino,INFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0520,Costa,Medio,59,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0229,Lima,Bajo,55,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0160,Lima,Bajo,20,Masculino,ESTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0132,Lima,Bajo,67,Femenino,ESFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0470,Costa,Medio-Alto,41,No Binario,ENTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0728,Sierra,Bajo,25,Masculino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0396,Costa,Medio,63,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0240,Lima,Bajo,70,Masculino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0700,Sierra,Medio,39,Femenino,ENFP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0668,Sierra,Medio,57,Femenino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0297,Lima,Medio,38,Masculino,ISFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0476,Costa,Bajo,49,Femenino,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0764,Sierra,Bajo,51,Masculino,INTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0849,Selva,Medio,56,Masculino,ISTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0581,Sierra,Medio,52,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0977,Selva,Bajo,46,No Binario,ESTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0236,Lima,Medio-Alto,70,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0537,Costa,Medio,30,Femenino,ISTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0845,Selva,Bajo,46,Masculino,INTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0831,Selva,Bajo,23,Masculino,ISTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0746,Sierra,Medio,30,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0994,Selva,Bajo,53,Femenino,ISTP,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0491,Costa,Bajo,27,Femenino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0165,Lima,Medio-Alto,23,Femenino,ENFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0260,Lima,Alto,69,Femenino,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0288,Lima,Alto,49,Femenino,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0873,Selva,Bajo,46,Femenino,ENTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0050,Lima,Medio,65,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0863,Selva,Medio,51,Masculino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0606,Sierra,Bajo,21,Femenino,ESFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0197,Lima,Bajo,72,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0228,Lima,Medio,21,Masculino,ESTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0112,Lima,Bajo,52,Femenino,ENFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0591,Sierra,Medio,71,Femenino,ESFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0157,Lima,Medio,46,Femenino,ESFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0399,Costa,Medio,23,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0325,Lima,Bajo,54,Femenino,ISTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0133,Lima,Medio,71,Femenino,ESTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0076,Lima,Bajo,51,Femenino,INFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0664,Sierra,Medio,23,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0878,Selva,Bajo,53,Masculino,ESTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0208,Lima,Medio,68,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0367,Costa,Bajo,37,Masculino,INTJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0889,Selva,Bajo,51,Masculino,INTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0688,Sierra,Medio,46,Femenino,INTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0421,Costa,Medio,44,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0631,Sierra,Bajo,28,Masculino,ENTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0131,Lima,Bajo,42,Masculino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0353,Costa,Medio-Alto,51,Femenino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0528,Costa,Bajo,18,Femenino,ESFJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0428,Costa,Bajo,41,Masculino,ENFJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0065,Lima,Medio-Alto,20,Femenino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0126,Lima,Medio-Alto,59,Femenino,ISFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0899,Selva,Bajo,44,Femenino,ESFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0107,Lima,Medio-Alto,36,Masculino,INTP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0754,Sierra,Medio,47,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0464,Costa,Medio,66,Femenino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0358,Costa,Bajo,67,Masculino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0870,Selva,Bajo,44,Femenino,ESFP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0667,Sierra,Medio,59,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0773,Sierra,Bajo,59,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0999,Selva,Bajo,63,Femenino,ISFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0465,Costa,Medio,47,Femenino,INFP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0371,Costa,Medio,71,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0648,Sierra,Medio,26,Masculino,ISTP,Candidato B (Derecha Tradicional),True,False,False
+PREDIK-PE-0337,Lima,Medio-Alto,50,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0347,Lima,Medio,56,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0828,Selva,Bajo,69,Femenino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0653,Sierra,Medio,51,Femenino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0602,Sierra,Bajo,40,Masculino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0714,Sierra,Medio,47,No Binario,INFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0780,Sierra,Medio,65,Masculino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0891,Selva,Bajo,35,Femenino,ENFJ,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0200,Lima,Bajo,54,Femenino,INFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0749,Sierra,Bajo,54,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0600,Sierra,Bajo,19,Masculino,ENFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0659,Sierra,Medio,67,Femenino,ISFP,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0011,Lima,Bajo,66,No Binario,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0488,Costa,Medio,72,No Binario,INTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0827,Selva,Bajo,60,Masculino,ESFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0257,Lima,Medio-Alto,19,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0640,Sierra,Bajo,65,Masculino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0144,Lima,Medio-Alto,28,Femenino,ISFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0354,Costa,Bajo,39,Masculino,ISFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0536,Costa,Bajo,39,Masculino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0972,Selva,Bajo,19,Femenino,INTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0649,Sierra,Medio,70,Femenino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0722,Sierra,Medio,42,Femenino,ISFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0327,Lima,Medio,24,Femenino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0683,Sierra,Medio,23,Masculino,ESTJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0673,Sierra,Medio,72,Masculino,INFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0677,Sierra,Bajo,27,Masculino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0619,Sierra,Bajo,68,Femenino,INTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0276,Lima,Medio-Alto,36,Femenino,ESTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0291,Lima,Alto,30,Femenino,ENFP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0044,Lima,Medio,38,No Binario,ESTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0074,Lima,Medio,45,Femenino,ENTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0830,Selva,Medio,51,Femenino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0978,Selva,Medio,41,Femenino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0936,Selva,Bajo,68,Femenino,ESTP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0743,Sierra,Medio,38,Femenino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0893,Selva,Medio,57,Masculino,ESTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0535,Costa,Bajo,55,Masculino,INFP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0876,Selva,Medio,31,Masculino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0485,Costa,Bajo,36,Masculino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0896,Selva,Bajo,61,Masculino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0093,Lima,Medio-Alto,44,Masculino,INFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0926,Selva,Bajo,36,Masculino,ESTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0976,Selva,Medio,68,Femenino,ISFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0858,Selva,Bajo,62,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0576,Sierra,Medio,59,Femenino,ISFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0010,Lima,Medio-Alto,34,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0928,Selva,Bajo,62,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0697,Sierra,Bajo,68,Masculino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0173,Lima,Medio-Alto,19,Femenino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0138,Lima,Bajo,68,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0070,Lima,Alto,67,Femenino,ISTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0334,Lima,Medio-Alto,62,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0338,Lima,Medio,47,Femenino,INFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0054,Lima,Medio,57,Femenino,INTP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0838,Selva,Bajo,47,Masculino,ESFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0705,Sierra,Medio,61,Masculino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0508,Costa,Medio-Alto,55,No Binario,ENFJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0110,Lima,Alto,48,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0086,Lima,Medio,55,Masculino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0632,Sierra,Bajo,62,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0609,Sierra,Bajo,60,Femenino,ESTJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0733,Sierra,Medio,38,Femenino,INFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0026,Lima,Medio,59,Femenino,ESFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0234,Lima,Bajo,50,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0282,Lima,Bajo,67,Femenino,ISTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0555,Sierra,Medio,56,Femenino,ESFP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0005,Lima,Bajo,30,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0265,Lima,Bajo,24,Masculino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0370,Costa,Medio,51,Masculino,ISTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0078,Lima,Bajo,41,Femenino,ENFJ,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0706,Sierra,Bajo,45,Masculino,INTJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0652,Sierra,Bajo,40,Femenino,ESFP,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0079,Lima,Medio,25,Masculino,ESTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0201,Lima,Medio,29,Masculino,ESTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0273,Lima,Bajo,62,Femenino,INTJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0104,Lima,Medio,53,Masculino,ENFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0401,Costa,Medio,36,Masculino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0770,Sierra,Bajo,20,Masculino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0797,Sierra,Bajo,22,Femenino,ESTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0310,Lima,Medio,53,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0253,Lima,Medio,52,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0299,Lima,Medio,60,Masculino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0345,Lima,Medio-Alto,57,Femenino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0259,Lima,Medio,59,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0413,Costa,Medio,49,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0971,Selva,Bajo,62,Masculino,INFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0186,Lima,Medio-Alto,46,Femenino,ENTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0713,Sierra,Bajo,66,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0134,Lima,Bajo,27,Masculino,ENFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0623,Sierra,Medio,36,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0453,Costa,Bajo,64,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0765,Sierra,Medio,45,Femenino,ENFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0217,Lima,Bajo,48,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0561,Sierra,Bajo,21,Masculino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0551,Sierra,Bajo,31,Femenino,INFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0644,Sierra,Medio,67,Femenino,INFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0852,Selva,Bajo,52,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0516,Costa,Bajo,57,Masculino,ISFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0592,Sierra,Bajo,42,Masculino,INFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0342,Lima,Medio,26,Masculino,ENTP,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0718,Sierra,Bajo,71,Masculino,ENTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0832,Selva,Bajo,20,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0597,Sierra,Medio,61,Femenino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0189,Lima,Bajo,63,Masculino,INFP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0311,Lima,Medio,51,Masculino,ENFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0905,Selva,Bajo,39,Femenino,INTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0298,Lima,Medio,68,Femenino,INTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0146,Lima,Medio,26,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0534,Costa,Bajo,60,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0843,Selva,Bajo,28,Femenino,ENTJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0375,Costa,Bajo,60,Femenino,ESTP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0006,Lima,Bajo,63,Femenino,ISFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0379,Costa,Medio,45,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0583,Sierra,Bajo,33,Femenino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0486,Costa,Bajo,51,Femenino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0072,Lima,Bajo,34,Masculino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0676,Sierra,Bajo,34,Masculino,ESTJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0120,Lima,Medio,29,Masculino,ENFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0769,Sierra,Medio,64,Femenino,INFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0819,Selva,Bajo,59,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0745,Sierra,Medio,27,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0089,Lima,Bajo,20,Femenino,ISFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0968,Selva,Bajo,39,Femenino,ESTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0944,Selva,Bajo,26,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0599,Sierra,Medio,62,Masculino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0155,Lima,Medio,27,Femenino,ESFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0263,Lima,Medio-Alto,59,Masculino,INFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0247,Lima,Medio-Alto,26,Femenino,ENFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0615,Sierra,Bajo,58,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0077,Lima,Medio-Alto,24,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0654,Sierra,Medio,42,Masculino,ENTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0734,Sierra,Medio,52,No Binario,ENFP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0017,Lima,Bajo,46,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0481,Costa,Medio-Alto,41,Masculino,ISFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0304,Lima,Medio,56,Femenino,ISFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0511,Costa,Medio,71,Masculino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0363,Costa,Bajo,67,Masculino,ENFJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0433,Costa,Medio,27,Femenino,ENFJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0046,Lima,Bajo,24,Femenino,ENTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0374,Costa,Bajo,66,Masculino,ISTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0248,Lima,Alto,67,Femenino,ENTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0518,Costa,Medio,65,Femenino,ISTP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0842,Selva,Bajo,69,Femenino,ISFJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0624,Sierra,Medio,57,Masculino,INTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0407,Costa,Bajo,28,Femenino,ESTJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0315,Lima,Bajo,22,Femenino,INTP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0626,Sierra,Medio,39,Femenino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0108,Lima,Bajo,28,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0063,Lima,Medio-Alto,23,Femenino,ISTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0215,Lima,Medio-Alto,66,Masculino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0351,Costa,Bajo,41,Masculino,INTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0915,Selva,Bajo,20,Masculino,ISFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0955,Selva,Medio,62,Masculino,ISTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0308,Lima,Medio,57,Femenino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0822,Selva,Medio,21,Masculino,ENTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0301,Lima,Medio-Alto,44,Masculino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0270,Lima,Medio,50,Masculino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0014,Lima,Medio,51,Femenino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0681,Sierra,Medio,60,Masculino,INTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0067,Lima,Bajo,48,Masculino,ENTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0454,Costa,Bajo,28,Masculino,ISTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0385,Costa,Medio,20,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0988,Selva,Bajo,26,Masculino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0509,Costa,Medio-Alto,28,Masculino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0549,Costa,Bajo,36,Femenino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0541,Costa,Medio,38,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0912,Selva,Bajo,32,Femenino,ESTJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0834,Selva,Medio,24,Femenino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0539,Costa,Medio-Alto,70,Femenino,ISTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0269,Lima,Medio,49,Femenino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0923,Selva,Medio,63,Femenino,ESTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0913,Selva,Bajo,31,Masculino,INTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0381,Costa,Medio,66,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0762,Sierra,Bajo,69,Masculino,INFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0073,Lima,Medio,47,Masculino,INFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0231,Lima,Medio,72,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0523,Costa,Medio,60,Masculino,ISTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0578,Sierra,Bajo,56,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0495,Costa,Medio,67,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0168,Lima,Medio-Alto,49,Masculino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0611,Sierra,Bajo,48,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0947,Selva,Bajo,71,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0645,Sierra,Medio,45,Masculino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0950,Selva,Bajo,25,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0711,Sierra,Medio,38,Masculino,ISTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0117,Lima,Alto,43,Femenino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0418,Costa,Bajo,60,Masculino,ESTJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0152,Lima,Alto,64,Femenino,INFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0526,Costa,Medio,72,Masculino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0957,Selva,Bajo,33,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0781,Sierra,Bajo,70,Femenino,ESFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0925,Selva,Medio,68,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0931,Selva,Bajo,33,Femenino,INTJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0319,Lima,Medio,32,Femenino,ISTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0218,Lima,Medio,36,Femenino,INFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0740,Sierra,Bajo,68,Femenino,ESTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0161,Lima,Medio-Alto,72,Masculino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0670,Sierra,Medio,70,Masculino,INTP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0567,Sierra,Bajo,25,Masculino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0020,Lima,Bajo,31,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0106,Lima,Medio-Alto,22,Femenino,ESTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0062,Lima,Medio,58,Masculino,INTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0544,Costa,Medio,60,Masculino,ENTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0177,Lima,Bajo,32,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0090,Lima,Medio,64,Masculino,ISFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0595,Sierra,Bajo,29,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0639,Sierra,Bajo,68,Masculino,INFJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0897,Selva,Bajo,23,Femenino,INTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0473,Costa,Medio,31,Femenino,ESFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0884,Selva,Medio,70,Femenino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0285,Lima,Medio-Alto,27,Masculino,ENFP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0890,Selva,Bajo,30,Masculino,ENFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0604,Sierra,Bajo,33,Femenino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0105,Lima,Medio,44,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0760,Sierra,Bajo,51,Femenino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0970,Selva,Bajo,52,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0019,Lima,Bajo,66,Femenino,ENFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0088,Lima,Bajo,60,Femenino,ISFP,Candidato B (Derecha Tradicional),True,False,False
+PREDIK-PE-0806,Selva,Bajo,38,Masculino,INTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0274,Lima,Medio,53,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0376,Costa,Medio-Alto,69,Femenino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0305,Lima,Alto,28,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0984,Selva,Bajo,32,No Binario,ENTJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0725,Sierra,Medio,19,Femenino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0300,Lima,Alto,36,Femenino,ISTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0903,Selva,Medio,29,Femenino,ISTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0696,Sierra,Bajo,38,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0221,Lima,Bajo,48,Masculino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0420,Costa,Medio,30,Femenino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0384,Costa,Medio,61,Masculino,ENFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0800,Sierra,Medio,69,Masculino,ESTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0490,Costa,Bajo,52,Femenino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0580,Sierra,Bajo,46,Masculino,ISFJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0227,Lima,Bajo,35,Femenino,INTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0475,Costa,Medio-Alto,52,Femenino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0003,Lima,Medio,49,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0885,Selva,Medio,63,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0504,Costa,Medio,42,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0477,Costa,Medio,50,Masculino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0039,Lima,Medio-Alto,31,Femenino,ENFP,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0194,Lima,Alto,23,Masculino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0589,Sierra,Bajo,36,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0127,Lima,Bajo,32,Femenino,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0866,Selva,Bajo,19,Femenino,ENTJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0244,Lima,Medio-Alto,69,Femenino,ESFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0109,Lima,Bajo,38,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0558,Sierra,Bajo,72,Masculino,ISFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0316,Lima,Medio-Alto,31,Femenino,ESFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0672,Sierra,Bajo,72,Masculino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0637,Sierra,Bajo,52,Femenino,ESTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0962,Selva,Bajo,25,Femenino,INTP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0823,Selva,Medio,61,Femenino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0973,Selva,Medio,71,Femenino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0550,Costa,Bajo,29,Masculino,ISFP,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0156,Lima,Medio-Alto,29,No Binario,ENTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0036,Lima,Medio,42,Masculino,ESFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0141,Lima,Medio-Alto,24,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0427,Costa,Medio,65,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0341,Lima,Medio,55,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0196,Lima,Medio,38,Masculino,ISFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0336,Lima,Bajo,27,Masculino,INFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0369,Costa,Medio-Alto,48,Femenino,ISFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0041,Lima,Medio,48,Masculino,ISFP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0025,Lima,Medio,65,Femenino,ESFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0478,Costa,Bajo,58,Femenino,INFP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0456,Costa,Bajo,53,Femenino,INTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0682,Sierra,Bajo,45,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0906,Selva,Medio,40,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0571,Sierra,Bajo,59,Femenino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0209,Lima,Medio-Alto,31,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0029,Lima,Alto,36,Masculino,ENTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0804,Selva,Medio,64,Masculino,ESTJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0643,Sierra,Bajo,48,Masculino,ESTJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0801,Selva,Bajo,56,Masculino,INTJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0935,Selva,Bajo,42,Masculino,ENTJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0805,Selva,Bajo,54,Femenino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0987,Selva,Bajo,32,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0211,Lima,Medio,63,Masculino,INTJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0398,Costa,Bajo,64,Femenino,ISFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0482,Costa,Medio,47,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0170,Lima,Bajo,21,Masculino,ISTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0552,Sierra,Bajo,26,Femenino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0402,Costa,Bajo,47,Femenino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0658,Sierra,Bajo,43,Masculino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0245,Lima,Medio,36,Femenino,ISFP,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0798,Sierra,Bajo,51,Masculino,ISFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0343,Lima,Medio,49,Masculino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0249,Lima,Medio,54,Masculino,ESFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0851,Selva,Bajo,30,Masculino,ISFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0661,Sierra,Medio,69,Masculino,INTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0524,Costa,Medio,63,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0252,Lima,Medio,40,Masculino,ISFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0187,Lima,Medio,28,Femenino,ISTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0366,Costa,Bajo,37,Masculino,INTJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0868,Selva,Bajo,34,Femenino,ISFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0444,Costa,Medio-Alto,48,Masculino,ENTP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0500,Costa,Medio,35,Masculino,ENTP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0569,Sierra,Bajo,26,Femenino,ISFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0573,Sierra,Medio,56,Masculino,ESTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0118,Lima,Medio-Alto,39,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0335,Lima,Alto,38,Masculino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0630,Sierra,Medio,18,Masculino,ISTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0004,Lima,Medio-Alto,49,Femenino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0397,Costa,Medio,59,Masculino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0761,Sierra,Medio,57,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0974,Selva,Bajo,69,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0948,Selva,Medio,38,Femenino,INFJ,Candidato B (Derecha Tradicional),True,False,False
+PREDIK-PE-0758,Sierra,Medio,69,Femenino,INFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0445,Costa,Medio,42,Femenino,ESFP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0329,Lima,Medio,40,Masculino,INFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0328,Lima,Medio-Alto,66,Masculino,ISTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0835,Selva,Bajo,56,Femenino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0750,Sierra,Bajo,45,Femenino,ENTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0145,Lima,Medio-Alto,32,Masculino,ISTJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0213,Lima,Medio-Alto,55,Masculino,ENFJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0771,Sierra,Bajo,60,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0230,Lima,Medio,67,Femenino,ISTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0493,Costa,Medio,54,Femenino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0219,Lima,Alto,29,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0744,Sierra,Bajo,43,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0680,Sierra,Medio,54,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0183,Lima,Medio,43,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0888,Selva,Medio,35,Masculino,ENFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0717,Sierra,Bajo,48,Masculino,ISFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0698,Sierra,Medio,18,Femenino,INFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0223,Lima,Medio-Alto,64,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0613,Sierra,Bajo,72,Masculino,ENFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0738,Sierra,Medio,65,Femenino,ENTJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0559,Sierra,Medio,42,Masculino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0702,Sierra,Medio,61,Femenino,ESFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0932,Selva,Bajo,49,Femenino,ENFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0736,Sierra,Bajo,59,Masculino,INTP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0965,Selva,Bajo,57,Femenino,INFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0272,Lima,Medio,25,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0048,Lima,Alto,42,Femenino,ISTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0939,Selva,Bajo,33,Masculino,INFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0256,Lima,Medio,25,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0362,Costa,Medio,28,No Binario,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0917,Selva,Medio,69,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0883,Selva,Bajo,19,Femenino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0594,Sierra,Bajo,19,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0522,Costa,Medio-Alto,56,Masculino,INFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0474,Costa,Medio,66,Masculino,ESFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0503,Costa,Bajo,44,Masculino,ESFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0142,Lima,Medio-Alto,48,Femenino,ENFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0007,Lima,Medio,45,Masculino,INTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0943,Selva,Medio,26,Femenino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0577,Sierra,Bajo,50,Femenino,INTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0997,Selva,Medio,29,Masculino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0557,Sierra,Bajo,27,Masculino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0174,Lima,Medio,43,Masculino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0013,Lima,Bajo,47,Femenino,ENFP,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0022,Lima,Medio-Alto,37,Masculino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0159,Lima,Medio,29,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0251,Lima,Bajo,42,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0096,Lima,Medio-Alto,33,Femenino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0143,Lima,Bajo,39,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0605,Sierra,Bajo,24,Femenino,ENFP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0302,Lima,Medio,48,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0967,Selva,Medio,68,Femenino,ESTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0826,Selva,Medio,26,Femenino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0815,Selva,Medio,44,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0646,Sierra,Medio,32,Femenino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0841,Selva,Bajo,39,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0787,Sierra,Bajo,63,Femenino,ENTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0359,Costa,Bajo,72,Masculino,ENFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0990,Selva,Bajo,63,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0449,Costa,Medio,58,Masculino,INTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0099,Lima,Medio,56,Femenino,ISFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0753,Sierra,Medio,19,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0540,Costa,Medio,24,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0414,Costa,Bajo,53,Femenino,INFP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0837,Selva,Bajo,72,Masculino,ESFP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0348,Lima,Medio,30,Masculino,ENFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0035,Lima,Medio,22,Masculino,ISFJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0756,Sierra,Medio,35,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0938,Selva,Bajo,59,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0166,Lima,Medio-Alto,38,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0772,Sierra,Bajo,36,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0176,Lima,Medio,69,Masculino,ISTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0657,Sierra,Bajo,21,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0212,Lima,Bajo,18,Masculino,ISFJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0814,Selva,Bajo,55,Femenino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0859,Selva,Bajo,24,Masculino,ISTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0408,Costa,Medio,57,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0634,Sierra,Medio,58,Masculino,ENFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0204,Lima,Medio-Alto,55,Masculino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0238,Lima,Medio,22,Femenino,INTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0864,Selva,Medio,23,Masculino,ENFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0636,Sierra,Medio,31,Femenino,ESTJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0587,Sierra,Bajo,54,Masculino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0656,Sierra,Bajo,30,Masculino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0998,Selva,Bajo,46,Masculino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0625,Sierra,Medio,55,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0461,Costa,Bajo,41,Masculino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0996,Selva,Bajo,48,No Binario,ESFP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0281,Lima,Bajo,33,Masculino,ESFP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0775,Sierra,Bajo,64,Masculino,ISTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0045,Lima,Medio-Alto,63,No Binario,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0981,Selva,Bajo,61,Femenino,ISTJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0458,Costa,Medio,35,Femenino,ENFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0101,Lima,Medio,22,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0416,Costa,Medio,27,Femenino,ENFP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0403,Costa,Medio,41,Masculino,ESFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0596,Sierra,Medio,26,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0303,Lima,Medio,41,Femenino,ISTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0378,Costa,Medio-Alto,46,Femenino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-1000,Selva,Bajo,57,Masculino,ESTJ,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0295,Lima,Medio-Alto,67,Femenino,ESFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0425,Costa,Bajo,53,Masculino,ESFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0373,Costa,Medio,64,Femenino,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0530,Costa,Bajo,23,Masculino,ISTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0574,Sierra,Bajo,63,Femenino,ESTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0080,Lima,Bajo,66,Masculino,INFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0900,Selva,Medio,30,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0975,Selva,Medio,33,Masculino,ISTJ,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0380,Costa,Bajo,47,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0239,Lima,Medio-Alto,38,Femenino,ESFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0871,Selva,Medio,50,Masculino,ESTJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0435,Costa,Bajo,43,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0368,Costa,Medio,38,Masculino,ISTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0860,Selva,Bajo,54,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0148,Lima,Bajo,23,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0759,Sierra,Medio,50,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0881,Selva,Bajo,48,Femenino,INTP,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0324,Lima,Alto,26,Masculino,ESFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0655,Sierra,Bajo,22,Femenino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0627,Sierra,Bajo,53,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0982,Selva,Medio,21,Masculino,INTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0214,Lima,Medio-Alto,29,Femenino,ESTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0869,Selva,Medio,59,Femenino,ENFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0793,Sierra,Medio,64,Masculino,ISFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0483,Costa,Medio,67,Femenino,ESTJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0892,Selva,Bajo,66,Femenino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0531,Costa,Medio,22,Masculino,ISTJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0388,Costa,Bajo,62,Masculino,ESTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0447,Costa,Medio,48,Femenino,ENTP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0154,Lima,Medio,21,Femenino,INTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0387,Costa,Medio-Alto,37,Masculino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0622,Sierra,Bajo,37,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0612,Sierra,Medio,58,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0737,Sierra,Bajo,45,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0916,Selva,Bajo,37,Masculino,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0150,Lima,Bajo,38,Masculino,INFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0709,Sierra,Bajo,47,Masculino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0452,Costa,Medio,39,Femenino,ESFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0190,Lima,Medio,64,Femenino,INTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0440,Costa,Medio,43,Masculino,ENTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0506,Costa,Bajo,68,Masculino,ENTP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0548,Costa,Bajo,50,Femenino,ESTP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0862,Selva,Bajo,61,Femenino,INTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0098,Lima,Bajo,41,Masculino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0684,Sierra,Bajo,60,Femenino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0515,Costa,Medio,21,Femenino,ESFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0704,Sierra,Bajo,25,No Binario,ESFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0346,Lima,Bajo,34,Masculino,ENFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0179,Lima,Medio,21,Masculino,ESFJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0075,Lima,Medio-Alto,67,Femenino,ENTJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0412,Costa,Bajo,52,Femenino,INTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0847,Selva,Medio,40,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0268,Lima,Medio,29,Masculino,ENFJ,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0195,Lima,Alto,22,Femenino,ESFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0941,Selva,Bajo,66,Femenino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0220,Lima,Medio,47,Femenino,INFP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0687,Sierra,Bajo,34,Femenino,ESFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0267,Lima,Medio-Alto,26,Femenino,ISTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0349,Lima,Medio-Alto,52,Masculino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0575,Sierra,Medio,55,Femenino,INFJ,Voto Blanco / Nulo,False,True,False
+PREDIK-PE-0699,Sierra,Medio,67,Masculino,ESFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0158,Lima,Medio-Alto,40,Femenino,ESTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0708,Sierra,Medio,62,Femenino,ESFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0983,Selva,Bajo,31,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0009,Lima,Medio,36,Femenino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0405,Costa,Medio,72,Femenino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0986,Selva,Bajo,53,Masculino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0280,Lima,Bajo,68,Femenino,ISFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0091,Lima,Medio-Alto,64,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0629,Sierra,Medio,22,Femenino,ISFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0372,Costa,Medio,50,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0038,Lima,Medio,50,Masculino,ISTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0992,Selva,Medio,27,Masculino,INFP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0124,Lima,Medio-Alto,54,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0809,Selva,Medio,32,Femenino,ISFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0532,Costa,Medio,49,Femenino,ISFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0479,Costa,Bajo,61,Masculino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0128,Lima,Medio-Alto,29,Femenino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0582,Sierra,Bajo,29,Masculino,INTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0436,Costa,Medio,39,Masculino,ISFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0151,Lima,Medio,69,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0669,Sierra,Medio,65,Femenino,INTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0494,Costa,Medio,25,Masculino,ENTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0129,Lima,Medio-Alto,43,Femenino,ENFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0512,Costa,Medio-Alto,40,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0094,Lima,Medio,40,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0694,Sierra,Bajo,21,Femenino,ESFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0757,Sierra,Medio,52,Femenino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0383,Costa,Medio,35,Masculino,ESFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0811,Selva,Bajo,49,Masculino,ISTP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0799,Sierra,Bajo,47,No Binario,ESFP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0061,Lima,Medio,29,Femenino,ENFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0092,Lima,Alto,55,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0116,Lima,Alto,39,Masculino,INTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0361,Costa,Bajo,41,Femenino,ESTP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0426,Costa,Medio,58,No Binario,ENFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0419,Costa,Bajo,71,Masculino,INFP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0437,Costa,Bajo,65,Masculino,ISTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0786,Sierra,Medio,60,Femenino,ENFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0618,Sierra,Bajo,30,Femenino,ENFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0946,Selva,Bajo,38,Masculino,ENFJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0480,Costa,Medio-Alto,60,Masculino,ESTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0568,Sierra,Medio,30,Masculino,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0778,Sierra,Medio,52,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0979,Selva,Bajo,23,Masculino,ISTJ,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0951,Selva,Bajo,55,Femenino,ENTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0498,Costa,Medio,59,Masculino,ENFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0052,Lima,Medio-Alto,31,Masculino,ENFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0125,Lima,Medio,56,Masculino,ENTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0802,Selva,Bajo,18,Masculino,ENFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0153,Lima,Medio-Alto,34,Masculino,ENFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0872,Selva,Medio,51,Femenino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0431,Costa,Bajo,42,Femenino,ISFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0352,Costa,Medio,23,Masculino,ESTJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0350,Lima,Bajo,19,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0499,Costa,Medio,53,Femenino,ENTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0232,Lima,Medio-Alto,29,Masculino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0963,Selva,Bajo,68,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0785,Sierra,Bajo,50,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0122,Lima,Bajo,52,No Binario,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0423,Costa,Bajo,60,Femenino,ENFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0856,Selva,Medio,29,Femenino,ESFP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0836,Selva,Bajo,54,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0395,Costa,Medio,50,Masculino,ISFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0137,Lima,Bajo,47,Masculino,ESFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0389,Costa,Bajo,20,Femenino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0904,Selva,Medio,48,Femenino,INFP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0542,Costa,Bajo,72,Masculino,ISTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0296,Lima,Alto,38,Femenino,ESFP,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0320,Lima,Medio,20,Femenino,ISTJ,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0735,Sierra,Medio,44,No Binario,INTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0671,Sierra,Medio,50,Masculino,INFP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0181,Lima,Bajo,39,Masculino,ESTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0497,Costa,Medio,48,Femenino,INTJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0180,Lima,Medio,58,Femenino,INFJ,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0741,Sierra,Bajo,72,Femenino,ISFP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0674,Sierra,Bajo,39,Femenino,INFJ,Candidato D (Centroderecha Tecnocrática),True,False,False
+PREDIK-PE-0016,Lima,Medio-Alto,65,Masculino,INFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0404,Costa,Bajo,43,Femenino,ENFJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0069,Lima,Medio,48,Masculino,ISTP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0095,Lima,Medio,24,Femenino,INFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0792,Sierra,Bajo,70,Masculino,ISFP,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0292,Lima,Medio,48,Masculino,ESFP,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0635,Sierra,Bajo,53,Femenino,INTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0921,Selva,Bajo,24,Femenino,ESFJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0966,Selva,Medio,29,Masculino,INTJ,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0593,Sierra,Bajo,54,Femenino,ENFJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0776,Sierra,Bajo,63,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0055,Lima,Bajo,51,Masculino,ISFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0031,Lima,Medio,57,Masculino,ENTJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0816,Selva,Medio,70,Masculino,INTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0051,Lima,Medio-Alto,26,Femenino,INFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0715,Sierra,Bajo,35,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0721,Sierra,Bajo,19,Femenino,ISTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0818,Selva,Bajo,55,Masculino,INFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0049,Lima,Medio-Alto,43,Masculino,ENTP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0377,Costa,Bajo,61,Femenino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0719,Sierra,Bajo,58,Femenino,ENFP,Indeciso — Voto Volátil,True,False,False
+PREDIK-PE-0525,Costa,Medio-Alto,48,Masculino,INTJ,Candidato B (Derecha Tradicional),False,False,False
+PREDIK-PE-0202,Lima,Medio,24,Masculino,ISFJ,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0053,Lima,Medio-Alto,19,Femenino,ISFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0768,Sierra,Medio,61,Femenino,INFJ,Candidato D (Centroderecha Tecnocrática),False,True,False
+PREDIK-PE-0910,Selva,Bajo,34,Femenino,ENTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0071,Lima,Medio,35,Masculino,INTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0203,Lima,Bajo,24,Femenino,ISFJ,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0886,Selva,Bajo,56,Masculino,ENTP,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0226,Lima,Medio,32,Femenino,ESFP,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0002,Lima,Medio,55,Masculino,ENFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0898,Selva,Bajo,48,Masculino,ESFP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0307,Lima,Medio,46,Masculino,INTP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0001,Lima,Bajo,33,Femenino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0685,Sierra,Medio,34,Masculino,ENTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0663,Sierra,Medio,54,Masculino,ISTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0167,Lima,Bajo,19,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0286,Lima,Medio,66,Masculino,ENTP,Candidato A (Populista / Anti-Sistema),True,False,False
+PREDIK-PE-0929,Selva,Bajo,67,Masculino,ESFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0628,Sierra,Bajo,70,Masculino,ISTJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0330,Lima,Medio,30,Masculino,ENFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0429,Costa,Medio,40,Masculino,ENFP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0710,Sierra,Bajo,49,Masculino,ENTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0255,Lima,Medio,60,Masculino,ENTP,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0258,Lima,Bajo,45,Femenino,INTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0920,Selva,Bajo,61,Masculino,ESFP,Candidato C (Izquierda Social),False,False,False
+PREDIK-PE-0895,Selva,Bajo,69,Masculino,ENFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0964,Selva,Bajo,49,Femenino,ENTP,Voto Blanco / Nulo,True,True,False
+PREDIK-PE-0082,Lima,Bajo,59,Femenino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0665,Sierra,Medio,52,Masculino,ISTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0638,Sierra,Medio,25,Femenino,ESTP,Candidato D (Centroderecha Tecnocrática),False,False,False
+PREDIK-PE-0940,Selva,Medio,18,No Binario,ISFJ,Candidato C (Izquierda Social),False,True,False
+PREDIK-PE-0455,Costa,Bajo,50,Femenino,ENFJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0243,Lima,Medio,60,Femenino,ISFJ,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0701,Sierra,Medio,22,Femenino,ISFJ,Voto Blanco / Nulo,True,False,False
+PREDIK-PE-0924,Selva,Medio,43,Masculino,INFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0958,Selva,Bajo,36,Femenino,ESTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0130,Lima,Bajo,49,Femenino,ISFP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0650,Sierra,Bajo,37,Masculino,INTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0424,Costa,Medio,52,Masculino,ENTJ,Indeciso — Voto Volátil,False,False,True
+PREDIK-PE-0451,Costa,Medio,69,Masculino,ENFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0874,Selva,Medio,39,Femenino,ISFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0032,Lima,Medio,63,Femenino,ISFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0216,Lima,Medio-Alto,53,Femenino,INTP,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0922,Selva,Bajo,30,Masculino,ISFJ,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0472,Costa,Medio,59,Femenino,ENFP,Candidato C (Izquierda Social),True,True,False
+PREDIK-PE-0588,Sierra,Medio,20,Femenino,ISTJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0225,Lima,Medio,37,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0732,Sierra,Bajo,19,Masculino,ENFP,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0278,Lima,Bajo,19,Masculino,INFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0492,Costa,Medio,32,Femenino,ISTP,Indeciso — Voto Volátil,False,True,False
+PREDIK-PE-0250,Lima,Bajo,33,Masculino,ESTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0502,Costa,Medio,69,Masculino,INFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0411,Costa,Bajo,69,Masculino,ENTP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0178,Lima,Bajo,20,Femenino,ENTP,Candidato D (Centroderecha Tecnocrática),True,True,False
+PREDIK-PE-0460,Costa,Bajo,65,Masculino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0562,Sierra,Medio,40,Femenino,ESFP,Candidato A (Populista / Anti-Sistema),False,False,False
+PREDIK-PE-0441,Costa,Bajo,42,Femenino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0919,Selva,Bajo,26,Femenino,INTP,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0340,Lima,Medio-Alto,72,Masculino,ISFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0902,Selva,Bajo,46,Femenino,ISTJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0008,Lima,Medio-Alto,39,Femenino,ESFP,Indeciso — Voto Volátil,True,False,True
+PREDIK-PE-0880,Selva,Medio,72,Femenino,INFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0275,Lima,Medio-Alto,22,Masculino,ESFJ,Candidato B (Derecha Tradicional),False,True,False
+PREDIK-PE-0927,Selva,Bajo,39,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,False
+PREDIK-PE-0043,Lima,Medio-Alto,32,Masculino,ENFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0794,Sierra,Bajo,55,Masculino,ISTJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0610,Sierra,Bajo,20,Femenino,ESFP,Candidato B (Derecha Tradicional),True,False,False
+PREDIK-PE-0321,Lima,Bajo,72,Masculino,ENTP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0788,Sierra,Bajo,30,Femenino,ESFJ,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0400,Costa,Medio,67,Masculino,ESFP,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0560,Sierra,Bajo,37,Masculino,INFJ,Candidato C (Izquierda Social),True,False,False
+PREDIK-PE-0135,Lima,Medio-Alto,63,Femenino,INFJ,Candidato A (Populista / Anti-Sistema),False,True,False
+PREDIK-PE-0846,Selva,Bajo,32,Masculino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0024,Lima,Medio,63,Masculino,ESFP,Indeciso — Voto Volátil,False,True,True
+PREDIK-PE-0318,Lima,Bajo,49,Masculino,INTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0066,Lima,Medio,70,Masculino,ESTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0463,Costa,Bajo,47,Masculino,ESTP,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0911,Selva,Bajo,49,Femenino,ENTJ,Indeciso — Voto Volátil,True,True,True
+PREDIK-PE-0579,Sierra,Bajo,71,Masculino,INFP,Candidato B (Derecha Tradicional),True,True,False
+PREDIK-PE-0030,Lima,Alto,42,Femenino,ESTP,Candidato A (Populista / Anti-Sistema),True,True,False
+PREDIK-PE-0443,Costa,Bajo,22,Femenino,INFJ,Voto Blanco / Nulo,False,False,False
+PREDIK-PE-0392,Costa,Medio,23,Femenino,ESFP,Indeciso — Voto Volátil,False,False,False
+PREDIK-PE-0647,Sierra,Medio,27,Femenino,ENFP,Indeciso — Voto Volátil,False,True,True
