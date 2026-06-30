@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import DashboardRedirect from './DashboardRedirect'
 
 const STREAMLIT_URL = process.env.NEXT_PUBLIC_STREAMLIT_URL || '#'
 
@@ -8,9 +9,9 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Once Streamlit URL is set, redirect with user id
+  // Render loading and wake-up interface before redirecting to Streamlit
   if (STREAMLIT_URL !== '#') {
-    redirect(`${STREAMLIT_URL}?uid=${user.id}`)
+    return <DashboardRedirect streamlitUrl={STREAMLIT_URL} userId={user.id} />
   }
 
   return (
