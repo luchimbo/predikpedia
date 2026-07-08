@@ -7,27 +7,27 @@ from typing import Dict
 
 
 COLORS: Dict[str, str] = {
-    "bg_app": "#F6F4EF",
-    "bg_surface": "#FFFFFF",
-    "bg_surface_alt": "#FAF8F3",
-    "border_subtle": "#DED8CB",
-    "text_primary": "#141414",
-    "text_secondary": "#5F665F",
-    "text_muted": "#98A2B3",
-    "accent_primary": "#0E6F5C",
-    "accent_light": "#17977E",
-    "accent_soft": "#DDF3EE",
-    "accent_glow": "#8CE1D0",
-    "success": "#16835F",
-    "warning": "#B7791F",
-    "danger": "#C2413B",
+    "bg_app": "#0B0E11",
+    "bg_surface": "#12181E",
+    "bg_surface_alt": "#18202A",
+    "border_subtle": "#222D3D",
+    "text_primary": "#F1F5F9",
+    "text_secondary": "#94A3B8",
+    "text_muted": "#64748B",
+    "accent_primary": "#14B8A6",
+    "accent_light": "#2DD4BF",
+    "accent_soft": "#132D2F",
+    "accent_glow": "#4FD1C5",
+    "success": "#10B981",
+    "warning": "#F59E0B",
+    "danger": "#EF4444",
     "info": "#3B82F6",
-    "steel": "#667085",
-    "steel_light": "#98A2B3",
-    "sidebar_bg": "#151A17",
-    "sidebar_text": "#C9D2CB",
-    "sidebar_active": "#21372F",
-    "sidebar_hover": "#202923",
+    "steel": "#64748B",
+    "steel_light": "#94A3B8",
+    "sidebar_bg": "#0A0D10",
+    "sidebar_text": "#E2E8F0",
+    "sidebar_active": "#112F2B",
+    "sidebar_hover": "#1E293B",
 }
 
 
@@ -62,8 +62,8 @@ html, body {{
 
 /* ── Header ───────────────────────────────────────────────── */
 [data-testid="stHeader"] {{
-    background: rgba(246, 244, 239, 0.82);
-    border-bottom: 1px solid rgba(222, 216, 203, 0.72);
+    background: rgba(11, 14, 17, 0.82) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
 }}
 
 /* ── Contenedor principal ─────────────────────────────────── */
@@ -189,11 +189,11 @@ section[data-testid="stSidebar"] .block-container {{
 
 /* Aumentar especificidad duplicando selectores */
 [data-testid="stSidebar"][data-testid="stSidebar"] [data-testid="stBaseButton-secondary"][data-testid="stBaseButton-secondary"] button {{
-    background: #1F1F1F !important;
-    background-color: #1F1F1F !important;
-    border: 1px solid #333333 !important;
+    background: #12181E !important;
+    background-color: #12181E !important;
+    border: 1px solid #222D3D !important;
     box-shadow: none !important;
-    color: #FFFFFF !important;
+    color: #F1F5F9 !important;
     text-align: left !important;
     padding: 12px 16px !important;
     border-radius: 10px !important;
@@ -206,18 +206,18 @@ section[data-testid="stSidebar"] .block-container {{
 }}
 
 [data-testid="stSidebar"][data-testid="stSidebar"] [data-testid="stBaseButton-secondary"][data-testid="stBaseButton-secondary"] button:hover {{
-    background: #333333 !important;
-    background-color: #333333 !important;
-    border-color: #444444 !important;
+    background: #1E293B !important;
+    background-color: #1E293B !important;
+    border-color: #334155 !important;
     color: #FFFFFF !important;
 }}
 
 /* Botón ACTIVO: verde fuerte */
 [data-testid="stSidebar"][data-testid="stSidebar"] [data-testid="stBaseButton-primary"][data-testid="stBaseButton-primary"] button {{
-    background: #0E6F5C !important;
-    background-color: #0E6F5C !important;
-    border: 1px solid #1A8A73 !important;
-    box-shadow: 0 0 0 1px rgba(14,111,92,0.5) !important;
+    background: #0D9488 !important;
+    background-color: #0D9488 !important;
+    border: 1px solid #14B8A6 !important;
+    box-shadow: 0 0 0 1px rgba(20,184,166,0.3) !important;
     color: #FFFFFF !important;
     text-align: left !important;
     padding: 12px 16px !important;
@@ -231,17 +231,17 @@ section[data-testid="stSidebar"] .block-container {{
 }}
 
 [data-testid="stSidebar"][data-testid="stSidebar"] [data-testid="stBaseButton-primary"][data-testid="stBaseButton-primary"] button:hover {{
-    background: #0B5D4E !important;
-    background-color: #0B5D4E !important;
-    border-color: #15A085 !important;
+    background: #0F766E !important;
+    background-color: #0F766E !important;
+    border-color: #0D9488 !important;
 }}
 
 /* Fallback con máxima especificidad */
 [data-testid="stSidebar"][data-testid="stSidebar"] .stButton.stButton > button {{
-    background: #1F1F1F !important;
-    background-color: #1F1F1F !important;
-    border: 1px solid #333333 !important;
-    color: #FFFFFF !important;
+    background: #12181E !important;
+    background-color: #12181E !important;
+    border: 1px solid #222D3D !important;
+    color: #F1F5F9 !important;
     text-align: left !important;
     padding: 12px 16px !important;
     border-radius: 10px !important;
@@ -252,16 +252,16 @@ section[data-testid="stSidebar"] .block-container {{
 }}
 
 [data-testid="stSidebar"][data-testid="stSidebar"] .stButton.stButton > button:hover {{
-    background: #333333 !important;
-    background-color: #333333 !important;
-    border-color: #444444 !important;
+    background: #1E293B !important;
+    background-color: #1E293B !important;
+    border-color: #334155 !important;
     color: #FFFFFF !important;
 }}
 
 [data-testid="stSidebar"][data-testid="stSidebar"] .stButton.stButton > button[kind="primary"] {{
-    background: #0E6F5C !important;
-    background-color: #0E6F5C !important;
-    border: 1px solid #1A8A73 !important;
+    background: #0D9488 !important;
+    background-color: #0D9488 !important;
+    border: 1px solid #14B8A6 !important;
     color: #FFFFFF !important;
     font-weight: 700 !important;
 }}
@@ -278,7 +278,7 @@ section[data-testid="stSidebar"] .block-container {{
 }}
 
 .stButton > button:hover {{
-    background: #0B5D4E;
+    background: #0D9488;
 }}
 
 .stButton > button[kind="secondary"] {{
@@ -294,16 +294,17 @@ section[data-testid="stSidebar"] .block-container {{
 /* ── Inputs ───────────────────────────────────────────────── */
 .stTextInput input, .stTextArea textarea, .stNumberInput input {{
     border-radius: 12px;
-    border: 1px solid var(--border-subtle);
-    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle) !important;
+    background: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
     padding: 0.625rem 0.875rem;
     font-size: 14px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }}
 
 .stTextInput input:focus, .stTextArea textarea:focus, .stNumberInput input:focus {{
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(14,111,92,0.08);
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
 }}
 
 /* ── Page Intro ───────────────────────────────────────────── */

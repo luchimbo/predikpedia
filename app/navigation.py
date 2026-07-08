@@ -24,8 +24,8 @@ def render_sidebar(*, balance_now: float, saved_api_key: str):
         st.markdown(
             """
             <div style="padding: 0.5rem 0 1.5rem 0;">
-                <div style="font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 800; color: #141414;">Predikpedia</div>
-                <div style="font-size: 13px; color: #5F665F; margin-top: 4px;">Research sintético</div>
+                <div style="font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 800; color: #F1F5F9;">Predikpedia</div>
+                <div style="font-size: 13px; color: #94A3B8; margin-top: 4px;">Research sintético</div>
             </div>
             """,
             unsafe_allow_html=True,
