@@ -48,7 +48,7 @@ class LLMService:
         if api_key.startswith("sk-or"):
             self.mode = "OPENROUTER"
             self.api_key = api_key
-            self.model_name = model_name or os.getenv("MODEL_NAME", "google/gemini-2.0-flash")
+            self.model_name = model_name or os.getenv("MODEL_NAME", "google/gemini-2.5-flash-lite")
             self.client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=self.api_key)
 
     def is_ready(self) -> bool:
