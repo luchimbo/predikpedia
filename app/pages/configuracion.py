@@ -71,10 +71,9 @@ def render_configuracion_page(*, credits_engine):
         new_dir = st.text_input("Directorio de datos", value=current_dir, key="cfg_data_dir")
 
         if new_dir != current_dir:
-            if st.button("Guardar y aplicar", key="cfg_save_dir", use_container_width=True):
-                config.save_settings(data_dir=new_dir)
-                st.success(f"Ruta actualizada: {new_dir}")
-                st.rerun()
+            config.save_settings(data_dir=new_dir)
+            st.success(f"Ruta actualizada: {new_dir}")
+            st.rerun()
 
         st.info(f"Ruta actual: {current_dir}")
         st.caption("Podés usar una variable de entorno PREDIKPEDIA_DATA_DIR para sobreescribir esto.")
