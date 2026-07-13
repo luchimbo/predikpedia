@@ -89,6 +89,7 @@ def list_universes() -> List[Universo]:
         paths = _sb.list_files(_uid(), "universos")
         # exclude expansiones subfolder entries
         paths = [p for p in paths if not p.startswith("universos/expansiones")]
+        paths = sorted(paths, reverse=True)
         results = []
         for rel in paths:
             data = _sb.download_json(_uid(), rel)
@@ -133,6 +134,7 @@ def list_expansions(universe_id: Optional[str] = None) -> List[str]:
         paths = _sb.list_files(_uid(), "universos/expansiones")
         if universe_id:
             paths = [p for p in paths if os.path.basename(p).startswith(f"{universe_id}_")]
+        paths = sorted(paths, reverse=True)
         return [f"supabase://{_uid()}/{p}" for p in paths]
     files = _sorted_json_files_local(str(config.expansions_dir))
     if not universe_id:
@@ -181,6 +183,7 @@ def load_study(path: str) -> Estudio:
 def list_studies() -> List[Estudio]:
     if _USE_SUPABASE:
         paths = _sb.list_files(_uid(), "estudios")
+        paths = sorted(paths, reverse=True)
         results = []
         for rel in paths:
             data = _sb.download_json(_uid(), rel)
@@ -232,5 +235,6 @@ def load_study_results(study_id: str) -> List[RespuestaEstudio]:
 def list_results() -> List[str]:
     if _USE_SUPABASE:
         paths = _sb.list_files(_uid(), "resultados")
+        paths = sorted(paths, reverse=True)
         return [f"supabase://{_uid()}/{p}" for p in paths]
     return _sorted_json_files_local(str(config.results_dir))
