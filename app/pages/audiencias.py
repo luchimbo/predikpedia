@@ -64,11 +64,13 @@ def _render_step_1_define():
 
     nombre = st.text_input(
         "Nombre de la audiencia",
+        value=st.session_state.get("aud_nombre_saved", ""),
         key="aud_nombre",
         placeholder="Ej: panaderos_gonzalez_catan",
     )
     descripcion = st.text_area(
         "¿Quiénes van a responder?",
+        value=st.session_state.get("aud_descripcion_saved", ""),
         key="aud_descripcion",
         height=180,
         placeholder="Describe con detalle quiénes son las personas que van a responder. Incluí segmentos si los hay...",
@@ -77,7 +79,7 @@ def _render_step_1_define():
         "¿Cuántas personas querés simular?",
         min_value=1,
         max_value=100000,
-        value=100,
+        value=int(st.session_state.get("aud_cantidad_saved", 100)),
         step=10,
         key="aud_cantidad",
     )
@@ -95,6 +97,9 @@ def _render_step_1_define():
             for err in errors:
                 st.error(err)
         else:
+            st.session_state["aud_nombre_saved"] = nombre
+            st.session_state["aud_descripcion_saved"] = descripcion
+            st.session_state["aud_cantidad_saved"] = int(cantidad)
             set("wiz_audience_step", 2)
             st.rerun()
 
@@ -108,9 +113,9 @@ def _render_step_2_expand():
         "con características enriquecidas (rol, industria, pain points, motivadores, etc.).",
     )
 
-    nombre = st.session_state.get("aud_nombre", "")
-    descripcion = st.session_state.get("aud_descripcion", "")
-    cantidad = int(st.session_state.get("aud_cantidad", 100))
+    nombre = st.session_state.get("aud_nombre_saved", "")
+    descripcion = st.session_state.get("aud_descripcion_saved", "")
+    cantidad = int(st.session_state.get("aud_cantidad_saved", 100))
 
     # Mostrar resumen antes de expandir
     st.markdown(f"**Audiencia:** {nombre}")
