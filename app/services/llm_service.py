@@ -19,10 +19,7 @@ from typing import Any, Dict, Optional
 from openai import OpenAI
 
 
-try:
-    import google.generativeai as genai
-except ImportError:
-    genai = None
+# No native Gemini import needed
 
 
 class LLMError(Exception):
@@ -43,13 +40,9 @@ class LLMService:
         if api_key:
             self._configure(api_key, model_name)
         else:
-            # Intentar desde ENV (sin side effects, solo lectura)
             or_key = os.getenv("OPENROUTER_API_KEY", "")
-            gm_key = os.getenv("GEMINI_API_KEY", "")
             if or_key and or_key.startswith("sk-or"):
                 self._configure(or_key, model_name)
-            elif gm_key and gm_key.startswith("AIza") and genai is not None:
-                self._configure(gm_key, model_name)
 
     def _configure(self, api_key: str, model_name: str | None):
         if api_key.startswith("sk-or"):
@@ -57,12 +50,6 @@ class LLMService:
             self.api_key = api_key
             self.model_name = model_name or os.getenv("MODEL_NAME", "google/gemini-2.0-flash")
             self.client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=self.api_key)
-        elif api_key.startswith("AIza") and genai is not None:
-            self.mode = "GEMINI_NATIVE"
-            self.api_key = api_key
-            genai.configure(api_key=self.api_key)
-            self.model_name = model_name or os.getenv("MODEL_NAME", "gemini-2.0-flash")
-            self.model = genai.GenerativeModel(self.model_name)
 
     def is_ready(self) -> bool:
         return self.mode is not None
@@ -113,13 +100,7 @@ class LLMService:
                         return self._parse_response(content, expect_json)
                     return "" if not expect_json else {}
 
-                elif self.mode == "GEMINI_NATIVE":
-                    full_p = f"INSTRUCTION: {system_prompt}\n\nUSER: {user_prompt}"
-                    response = self.model.generate_content(full_p)
-                    text = getattr(response, "text", None)
-                    if isinstance(text, str) and text.strip():
-                        return self._parse_response(text, expect_json)
-                    return "" if not expect_json else {}
+
 
             except Exception as e:
                 last_error = str(e)
@@ -158,6 +139,4 @@ class LLMService:
     def get_provider_label(self) -> str:
         if self.mode == "OPENROUTER":
             return "OpenRouter"
-        if self.mode == "GEMINI_NATIVE":
-            return "Gemini"
         return "Sin configurar"

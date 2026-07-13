@@ -39,12 +39,11 @@ init_state()
 
 saved_key = st.session_state.get("saved_api_key", "")
 if not saved_key:
-    saved_key = os.getenv("OPENROUTER_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")
+    saved_key = os.getenv("OPENROUTER_API_KEY", "")
     st.session_state["saved_api_key"] = saved_key
 
 if saved_key:
     os.environ["OPENROUTER_API_KEY"] = saved_key
-    os.environ["GEMINI_API_KEY"] = saved_key
 
 if st.session_state.get("credits_engine") is None:
     st.session_state["credits_engine"] = CreditsService(

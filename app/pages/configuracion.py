@@ -28,33 +28,30 @@ def render_configuracion_page(*, credits_engine):
     provider_label = resolve_provider_label(saved_key)
 
     # Métricas rápidas
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c4 = st.columns(3)
     with c1:
         render_stat_card("Proveedor", provider_label)
     with c2:
         render_stat_card("API key", "Cargada" if saved_key else "Falta")
-    with c3:
-        render_stat_card("Saldo", f"{balance:.1f} PC")
     with c4:
         render_stat_card("Data dir", str(config.data_dir))
 
-    tab_access, tab_credits, tab_paths = st.tabs(["Acceso", "Créditos", "Rutas"])
+    tab_access, tab_paths = st.tabs(["Acceso", "Rutas"])
 
     with tab_access:
         render_section_title("Acceso al modelo")
-        st.caption("La app detecta el proveedor por prefijo: OpenRouter usa sk-or y Gemini usa AIza.")
+        st.caption("La app utiliza OpenRouter (debe empezar con sk-or).")
 
         api_key_input = st.text_input(
             "API key",
             type="password",
             value=saved_key,
             key="cfg_api_key",
-            placeholder="sk-or-... / AIza...",
+            placeholder="sk-or-...",
         )
         if api_key_input != saved_key:
             st.session_state["saved_api_key"] = api_key_input
             os.environ["OPENROUTER_API_KEY"] = api_key_input
-            os.environ["GEMINI_API_KEY"] = api_key_input
             st.rerun()
 
         m1, m2 = st.columns(2)
@@ -64,38 +61,7 @@ def render_configuracion_page(*, credits_engine):
             render_stat_card("Clave cargada", "Sí" if saved_key else "No")
 
         with st.expander("Ayuda técnica"):
-            st.caption("OpenRouter debe empezar con sk-or y Gemini con AIza.")
-
-    with tab_credits:
-        render_section_title("Créditos")
-
-        user_id = st.text_input("User ID", value=st.session_state.get("settings_user_id", "demo_user"), key="cfg_uid")
-        if user_id != st.session_state.get("settings_user_id", "demo_user"):
-            st.session_state["settings_user_id"] = user_id
-            st.session_state["credits_engine"] = CreditsService(user_id=user_id)
-            st.rerun()
-
-        c1, c2 = st.columns(2)
-        with c1:
-            render_stat_card("Saldo", f"{balance:.1f} PC")
-        with c2:
-            render_stat_card("USD", f"${balance_usd:.2f}")
-
-        usd_load = st.number_input("USD a cargar", 1.0, 1000.0, 5.0, 0.5, key="cfg_usd_load")
-        if st.button("Cargar saldo", key="cfg_load_btn", use_container_width=True):
-            result = credits_engine.load_balance(usd_load)
-            if result["ok"]:
-                st.success(f"+{result['credits_added']:.0f} Predik-Credits")
-                st.rerun()
-            else:
-                st.error(result["error"])
-
-        with st.expander("Ver tabla de precios"):
-            pricing = credits_engine.get_pricing_table()
-            for op, info in pricing.items():
-                st.markdown(
-                    f"**{op}**: {info['credits']} PC (~${info['usd_equiv']} USD)"
-                )
+            st.caption("OpenRouter debe empezar con sk-or.")
 
     with tab_paths:
         render_section_title("Rutas de datos")

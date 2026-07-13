@@ -215,21 +215,8 @@ def _render_step_4_execute():
     personas = expansion["payload"].personas[:limite]
     total_tareas = len(personas) * rpp
 
-    # Estimar costo
-    credits_engine = st.session_state.get("credits_engine")
-    if credits_engine:
-        cost = credits_engine.estimate_study_cost(total_tareas)
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            render_stat_card("Costo estimado", f"{cost['cost_credits']:.1f} PC")
-        with c2:
-            render_stat_card("Equivalente", f"${cost['cost_usd_equiv']:.4f} USD")
-        with c3:
-            render_stat_card("Saldo actual", f"{cost['balance']:.1f} PC")
-
-        if not cost["can_run"]:
-            st.error(f"Saldo insuficiente. Necesitás {cost['cost_credits']:.1f} PC.")
-            return
+    # Estimar costo (Bypassed)
+    pass
 
     # Verificar API
     saved_key = st.session_state.get("saved_api_key", "")

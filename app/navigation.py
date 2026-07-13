@@ -52,10 +52,6 @@ def render_sidebar(*, balance_now: float, saved_api_key: str):
         st.markdown(
             f"""
             <div class="nav-footer-item">
-                <span class="nav-footer-label">Saldo</span>
-                <span class="nav-footer-value">{balance_now:.1f} PC</span>
-            </div>
-            <div class="nav-footer-item">
                 <span class="nav-footer-label">API</span>
                 <span class="nav-footer-value">{api_status}</span>
             </div>
@@ -69,8 +65,6 @@ def render_sidebar(*, balance_now: float, saved_api_key: str):
 def resolve_provider_label(api_key: str) -> str:
     if api_key.startswith("sk-or"):
         return "OpenRouter"
-    if api_key.startswith("AIza"):
-        return "Gemini"
     if api_key:
         return "API cargada"
     return "Sin configurar"

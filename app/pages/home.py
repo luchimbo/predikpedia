@@ -68,7 +68,6 @@ def render_home_page(
         st.subheader("Estado operativo")
         status_text = "Lista" if has_api_key else "Falta configurar API key"
         st.write(f"**API:** {status_text}")
-        st.write(f"**Saldo:** {balance_now:.1f} PC")
 
     # Accesos rápidos
     st.divider()

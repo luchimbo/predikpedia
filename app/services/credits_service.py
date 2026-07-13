@@ -97,67 +97,30 @@ class CreditsService:
         }
 
     def consume(self, operation: str, quantity: int = 1) -> dict:
-        """Descuenta créditos por operación."""
-        cost_per_unit = CREDIT_TABLE.get(operation, CREDIT_COST_PER_AGENT)
-        total_cost = cost_per_unit * quantity
-
-        ledger = self._load_ledger()
-        user = self._get_user_record(ledger)
-
-        if user["balance_credits"] < total_cost:
-            return {
-                "ok": False,
-                "error": "Saldo insuficiente",
-                "needed": total_cost,
-                "balance": user["balance_credits"],
-            }
-
-        user["balance_credits"] -= total_cost
-        user["total_consumed_credits"] += total_cost
-        user["transactions"].append({
-            "type": "CONSUMO",
-            "operation": operation,
-            "quantity": quantity,
-            "credits_deducted": total_cost,
-            "balance_after": user["balance_credits"],
-            "ts": datetime.now().isoformat(),
-        })
-
-        self._save_ledger(ledger)
+        """Descuenta créditos por operación. (Bypassed in production)"""
         return {
             "ok": True,
-            "credits_deducted": total_cost,
-            "new_balance": user["balance_credits"],
+            "credits_deducted": 0.0,
+            "new_balance": 999999.0,
         }
 
     def get_balance(self) -> float:
-        ledger = self._load_ledger()
-        user = self._get_user_record(ledger)
-        return user["balance_credits"]
+        return 999999.0
 
     def get_balance_usd_equiv(self) -> float:
-        return self.get_balance() / USD_TO_CREDITS
+        return 9999.99
 
     def get_history(self, last_n: int = 20) -> list:
-        ledger = self._load_ledger()
-        user = self._get_user_record(ledger)
-        return user["transactions"][-last_n:]
+        return []
 
     def get_pricing_table(self) -> dict:
-        return {
-            op: {
-                "credits": cost,
-                "usd_equiv": round(cost / USD_TO_CREDITS, 6),
-            }
-            for op, cost in CREDIT_TABLE.items()
-        }
+        return {}
 
     def estimate_study_cost(self, num_agents: int) -> dict:
-        cost_credits = CREDIT_TABLE[OP_SIMULATION] * num_agents
         return {
             "agents": num_agents,
-            "cost_credits": round(cost_credits, 2),
-            "cost_usd_equiv": round(cost_credits / USD_TO_CREDITS, 4),
-            "balance": self.get_balance(),
-            "can_run": self.get_balance() >= cost_credits,
+            "cost_credits": 0.0,
+            "cost_usd_equiv": 0.0,
+            "balance": 999999.0,
+            "can_run": True,
         }
