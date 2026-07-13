@@ -216,7 +216,7 @@ def _render_step_4_execute():
     total_tareas = len(personas) * rpp
 
     # Estimar costo (Bypassed)
-    pass
+    credits_engine = st.session_state.get("credits_engine")
 
     # Verificar API
     saved_key = st.session_state.get("saved_api_key", "")
