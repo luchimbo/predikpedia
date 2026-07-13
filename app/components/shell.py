@@ -11,13 +11,7 @@ import streamlit as st
 def render_page_intro(kicker: str, title: str, description: str):
     """Header de página con kicker, título y descripción."""
     st.markdown(
-        f"""
-        <div class="page-intro">
-            <div class="page-intro-kicker">{kicker}</div>
-            <div class="page-intro-title">{title}</div>
-            <div class="page-intro-copy">{description}</div>
-        </div>
-        """,
+        f'<div class="page-intro"><div class="page-intro-kicker">{kicker}</div><div class="page-intro-title">{title}</div><div class="page-intro-copy">{description}</div></div>',
         unsafe_allow_html=True,
     )
 
@@ -33,13 +27,7 @@ def render_empty_state(
     """Estado vacío con diseño de producto."""
     icon_html = f'<div class="empty-state-icon">{icon}</div>' if icon else ""
     st.markdown(
-        f"""
-        <div class="empty-state">
-            {icon_html}
-            <div class="empty-state-title">{title}</div>
-            <div class="empty-state-copy">{description}</div>
-        </div>
-        """,
+        f'<div class="empty-state">{icon_html}<div class="empty-state-title">{title}</div><div class="empty-state-copy">{description}</div></div>',
         unsafe_allow_html=True,
     )
     if cta_text and on_cta:
@@ -54,13 +42,7 @@ def render_stat_card(label: str, value: str, detail: str = ""):
     """Tarjeta de métrica estilizada."""
     detail_html = f'<div class="stat-detail">{detail}</div>' if detail else ""
     st.markdown(
-        f"""
-        <div class="stat-card">
-            <div class="stat-label">{label}</div>
-            <div class="stat-value">{value}</div>
-            {detail_html}
-        </div>
-        """,
+        f'<div class="stat-card"><div class="stat-label">{label}</div><div class="stat-value">{value}</div>{detail_html}</div>',
         unsafe_allow_html=True,
     )
 
@@ -73,12 +55,7 @@ def render_section_title(title: str):
 def render_soft_panel(title: str, text: str):
     """Panel suave con título y texto."""
     st.markdown(
-        f"""
-        <div class='soft-panel'>
-            <div class='soft-panel-title'>{title}</div>
-            <div class='soft-panel-text'>{text}</div>
-        </div>
-        """,
+        f'<div class="soft-panel"><div class="soft-panel-title">{title}</div><div class="soft-panel-text">{text}</div></div>',
         unsafe_allow_html=True,
     )
 
