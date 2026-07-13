@@ -251,11 +251,11 @@ def _run_ai_analysis(estudio, resultados_df: pd.DataFrame) -> str:
 
 
 def render_resultados_page():
-    """Renderiza la página de resultados."""
+    """Renderiza la página de resultados con pestañas unificadas (Resultados, Preguntas, Comparar, Biblioteca)."""
     render_page_intro(
         "Resultados",
-        "Analizá respuestas y extraé insights",
-        "Leé primero la decisión ejecutiva y bajá al detalle solo cuando necesites auditar respuestas.",
+        "Visualización y Análisis de Estudios",
+        "Analizá respuestas con IA, agrupá por preguntas, compará variantes o descargá reportes y datos.",
     )
 
     estudios = list_studies()
@@ -268,6 +268,32 @@ def render_resultados_page():
             on_cta=lambda: go_to_page("Estudios"),
         )
         return
+
+    tab_analysis, tab_questions, tab_compare, tab_library = st.tabs([
+        "📊 Análisis de Estudio",
+        "❓ Respuestas por Pregunta",
+        "⚖️ Comparar Estudios",
+        "📂 Biblioteca / Descargas"
+    ])
+
+    with tab_analysis:
+        _render_analysis_tab(estudios)
+
+    with tab_questions:
+        from app.pages.preguntas import render_preguntas_tab
+        render_preguntas_tab()
+
+    with tab_compare:
+        from app.pages.reportes import render_reportes_tab
+        render_reportes_tab()
+
+    with tab_library:
+        from app.pages.biblioteca import render_biblioteca_tab
+        render_biblioteca_tab()
+
+
+def _render_analysis_tab(estudios: List[Any]):
+    """Renderiza la vista principal de análisis de un estudio."""
 
     # Selector de estudio
     def _fmt_option(e):

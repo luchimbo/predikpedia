@@ -10,9 +10,6 @@ NAV_OPTIONS = [
     "Audiencias",
     "Estudios",
     "Resultados",
-    "Preguntas",
-    "Biblioteca",
-    "Reportes",
     "Configuración",
 ]
 

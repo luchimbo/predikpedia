@@ -18,9 +18,6 @@ from app.pages.home import render_home_page
 from app.pages.audiencias import render_audiencias_page
 from app.pages.estudios import render_estudios_page
 from app.pages.resultados import render_resultados_page
-from app.pages.preguntas import render_preguntas_page
-from app.pages.biblioteca import render_biblioteca_page
-from app.pages.reportes import render_reportes_page
 from app.pages.configuracion import render_configuracion_page
 from app.services.credits_service import CreditsService
 
@@ -89,11 +86,5 @@ elif current_page == "Estudios":
     render_estudios_page()
 elif current_page == "Resultados":
     render_resultados_page()
-elif current_page == "Preguntas":
-    render_preguntas_page()
-elif current_page == "Biblioteca":
-    render_biblioteca_page()
-elif current_page == "Reportes":
-    render_reportes_page()
 elif current_page == "Configuración":
     render_configuracion_page(credits_engine=credits_engine)

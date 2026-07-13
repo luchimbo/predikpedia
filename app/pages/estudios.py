@@ -273,7 +273,7 @@ def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_
         completadas = 0
 
         progress = st.progress(0.0)
-        status = st.status("Ejecutando estudio...", expanded=True)
+        status_text = st.empty()
         stop_container = st.empty()
 
         for idx, persona_dict in enumerate(personas):
@@ -283,7 +283,7 @@ def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_
                 st.warning("Deteniendo estudio...")
 
             if st.session_state.get("est_stop_flag", False):
-                status.update(label="Estudio detenido por el usuario", state="error")
+                status_text.error("Estudio detenido por el usuario")
                 break
 
             if isinstance(persona_dict, dict):
@@ -365,19 +365,16 @@ def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_
                     ))
                     completadas += 1
 
-            with status:
-                st.write(f"{persona_id} · {perfil} procesado")
+            status_text.markdown(f"🤖 **Procesando perfiles:** `{completadas}` de `{total}` respuestas (`{persona_id}` · `{perfil}`)...")
 
         # Guardar resultados (parciales o completos)
         save_study_results(estudio.id, respuestas)
 
         detenido = st.session_state.get("est_stop_flag", False)
         if detenido:
-            status.update(label="Estudio detenido", state="error")
-            st.warning(f"Estudio detenido. Se guardaron {len(respuestas)} respuestas de {total} planificadas.")
+            status_text.error(f"Estudio detenido. Se guardaron {len(respuestas)} respuestas de {total} planificadas.")
         else:
-            status.update(label="Estudio completado", state="complete")
-            st.success(f"Estudio completado: {len(personas)} personas × {rpp} respuesta(s) = {len(respuestas)} total.")
+            status_text.success(f"¡Estudio completado! Se procesaron {len(personas)} personas.")
 
         set("tmp_last_study", estudio)
         set("tmp_study_results", [r.to_dict() for r in respuestas])

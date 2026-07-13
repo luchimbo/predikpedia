@@ -84,14 +84,8 @@ def _render_study_row(estudio: Estudio, idx: int):
                 )
 
 
-def render_biblioteca_page():
-    """Renderiza la página de biblioteca de estudios."""
-    render_page_intro(
-        "Biblioteca",
-        "Descargá resultados de todos tus estudios",
-        "Accedé rápidamente a los CSV, JSON e informes de cada estudio ejecutado.",
-    )
-
+def render_biblioteca_tab():
+    """Renderiza el tab de biblioteca de estudios."""
     estudios = list_studies()
     if not estudios:
         render_empty_state(

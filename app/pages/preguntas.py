@@ -53,14 +53,8 @@ def _construir_df(estudios: List[Estudio]) -> pd.DataFrame:
     return pd.DataFrame(filas)
 
 
-def render_preguntas_page():
-    """Renderiza la página de resultados agrupados por pregunta."""
-    render_page_intro(
-        "Preguntas",
-        "Todas las respuestas hechas con una pregunta",
-        "Elegí una pregunta y mirá juntas todas las respuestas crudas de cada corrida que la usó.",
-    )
-
+def render_preguntas_tab():
+    """Renderiza el tab de resultados agrupados por pregunta."""
     estudios = list_studies()
     if not estudios:
         render_empty_state(

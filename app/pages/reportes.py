@@ -20,14 +20,8 @@ from app.state import get, go_to_page
 from app.storage.repository import list_studies, load_study_results
 
 
-def render_reportes_page():
-    """Renderiza la página de reportes."""
-    render_page_intro(
-        "Reportes",
-        "Releá histórico y compará estudios",
-        "Accedé a estudios guardados, compará variantes y exportá informes presentables.",
-    )
-
+def render_reportes_tab():
+    """Renderiza el tab de comparación de estudios."""
     estudios = list_studies()
     if not estudios:
         render_empty_state(
