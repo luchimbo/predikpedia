@@ -28,6 +28,60 @@ Usuario ──► Portal Next.js (Vercel) ──login Supabase──► redirect
 | **Resultados** | Resumen ejecutivo, KPIs, insights por perfil, quotes, comparación entre estudios, vista por pregunta y descargas. |
 | **Configuración** | API key, carpeta de datos y opciones operativas. |
 
+## Cómo funciona por dentro
+
+El flujo tiene tres etapas: **crear una audiencia → correr un estudio → analizar los resultados**.
+
+### 1. Audiencia (universo → personas sintéticas)
+
+1. Definís un **universo**: nombre, descripción (quiénes son, contexto) y cantidad de personas.
+2. Al tocar *Generar personas sintéticas*, `universe_service.expand_universe()` arma las personas **sin usar el LLM**:
+   - Si el universo tiene perfiles con porcentajes (`PerfilCliente`), reparte las personas según esos porcentajes. Si no tiene (el caso de la UI actual), usa un perfil `General` con la descripción del universo.
+   - A cada persona le asigna atributos al azar de listas fijas: rango de edad, rol, industria, principal dolor, motivador, objeción base, sensibilidad al precio, comportamiento y canal preferido. La descripción del universo queda como `contexto_operativo`.
+   - El azar usa como semilla el `id` del universo, así que expandir el mismo universo siempre da las mismas personas.
+3. Al guardar, se persisten el universo (`universos/<id>.json`) y un snapshot de la expansión con todas las personas (`universos/expansiones/<id>_<fecha>.json`).
+
+### 2. Estudio (una pregunta a cada persona)
+
+1. Elegís una audiencia ya expandida, escribís título, **pregunta** y **contexto** (qué se les muestra o en qué situación están).
+2. Configurás la muestra: cuántas personas usar (por defecto hasta 120) y cuántas respuestas por persona (1 a 5).
+3. Al ejecutar, `estudios.py` recorre las personas **de a una, en secuencia**. Para cada una:
+   - Arma un *system prompt* que le pide al modelo actuar como esa persona (perfil + atributos + contexto del estudio), responder en primera persona, con realismo y en un máximo de 150 palabras.
+   - Envía la pregunta pidiendo un **JSON** con `response_text`, `sentiment`, `intent`, `main_objection`, `main_driver`, `confidence` y `quote`.
+   - Guarda cada respuesta como `RespuestaEstudio`. Si el modelo falla, la registra como `[ERROR: ...]` y sigue con la siguiente.
+4. Hay un botón para **detener** el estudio a mitad de camino; las respuestas obtenidas hasta ese momento se guardan igual.
+5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`).
+
+### 3. Resultados (análisis sin LLM)
+
+`analysis_service.build_executive_report()` analiza las respuestas **con reglas y conteo de palabras**, sin llamar al modelo:
+
+- **Temas clave:** las palabras más frecuentes de las respuestas (sin stopwords), en general y por perfil.
+- **Insights por perfil:** temas dominantes y una respuesta de evidencia por perfil.
+- **Objeciones y oportunidades:** respuestas que contienen patrones como "caro", "duda", "riesgo"… o "interesa", "valor", "necesito"….
+- **KPIs y distribuciones:** a partir de los campos estructurados del JSON (sentimiento, intención, objeciones y drivers).
+- **Próximas preguntas sugeridas** y un informe en Markdown descargable.
+
+La página de Resultados también permite comparar estudios, ver todas las respuestas de una misma pregunta a lo largo de varias corridas y descargar los datos.
+
+### Llamadas al LLM
+
+Todas pasan por `LLMService.generate()`:
+
+- En cada request, `llm_routing.resolve_provider()` decide si usar **Ollama local** u **OpenRouter** según `LLM_PROVIDER` y el horario.
+- Cada proveedor se reintenta hasta 3 veces con espera exponencial (1 s, 2 s).
+- Si estaba en horario local y Ollama falla, hace **fallback automático a OpenRouter**.
+- La respuesta se parsea como JSON (también si viene envuelta en un bloque ` ```json `); si no se puede parsear, se usa el texto crudo.
+
+### Créditos
+
+`credits_service.py` tiene el modelo de créditos pay-as-you-go (USD → Predik-Credits, costo por agente), pero **hoy está desactivado**: el saldo siempre es 999.999 y los estudios no descuentan nada.
+
+### Código preparado pero sin usar
+
+- `domain/templates.py` define templates de estudio (Exploratorio, Concept Test, Messaging Test, Pricing Test, Feature Feedback) con prompts y salidas propias, pero el wizard de Estudios usa un prompt genérico (`template="custom"`).
+- `domain/coherence_engine.py` tiene filtros de "sinceridad" y escepticismo (para evitar que el modelo sea complaciente), pero ningún flujo lo invoca todavía.
+
 ## Estructura del código
 
 ```
