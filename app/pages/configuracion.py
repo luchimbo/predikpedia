@@ -12,6 +12,7 @@ from app.components.shell import render_page_intro, render_section_title, render
 from app.config import config
 from app.navigation import resolve_provider_label
 from app.services.credits_service import CreditsService
+from app.services.llm_service import LLMService
 from app.state import go_to_page
 
 
@@ -25,7 +26,7 @@ def render_configuracion_page(*, credits_engine):
     balance = credits_engine.get_balance()
     balance_usd = credits_engine.get_balance_usd_equiv()
     saved_key = st.session_state.get("saved_api_key", "")
-    provider_label = resolve_provider_label(saved_key)
+    provider_label = LLMService(api_key=saved_key or None).get_provider_label()
 
     # Métricas rápidas
     c1, c2, c4 = st.columns(3)
@@ -47,7 +48,7 @@ def render_configuracion_page(*, credits_engine):
             type="password",
             value=saved_key,
             key="cfg_api_key",
-            placeholder="sk-or-...",
+            placeholder="sk-or-... (opcional con Ollama local)",
         )
         if api_key_input != saved_key:
             st.session_state["saved_api_key"] = api_key_input

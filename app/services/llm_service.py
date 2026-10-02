@@ -1,58 +1,99 @@
-"""
-app/services/llm_service.py — Motor de LLM mejorado.
+"""LLM service with request-time provider routing and safe operational metadata."""
 
-Migrado y mejorado desde engine_llm.py.
-Cambios:
-  - Sin side effects en import (no load_dotenv en top-level)
-  - Errores separados de respuestas válidas
-  - Retries con backoff
-  - Timeout configurable
-  - Logging de metadata
-  - Soporte JSON estructurado
-"""
+from __future__ import annotations
 
 import json
 import os
 import time
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openai import OpenAI
 
+from app.services.llm_routing import (
+    LLMConfigurationError,
+    ProviderResolution,
+    load_llm_settings,
+    resolve_provider,
+    validate_provider_settings,
+)
 
-# No native Gemini import needed
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 
 class LLMError(Exception):
-    """Error específico del motor LLM."""
-    pass
+    """Failure returned by the inference layer, never a valid LLM response."""
 
 
 class LLMService:
-    """Servicio de inferencia LLM con retries, timeouts y logging."""
+    """OpenAI-compatible inference service.
+
+    Provider selection deliberately happens in :meth:`generate`, not in the
+    constructor, so long-running studies respect the schedule on each request.
+    """
 
     def __init__(self, api_key: str | None = None, model_name: str | None = None):
-        self.mode = None
-        self.api_key = None
-        self.model_name = model_name
-        self.client = None
-        self.model = None
+        self._session_openrouter_key = api_key
+        self._session_openrouter_model = model_name
+        self.last_request_metadata: dict[str, Any] = {}
 
-        if api_key:
-            self._configure(api_key, model_name)
-        else:
-            or_key = os.getenv("OPENROUTER_API_KEY", "")
-            if or_key and or_key.startswith("sk-or"):
-                self._configure(or_key, model_name)
+    def _settings(self):
+        try:
+            settings = load_llm_settings()
+        except LLMConfigurationError as exc:
+            raise LLMError(str(exc)) from exc
+        if self._session_openrouter_key:
+            # A key entered in Streamlit is an OpenRouter session override only.
+            settings = settings.__class__(
+                **{**settings.__dict__, "openrouter_api_key": self._session_openrouter_key,
+                   "openrouter_model": self._session_openrouter_model or settings.openrouter_model}
+            )
+        return settings
 
-    def _configure(self, api_key: str, model_name: str | None):
-        if api_key.startswith("sk-or"):
-            self.mode = "OPENROUTER"
-            self.api_key = api_key
-            self.model_name = model_name or os.getenv("MODEL_NAME", "google/gemini-2.5-flash-lite")
-            self.client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=self.api_key)
+    def _client_for(self, provider: str, settings):
+        try:
+            validate_provider_settings(settings, provider)
+        except LLMConfigurationError as exc:
+            raise LLMError(str(exc)) from exc
+        if provider == "local":
+            return OpenAI(base_url=settings.local_base_url, api_key=settings.local_api_key), settings.local_model
+        return OpenAI(base_url=OPENROUTER_BASE_URL, api_key=settings.openrouter_api_key), settings.openrouter_model
 
     def is_ready(self) -> bool:
-        return self.mode is not None
+        try:
+            settings = self._settings()
+            resolution = resolve_provider(settings)
+            validate_provider_settings(settings, resolution.provider)
+            return True
+        except (LLMError, LLMConfigurationError):
+            return False
+
+    def get_request_metadata(self) -> dict[str, Any]:
+        """Return non-secret metadata for the most recent request."""
+        return dict(self.last_request_metadata)
+
+    def _generate_with_provider(
+        self, provider: str, settings, system_prompt: str, user_prompt: str,
+        max_retries: int, timeout: int, expect_json: bool,
+    ) -> str | dict:
+        client, model = self._client_for(provider, settings)
+        last_error: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt},
+                    ],
+                    timeout=timeout,
+                )
+                content = response.choices[0].message.content
+                return self._parse_response(content or "", expect_json)
+            except Exception as exc:  # provider errors are normalized below
+                last_error = exc
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+        raise LLMError(f"{provider} no respondió tras {max_retries} intentos: {last_error}")
 
     def generate(
         self,
@@ -63,80 +104,59 @@ class LLMService:
         timeout: int = 60,
         expect_json: bool = False,
     ) -> str | dict:
-        """
-        Genera una respuesta del LLM.
-
-        Args:
-            system_prompt: Prompt de sistema/instrucciones
-            user_prompt: Prompt del usuario
-            agent_id: Identificador para logging
-            max_retries: Número de reintentos
-            timeout: Timeout en segundos
-            expect_json: Si True, intenta parsear la respuesta como JSON
-
-        Returns:
-            str o dict con la respuesta
-
-        Raises:
-            LLMError: Si no hay API key o fallan todos los retries
-        """
-        if not self.mode:
-            raise LLMError("API Key inválida o ausente. Configúrala en Configuración.")
-
-        last_error = None
-        for attempt in range(max_retries):
-            try:
-                if self.mode == "OPENROUTER":
-                    response = self.client.chat.completions.create(
-                        model=self.model_name,
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": user_prompt},
-                        ],
-                        timeout=timeout,
+        del agent_id  # reserved for caller logging; never sent to the provider
+        settings = self._settings()
+        resolution: ProviderResolution = resolve_provider(settings)
+        fallback_used = False
+        selected_provider = resolution.provider
+        try:
+            result = self._generate_with_provider(
+                selected_provider, settings, system_prompt, user_prompt, max_retries, timeout, expect_json
+            )
+        except LLMError as local_error:
+            if resolution.mode == "schedule" and selected_provider == "local":
+                fallback_used = True
+                selected_provider = "openrouter"
+                try:
+                    result = self._generate_with_provider(
+                        selected_provider, settings, system_prompt, user_prompt, max_retries, timeout, expect_json
                     )
-                    content = response.choices[0].message.content
-                    if isinstance(content, str) and content.strip():
-                        return self._parse_response(content, expect_json)
-                    return "" if not expect_json else {}
+                except LLMError as fallback_error:
+                    raise LLMError(f"Fallaron proveedor local y fallback OpenRouter: {fallback_error}") from fallback_error
+            else:
+                raise local_error
 
+        model = settings.local_model if selected_provider == "local" else settings.openrouter_model
+        self.last_request_metadata = {
+            "provider": selected_provider,
+            "model": model,
+            "mode": resolution.mode,
+            "scheduled_provider": resolution.scheduled_provider,
+            "fallback_used": fallback_used,
+        }
+        return result
 
-
-            except Exception as e:
-                last_error = str(e)
-                if attempt < max_retries - 1:
-                    wait = 2 ** attempt  # Backoff exponencial
-                    time.sleep(wait)
-                continue
-
-        raise LLMError(f"Error tras {max_retries} intentos: {last_error}")
-
-    def _parse_response(self, text: str, expect_json: bool) -> str | dict:
-        """Parsea la respuesta, extrayendo JSON si se espera."""
-        if not expect_json:
-            return text.strip()
-
-        # Intentar extraer JSON del texto
+    @staticmethod
+    def _parse_response(text: str, expect_json: bool) -> str | dict:
         text = text.strip()
-        # Buscar bloque markdown JSON
+        if not expect_json:
+            return text
         if "```json" in text:
             start = text.find("```json") + 7
             end = text.find("```", start)
-            if end != -1:
-                text = text[start:end].strip()
+            text = text[start:end].strip() if end != -1 else text[start:].strip()
         elif "```" in text:
             start = text.find("```") + 3
             end = text.find("```", start)
-            if end != -1:
-                text = text[start:end].strip()
-
+            text = text[start:end].strip() if end != -1 else text[start:].strip()
         try:
             return json.loads(text)
         except json.JSONDecodeError:
-            # Si falla el JSON, devolver el texto crudo
             return {"_raw": text, "_error": "No se pudo parsear como JSON"}
 
     def get_provider_label(self) -> str:
-        if self.mode == "OPENROUTER":
-            return "OpenRouter"
-        return "Sin configurar"
+        try:
+            resolution = resolve_provider(self._settings())
+            return "Ollama local" if resolution.provider == "local" else "OpenRouter"
+        except LLMError:
+            return "Sin configurar"

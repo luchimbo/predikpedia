@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "toomatch.population/v1",
+  "populationId": "toomatch-ar-25-45",
+  "version": "v1",
+  "size": 40,
+  "seed": 20260805,
+  "orientationDistribution": {"hetero": 0.85, "bi": 0.075, "gay": 0.05, "lesbiana": 0.025},
+  "source": {
+    "name": "Ipsos Pride Survey 2024 — Global Advisor",
+    "url": "https://www.ipsos.com/en/pride-month-2024-35-across-26-countries-identify-lgbt",
+    "publishedAt": "2024-06-06",
+    "methodology": "Encuesta online internacional; la configuración convierte las proporciones publicadas o derivadas para Argentina a cuotas enteras deterministas de una cohorte de 40.",
+    "limitations": "No es un censo ni una muestra probabilística de toda Argentina; orientación autoidentificada y categorías reducidas a las cuatro soportadas por el protocolo v1."
+  }
+}

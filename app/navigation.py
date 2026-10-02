@@ -4,6 +4,8 @@ app/navigation.py — Sidebar y navegación principal.
 
 import streamlit as st
 
+from app.services.llm_routing import LLMConfigurationError, load_llm_settings, resolve_provider
+
 
 NAV_OPTIONS = [
     "Inicio",
@@ -60,8 +62,9 @@ def render_sidebar(*, balance_now: float, saved_api_key: str):
 
 
 def resolve_provider_label(api_key: str) -> str:
-    if api_key.startswith("sk-or"):
-        return "OpenRouter"
-    if api_key:
-        return "API cargada"
-    return "Sin configurar"
+    del api_key
+    try:
+        resolution = resolve_provider(load_llm_settings())
+        return "Ollama local" if resolution.provider == "local" else "OpenRouter"
+    except LLMConfigurationError:
+        return "Sin configurar"

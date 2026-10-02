@@ -7,11 +7,25 @@ services:
     envVars:
       - key: OPENROUTER_API_KEY
         sync: false
+      - key: OPENROUTER_MODEL
+        value: "google/gemini-2.5-flash-lite"
+      - key: LLM_PROVIDER
+        value: "schedule"
+      - key: LLM_SCHEDULE_TIMEZONE
+        value: "America/Argentina/Buenos_Aires"
+      - key: LLM_LOCAL_START
+        value: "09:30"
+      - key: LLM_LOCAL_END
+        value: "17:30"
+      - key: LLM_LOCAL_BASE_URL
+        sync: false
+      - key: LLM_LOCAL_MODEL
+        value: "qwen2.5:32b"
+      - key: LLM_LOCAL_API_KEY
+        sync: false
       - key: SUPABASE_URL
         value: "https://frnuevudttnxtkblgeer.supabase.co"
       - key: SUPABASE_SERVICE_KEY
         sync: false
       - key: QUOTA_LIMIT
         value: "500000"
-      - key: MODEL_NAME
-        value: "google/gemini-2.5-flash-lite"

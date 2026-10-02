@@ -220,7 +220,7 @@ def _render_step_4_execute():
 
     # Verificar API
     saved_key = st.session_state.get("saved_api_key", "")
-    if not saved_key:
+    if not LLMService().is_ready():
         st.error("No hay API key configurada. Configurala en Configuración.")
         return
 

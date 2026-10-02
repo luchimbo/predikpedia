@@ -12,7 +12,12 @@ load_dotenv()
 from app.config import config
 from app.navigation import render_sidebar, resolve_provider_label
 from app.state import init_state
-from app.storage.repository import list_studies, list_universes, set_active_user
+from app.storage.repository import (
+    list_studies,
+    list_universes,
+    set_active_user,
+    use_local_storage,
+)
 from app.theme import GLOBAL_CSS
 from app.pages.home import render_home_page
 from app.pages.audiencias import render_audiencias_page
@@ -20,6 +25,7 @@ from app.pages.estudios import render_estudios_page
 from app.pages.resultados import render_resultados_page
 from app.pages.configuracion import render_configuracion_page
 from app.services.credits_service import CreditsService
+from app.services.llm_service import LLMService
 
 # ── Inicialización ──────────────────────────────────────────────────────────
 
@@ -28,9 +34,17 @@ _params = st.query_params
 _user_id = _params.get("uid", "")
 if _user_id:
     config.set_user(_user_id)
-    set_active_user(_user_id)
 else:
-    config.ensure_directories()
+    # Al abrir Streamlit directamente, conservar los datos en este equipo y
+    # aislarlos del storage remoto que usa el redirect autenticado de Vercel.
+    _user_id = os.getenv("PREDIKPEDIA_DEFAULT_USER", "demo_user")
+    config.set_user(_user_id)
+    use_local_storage()
+
+# El acceso directo a Streamlit no incluye el `uid` que agrega el redirect de
+# Vercel. El repositorio usa ese identificador para el backend Supabase, por lo
+# que siempre debe existir una identidad activa, incluso en modo local/demo.
+set_active_user(_user_id)
 
 init_state()
 
@@ -70,12 +84,14 @@ render_sidebar(
 # ── Routing ─────────────────────────────────────────────────────────────────
 
 current_page = st.session_state.get("current_page", "Inicio")
-provider_label = resolve_provider_label(saved_key)
+llm_engine = LLMService(api_key=saved_key or None)
+provider_label = llm_engine.get_provider_label()
+llm_ready = llm_engine.is_ready()
 
 if current_page == "Inicio":
     render_home_page(
         balance_now=credits_engine.get_balance(),
-        has_api_key=bool(saved_key),
+        has_api_key=llm_ready,
         provider_label=provider_label,
         universes=list_universes(),
         studies=list_studies(),

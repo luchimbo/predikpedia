@@ -29,6 +29,12 @@ def set_active_user(user_id: str) -> None:
     _current_user_id = user_id
 
 
+def use_local_storage() -> None:
+    """Fuerza el almacenamiento en archivos para ejecuciones locales."""
+    global _USE_SUPABASE
+    _USE_SUPABASE = False
+
+
 def _uid() -> str:
     if not _current_user_id:
         raise RuntimeError("No active user set. Call set_active_user(uid) first.")
