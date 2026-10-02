@@ -2,50 +2,55 @@
 
 ## Entrypoints reales
 
-- La app principal es `predikpedia.py`; ejecutala con Streamlit, no con `python predikpedia.py`.
-- `main.py` es un flujo CLI viejo de simulacion/demo y no refleja la app actual.
-- `ui_universos.py` contiene el flujo de audiencias/universos dentro de la app Streamlit.
-- `engine_universos.py` es el puente entre `Universo`/`PerfilCliente` y el flujo viejo basado en filas `Agent_ID`/`Backstory`.
-- `README.md` esta desactualizado para la app real; para comportamiento actual confia en `predikpedia.py`, `ui_universos.py`, `app_paths.py` y `storage_universos.py`.
+- La app principal es `predikpedia.py` + el paquete `app/`; ejecutala con Streamlit, no con `python predikpedia.py`.
+- `predikpedia.py` solo inicializa (usuario, storage, estado, creditos, sidebar) y rutea a `app/pages/*`. La logica vive en `app/`.
+- El portal Next.js (`app/*.tsx`, `app/login`, `app/register`, `app/dashboard`, `middleware.ts`, `lib/supabase`) convive en la misma carpeta `app/` que el paquete Python. Solo hace login con Supabase y redirige a Streamlit con `?uid=<user_id>` (`NEXT_PUBLIC_STREAMLIT_URL`).
+- `README.md` describe la app actual.
+- Los archivos legacy de MiroModi (`main.py`, `ui_universos.py`, `engine_*.py`, `core_logic.py`, `credits_engine.py`, `storage_universos.py`) ya no existen; su logica se migro a `app/`. `Projects/`, `Archivo Predikpédico/` y `outputs/` son datos viejos que la app no usa.
+
+## Mapa del paquete `app/`
+
+- `config.py`: rutas de datos. Prioridad: `PREDIKPEDIA_DATA_DIR` > `settings.json` en la raiz > `./data/`. `set_user()` cambia a `data/<user_id>/`.
+- `state.py`: claves y defaults de `st.session_state`.
+- `navigation.py`: sidebar y `NAV_OPTIONS` (Inicio, Audiencias, Estudios, Resultados, Configuracion).
+- `pages/`: una pagina por pantalla. `audiencias.py` (wizard 3 pasos), `estudios.py` (wizard 4 pasos), `resultados.py` (tabs con resultados, preguntas, comparacion y descargas). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
+- `domain/`: `models.py` (`Universo`, `PerfilCliente`, etc.), `templates.py` (templates de estudio), `coherence_engine.py`.
+- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `universe_service.py` (expansion de personas), `analysis_service.py`, `credits_service.py`.
+- `storage/repository.py`: CRUD de universos, estudios y resultados. Usa Supabase si hay `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL`; si no, filesystem local.
 
 ## Comandos verificados
 
 - Usar el venv del repo en Windows PowerShell:
   - `& ".\.venv\Scripts\streamlit.exe" run "predikpedia.py"`
-  - `& ".\.venv\Scripts\python.exe" -m py_compile "predikpedia.py" "ui_universos.py" "engine_llm.py" "storage_universos.py" "app_paths.py"`
+  - `& ".\.venv\Scripts\python.exe" -m unittest discover -s tests`
+  - `& ".\.venv\Scripts\python.exe" -m py_compile "predikpedia.py" "app\services\llm_service.py" "app\services\llm_routing.py"`
 - Smoke start headless de la UI:
   - `& ".\.venv\Scripts\streamlit.exe" run "predikpedia.py" --server.headless true --server.port 8510`
+- Portal: `npm install` y `npm run dev`.
 
 ## Dependencias y entorno
 
-- El repo trae `.venv/` versionado; excluilo de busquedas y ediciones porque contamina `glob`/`grep` con miles de resultados.
-- `requirements.txt` es incompleto para la app real: el codigo tambien importa `streamlit`, `pandas`, `plotly` y `google.generativeai`.
-- `engine_llm.py` hace `load_dotenv()` al importar y selecciona proveedor por prefijo de clave:
-  - `OPENROUTER_API_KEY` si empieza con `sk-or`
-  - `GEMINI_API_KEY` si empieza con `AIza`
-- En la sidebar actual, una sola entrada de API se copia a ambas variables; si el proveedor "cambia solo", revisa el prefijo de la clave antes de tocar logica.
-- El repo sigue usando `google.generativeai`; al importar vas a ver un warning de deprecacion.
+- El repo trae `.venv/` y `node_modules/` locales; excluilos de busquedas y ediciones porque contaminan `glob`/`grep`.
+- `requirements.txt` no incluye `pandas`, aunque el codigo lo importa.
+- El proveedor LLM ya no se elige por prefijo de clave. Lo decide `app/services/llm_routing.py` en cada request:
+  - `LLM_PROVIDER=schedule` (default): Ollama local entre `LLM_LOCAL_START` (inclusive) y `LLM_LOCAL_END` (exclusiva) en `LLM_SCHEDULE_TIMEZONE`; OpenRouter fuera de esa franja.
+  - `LLM_PROVIDER=local` u `openrouter` fuerzan el proveedor.
+  - Local: `LLM_LOCAL_BASE_URL`, `LLM_LOCAL_MODEL`, `LLM_LOCAL_API_KEY`. OpenRouter: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`.
+- Render llega al Ollama local con `tools/ollama_relay.py` + Cloudflare Quick Tunnel (`scripts/start_llm_relay_and_tunnel.ps1`, `tools/supervise_quick_tunnel.py`). Ver `docs/LLM_ROTATION.md`.
+- Secretos locales: `.env` y `.env.relay.local`, ambos ignorados. Nunca commitear claves reales.
 
-## Persistencia y rutas que sorprenden
+## Persistencia y rutas
 
-- Importar `predikpedia.py` o `storage_universos.py` crea directorios en `c:/MiroModi/...` mediante `ensure_legacy_runtime_dirs()`.
-- La persistencia principal no vive solo en el repo:
-  - universos: `c:/MiroModi/Archivo Predikpédico/universos`
-  - expansiones: `c:/MiroModi/Archivo Predikpédico/universos/expansiones`
-  - estudios: `c:/MiroModi/Archivo Predikpédico/estudios`
-  - resultados: `c:/MiroModi/Archivo Predikpédico/resultados`
-  - checkpoints: `c:/MiroModi/Archivo Predikpédico/checkpoints`
-  - ledger de creditos: `c:/MiroModi/Archivo Predikpédico/credits_ledger.json`
-- La biblioteca de universos escanea tanto rutas legacy como carpetas locales del repo (`backend/uploads/simulations`, `Archivo Predikpédico`, `Projects`, raiz). No asumas que los datos de prueba estan en un solo lugar.
-- `models_universos.py` serializa directo a JSON; cambiar nombres de campos rompe compatibilidad con datos ya guardados.
+- Al abrir Streamlit directo (sin `?uid=`), la app fuerza storage local con el usuario `PREDIKPEDIA_DEFAULT_USER` (default `demo_user`) y datos en `data/demo_user/`.
+- Con `?uid=` desde el portal, usa Supabase Storage en `predikpedia-data/{user_id}/{universos,universos/expansiones,estudios,resultados}/*.json`.
+- `data/<user_id>/` esta versionado en el repo.
+- `app/domain/models.py` serializa directo a JSON; cambiar nombres de campos rompe compatibilidad con datos ya guardados (locales y en Supabase).
 
 ## Hotspots de arquitectura
 
-- `predikpedia.py` es monolitico: shell visual, CSS, sidebar, simulacion OASIS, resultados, creditos y metodologia viven ahi.
-- `ui_universos.py` tambien es monolitico: creacion de universos, expansion, ejecucion de estudios y lectura historica.
-- Antes de hacer cambios grandes de UI/UX, lee ambos archivos completos; muchos comportamientos dependen del orden de render y de `st.session_state` disperso.
-- `credits_engine.py` tambien escribe fuera del repo y usa rutas hardcodeadas; no lo trates como modulo aislado de UI.
-- `engine_llm.py` devuelve errores del proveedor como strings de respuesta; no supongas que toda respuesta string es un resultado valido del modelo.
+- Muchos comportamientos dependen del orden de render y de `st.session_state`; revisa `app/state.py` y la pagina involucrada antes de tocar el flujo.
+- Los wizards de Audiencias y Estudios guardan el paso actual y los inputs en session state; cuidado con keys de widgets que se pierden entre reruns.
+- `llm_service.py` puede devolver errores del proveedor; no supongas que toda respuesta es un resultado valido del modelo.
 
 ## Roadmap vigente
 
@@ -53,8 +58,8 @@
 - Si vas a tocar navegacion, shell visual, layout, jerarquia de pantallas o UX principal, leelo antes de editar.
 - No hagas tweaks cosmeticos aislados en UI que contradigan ese plan; prioriza cambios alineados con el rediseño total.
 
-## Verificacion y limites actuales
+## Deploy y verificacion
 
-- No se encontraron CI, workflows, linter, formatter, typecheck ni suite automatizada del proyecto.
-- Verifica cambios con smoke tests puntuales; no asumas que existe `pytest` util para este repo.
-- `test_connection.py` no es una smoke test confiable por defecto en Windows PowerShell: imprime emoji (puede fallar por `cp1252`) y asume que `InferenceEngine.api_key` existe.
+- App Streamlit en Render (`render.yaml`); variables `sync: false` se cargan a mano en Render.
+- Portal en Vercel; sus variables no controlan el router LLM.
+- No hay CI, linter ni typecheck. La suite en `tests/` usa `unittest` (no `pytest`); complementala con smoke tests puntuales de la UI.
