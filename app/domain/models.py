@@ -16,16 +16,26 @@ class PerfilCliente:
     nombre: str
     descripcion: str
     porcentaje: float
+    # Valores posibles por campo de PersonaSintetica (edad_rango, rol, ...).
+    # Vacío = la expansión usa los valores genéricos.
+    atributos: Dict[str, List[str]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "PerfilCliente":
+        raw_atributos = data.get("atributos") or {}
+        atributos = {
+            str(key): [str(v).strip() for v in values if str(v).strip()]
+            for key, values in raw_atributos.items()
+            if isinstance(values, list)
+        } if isinstance(raw_atributos, dict) else {}
         return cls(
             nombre=str(data.get("nombre", "")).strip(),
             descripcion=str(data.get("descripcion", "")).strip(),
             porcentaje=float(data.get("porcentaje", 0)),
+            atributos={k: v for k, v in atributos.items() if v},
         )
 
 

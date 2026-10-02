@@ -297,7 +297,7 @@ def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_
             # Construir perfil para system prompt
             perfil_desc = f"Perfil: {perfil}. {persona.get('perfil_descripcion', '')}"
             detalles = []
-            for campo in ["edad_rango", "rol", "industria", "principal_pain", "motivador", "objecion_base", "comportamiento", "canal_preferido"]:
+            for campo in ["edad_rango", "rol", "industria", "objetivo", "principal_pain", "motivador", "objecion_base", "sensibilidad_precio", "comportamiento", "canal_preferido"]:
                 val = persona.get(campo, "")
                 if val:
                     detalles.append(f"{campo}: {val}")

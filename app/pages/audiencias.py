@@ -15,6 +15,8 @@ import streamlit as st
 
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stepper, render_stat_card
 from app.domain.models import PerfilCliente, Universo
+from app.services.audience_design_service import AudienceDesignError, design_segments
+from app.services.llm_service import LLMService
 from app.services.universe_service import build_expansion_snapshot, expand_universe
 from app.state import get, go_to_page, set
 from app.storage.repository import find_latest_expansion, list_universes, save_expansion, save_universe
@@ -109,8 +111,9 @@ def _render_step_2_expand():
     render_section_title("2. Expandí en personas")
     render_soft_panel(
         "Generación de personas",
-        "A partir del brief definido, se generarán personas sintéticas individuales "
-        "con características enriquecidas (rol, industria, pain points, motivadores, etc.).",
+        "A partir del brief, la IA diseña los segmentos de la audiencia y los valores posibles de cada "
+        "atributo (edad, rol, rubro, dolores, motivadores, objeciones, canales). Después se sortean las "
+        "personas dentro de esos valores: es una sola llamada al modelo, sin importar la cantidad.",
     )
 
     nombre = st.session_state.get("aud_nombre_saved", "")
@@ -122,16 +125,37 @@ def _render_step_2_expand():
     st.markdown(f"**Personas:** {cantidad}")
     st.markdown(f"**Descripción:** {descripcion[:200]}...")
 
+    llm_ready = LLMService().is_ready()
+    usar_ia = st.checkbox(
+        "Diseñar segmentos con IA a partir de la descripción",
+        value=llm_ready,
+        disabled=not llm_ready,
+        key="aud_use_ai_design",
+        help="Sin IA, todas las personas usan atributos genéricos y la descripción solo se pasa como contexto.",
+    )
+    if not llm_ready:
+        st.caption("No hay un modelo configurado: se usarán atributos genéricos.")
+
     if st.button("Generar personas sintéticas", key="aud_expand_btn", use_container_width=True, type="primary"):
         try:
-            # Sin perfiles manuales: se usa un perfil genérico basado en la descripción
+            perfiles: List[PerfilCliente] = []
+            if usar_ia:
+                with st.spinner("Diseñando segmentos a partir de la descripción..."):
+                    try:
+                        perfiles = design_segments(descripcion)
+                    except AudienceDesignError as exc:
+                        st.session_state["aud_design_warning"] = (
+                            f"No se pudieron diseñar los segmentos con IA ({exc}). "
+                            "Se usaron atributos genéricos."
+                        )
+
             universo = Universo(
                 id=_new_universe_id(nombre),
                 nombre=nombre.strip() or "Audiencia sin nombre",
                 descripcion=descripcion.strip(),
                 cantidad_personas=cantidad,
                 prompt_perfil=descripcion.strip(),
-                perfiles=[],  # Sin perfiles manuales, la expansión creará variedad automáticamente
+                perfiles=perfiles,  # Vacío = perfil "General" con atributos genéricos
             )
 
             personas = expand_universe(universo)
@@ -173,6 +197,10 @@ def _render_step_3_review():
         )
         return
 
+    warning = st.session_state.pop("aud_design_warning", "")
+    if warning:
+        st.warning(warning)
+
     # Métricas
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -183,8 +211,13 @@ def _render_step_3_review():
         render_stat_card("Preview", str(min(25, len(personas))))
 
     # Resumen por perfil
+    descripciones = {perfil.nombre: perfil.descripcion for perfil in universo.perfiles}
     df_resumen = pd.DataFrame([
-        {"Perfil": perfil, "Cantidad": len([p for p in personas if p.perfil == perfil])}
+        {
+            "Perfil": perfil,
+            "Cantidad": len([p for p in personas if p.perfil == perfil]),
+            "Descripción": descripciones.get(perfil, ""),
+        }
         for perfil in sorted({p.perfil for p in personas})
     ])
     st.dataframe(df_resumen, use_container_width=True, hide_index=True)
@@ -198,8 +231,12 @@ def _render_step_3_review():
             "Edad": p.edad_rango,
             "Rol": p.rol,
             "Industria": p.industria,
+            "Objetivo": p.objetivo,
             "Pain": p.principal_pain,
             "Motivador": p.motivador,
+            "Objeción": p.objecion_base,
+            "Precio": p.sensibilidad_precio,
+            "Canal": p.canal_preferido,
         }
         for p in personas[:25]
     ])

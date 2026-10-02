@@ -60,37 +60,56 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
     return personas
 
 
-def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random) -> PersonaSintetica:
-    """Construye una persona sintética individual enriquecida."""
-    edades = ["18-25", "26-35", "36-45", "46-55", "56-65", "65+"]
-    roles = ["Usuario final", "Decisor", "Influencer", "Gatekeeper", "Comprador"]
-    industrias = ["Tecnología", "Retail", "Salud", "Educación", "Finanzas", "Manufactura", "Servicios"]
-    pains = [
+GENERIC_ATTRIBUTES: Dict[str, List[str]] = {
+    "edad_rango": ["18-25", "26-35", "36-45", "46-55", "56-65", "65+"],
+    "rol": ["Usuario final", "Decisor", "Influencer", "Gatekeeper", "Comprador"],
+    "industria": ["Tecnología", "Retail", "Salud", "Educación", "Finanzas", "Manufactura", "Servicios"],
+    "principal_pain": [
         "Falta de tiempo",
         "Precio elevado",
         "Complejidad de uso",
         "Falta de confianza",
         "Mala experiencia previa",
         "Falta de información",
-    ]
-    motivadores = [
+    ],
+    "motivador": [
         "Ahorrar tiempo",
         "Reducir costos",
         "Mejorar calidad",
         "Innovación",
         "Recomendación de pares",
         "Tendencia de mercado",
-    ]
-    objeciones = [
+    ],
+    "objecion_base": [
         "Es muy caro",
         "No veo el valor",
         "Es complicado",
         "No confío en la marca",
         "Ya tengo una solución",
         "No es prioritario",
-    ]
-    comportamientos = ["Analítico", "Impulsivo", "Social", "Conservador", "Innovador"]
-    canales = ["WhatsApp", "Email", "Redes sociales", "Sitio web", "Referido", "Tienda física"]
+    ],
+    "sensibilidad_precio": ["Alta", "Media", "Baja"],
+    "comportamiento": ["Analítico", "Impulsivo", "Social", "Conservador", "Innovador"],
+    "canal_preferido": ["WhatsApp", "Email", "Redes sociales", "Sitio web", "Referido", "Tienda física"],
+}
+
+# El orden importa: define la secuencia del sorteo y, con ella, la
+# reproducibilidad de las expansiones ya guardadas.
+SAMPLED_FIELDS = list(GENERIC_ATTRIBUTES.keys())
+
+# Campos que solo se completan si el perfil trae valores propios.
+OPTIONAL_FIELDS = ["objetivo"]
+
+
+def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random) -> PersonaSintetica:
+    """Construye una persona sintética sorteando atributos del perfil (o genéricos)."""
+    atributos = perfil.atributos or {}
+    valores: Dict[str, str] = {}
+    for campo in SAMPLED_FIELDS:
+        valores[campo] = rng.choice(atributos.get(campo) or GENERIC_ATTRIBUTES[campo])
+    for campo in OPTIONAL_FIELDS:
+        opciones = atributos.get(campo)
+        valores[campo] = rng.choice(opciones) if opciones else ""
 
     return PersonaSintetica(
         persona_id="",  # Se asigna después del shuffle
@@ -100,18 +119,9 @@ def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random
         perfil=perfil.nombre,
         perfil_descripcion=perfil.descripcion,
         perfil_porcentaje_objetivo=perfil.porcentaje,
-        edad_rango=rng.choice(edades),
-        rol=rng.choice(roles),
-        industria=rng.choice(industrias),
-        objetivo="",
-        principal_pain=rng.choice(pains),
-        motivador=rng.choice(motivadores),
-        objecion_base=rng.choice(objeciones),
-        sensibilidad_precio=rng.choice(["Alta", "Media", "Baja"]),
-        comportamiento=rng.choice(comportamientos),
-        canal_preferido=rng.choice(canales),
         contexto_operativo=universo.descripcion or "",
         notas="",
+        **valores,
     )
 
 

@@ -35,10 +35,11 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
 ### 1. Audiencia (universo → personas sintéticas)
 
 1. Definís un **universo**: nombre, descripción (quiénes son, contexto) y cantidad de personas.
-2. Al tocar *Generar personas sintéticas*, `universe_service.expand_universe()` arma las personas **sin usar el LLM**:
-   - Si el universo tiene perfiles con porcentajes (`PerfilCliente`), reparte las personas según esos porcentajes. Si no tiene (el caso de la UI actual), usa un perfil `General` con la descripción del universo.
-   - A cada persona le asigna atributos al azar de listas fijas: rango de edad, rol, industria, principal dolor, motivador, objeción base, sensibilidad al precio, comportamiento y canal preferido. La descripción del universo queda como `contexto_operativo`.
-   - El azar usa como semilla el `id` del universo, así que expandir el mismo universo siempre da las mismas personas.
+2. Al tocar *Generar personas sintéticas* pasan dos cosas:
+   - **Diseño de segmentos (1 llamada al LLM):** `audience_design_service.design_segments()` lee la descripción y devuelve de 1 a 4 segmentos (`PerfilCliente`) con su porcentaje, una descripción y, para cada atributo (rango de edad, rol, rubro, objetivo, dolor principal, motivador, objeción, sensibilidad al precio, comportamiento y canal), los valores que tienen sentido para ese segmento. Si el brief menciona segmentos o proporciones, los respeta.
+   - **Expansión (sin LLM):** `universe_service.expand_universe()` reparte las personas según los porcentajes y a cada una le sortea atributos **dentro de los valores de su segmento**. El costo no depende de la cantidad de personas.
+   - Si no hay modelo configurado, la llamada falla o se desmarca la opción de IA, se usa un perfil `General` con atributos genéricos (edad, rol, industria, etc. de listas fijas) y la descripción solo queda como contexto.
+   - El azar usa como semilla el `id` del universo, así que expandir el mismo universo siempre da las mismas personas. Las audiencias guardadas antes de este cambio (sin `atributos`) siguen generando exactamente las mismas personas.
 3. Al guardar, se persisten el universo (`universos/<id>.json`) y un snapshot de la expansión con todas las personas (`universos/expansiones/<id>_<fecha>.json`).
 
 ### 2. Estudio (una pregunta a cada persona)
