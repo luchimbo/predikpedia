@@ -19,12 +19,22 @@ class PerfilCliente:
     # Valores posibles por campo de PersonaSintetica (edad_rango, rol, ...).
     # Vacío = la expansión usa los valores genéricos.
     atributos: Dict[str, List[str]] = field(default_factory=dict)
+    # Personas completas y coherentes (campo -> valor) escritas por la IA.
+    # Si hay, la expansión copia un arquetipo entero en vez de sortear cada
+    # atributo por separado.
+    arquetipos: List[Dict[str, str]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "PerfilCliente":
+        raw_arquetipos = data.get("arquetipos") or []
+        arquetipos = [
+            {str(k): str(v).strip() for k, v in item.items() if str(v).strip()}
+            for item in raw_arquetipos
+            if isinstance(item, dict)
+        ] if isinstance(raw_arquetipos, list) else []
         raw_atributos = data.get("atributos") or {}
         atributos = {
             str(key): [str(v).strip() for v in values if str(v).strip()]
@@ -36,6 +46,7 @@ class PerfilCliente:
             descripcion=str(data.get("descripcion", "")).strip(),
             porcentaje=float(data.get("porcentaje", 0)),
             atributos={k: v for k, v in atributos.items() if v},
+            arquetipos=[a for a in arquetipos if a],
         )
 
 

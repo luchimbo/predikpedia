@@ -6,6 +6,7 @@ Paso 2: Revisar y guardar
 """
 
 import re
+from dataclasses import replace
 from datetime import datetime
 from typing import List
 
@@ -344,7 +345,11 @@ def _render_step_2_review():
         }
         for perfil in sorted({p.perfil for p in personas})
     ])
-    st.dataframe(df_resumen, use_container_width=True, hide_index=True)
+    if universo.origen == "datos_reales" or not universo.perfiles:
+        # Con datos reales los porcentajes salen de los datos y no se editan.
+        st.dataframe(df_resumen, use_container_width=True, hide_index=True)
+    else:
+        _render_editable_shares(universo, personas)
 
     if universo.origen == "datos_reales":
         st.caption(f"Cada persona es una fila real de **{universo.fuente}**.")
@@ -377,6 +382,52 @@ def _render_step_2_review():
             st.session_state["aud_just_saved"] = {"id": universo.id, "nombre": universo.nombre}
             set("wiz_audience_step", 1)
             st.rerun()
+
+
+def _render_editable_shares(universo, personas):
+    """Tabla de grupos con el % editable; al aplicar se vuelven a repartir las personas (sin IA)."""
+    counts = {perfil.nombre: len([p for p in personas if p.perfil == perfil.nombre]) for perfil in universo.perfiles}
+    editor_df = pd.DataFrame([
+        {
+            "Grupo": perfil.nombre,
+            "%": float(perfil.porcentaje),
+            "Personas": counts.get(perfil.nombre, 0),
+            "Quiénes son": perfil.descripcion,
+        }
+        for perfil in universo.perfiles
+    ])
+    version = st.session_state.get("aud_shares_version", 0)
+    edited = st.data_editor(
+        editor_df,
+        key=f"aud_shares_{universo.id}_{version}",
+        hide_index=True,
+        use_container_width=True,
+        disabled=["Grupo", "Personas", "Quiénes son"],
+        column_config={
+            "%": st.column_config.NumberColumn("%", min_value=0.0, max_value=100.0, step=0.1, format="%.1f"),
+        },
+    )
+    st.caption("Los porcentajes los propuso la IA. Si conocés las proporciones reales, corregilos y aplicá.")
+
+    nuevos = [float(v or 0) for v in edited["%"].tolist()]
+    if nuevos == [float(p.porcentaje) for p in universo.perfiles]:
+        return
+    total = sum(nuevos)
+    if total <= 0:
+        st.error("Al menos un grupo tiene que tener un porcentaje mayor a 0.")
+        return
+    if st.button("Aplicar porcentajes", key="aud_apply_shares", use_container_width=True):
+        perfiles = [
+            replace(perfil, porcentaje=round(valor * 100 / total, 1))
+            for perfil, valor in zip(universo.perfiles, nuevos)
+        ]
+        universo = replace(universo, perfiles=perfiles)
+        personas = expand_universe(universo)
+        st.session_state["aud_temp_universo"] = universo
+        st.session_state["aud_temp_personas"] = personas
+        st.session_state["aud_temp_snapshot"] = build_expansion_snapshot(universo, personas)
+        st.session_state["aud_shares_version"] = version + 1
+        st.rerun()
 
 
 def _render_generated_examples(personas):

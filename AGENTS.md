@@ -13,9 +13,9 @@
 - `config.py`: rutas de datos. Prioridad: `PREDIKPEDIA_DATA_DIR` > `settings.json` en la raiz > `./data/`. `set_user()` cambia a `data/<user_id>/`.
 - `state.py`: claves y defaults de `st.session_state`.
 - `navigation.py`: sidebar y `NAV_OPTIONS` (Inicio, Audiencias, Estudios, Resultados, Configuracion).
-- `pages/`: una pagina por pantalla. `audiencias.py` (wizard 2 pasos: describir y revisar), `estudios.py` (una sola pantalla; guarda respuestas incrementalmente y navega a Resultados), `resultados.py` (resumen del estudio arriba; preguntas, comparacion y descargas como vistas secundarias). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
+- `pages/`: una pagina por pantalla. `audiencias.py` (wizard 2 pasos: describir o subir datos reales, y revisar con % por grupo editable), `estudios.py` (una sola pantalla; guarda respuestas incrementalmente y navega a Resultados), `resultados.py` (resumen del estudio arriba; preguntas, comparacion y descargas como vistas secundarias). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
 - `domain/`: `models.py` (`Universo`, `PerfilCliente`, etc.), `templates.py` (templates de estudio), `coherence_engine.py`.
-- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `universe_service.py` (expansion de personas desde descripcion), `population_import_service.py` (audiencias desde un CSV/Excel real: una persona por fila, con mapeo de columnas y descarte de datos personales), `analysis_service.py`, `credits_service.py`.
+- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `audience_design_service.py` (la IA escribe grupos con arquetipos: personas completas y coherentes), `universe_service.py` (expansion: copia arquetipos enteros; audiencias viejas sin arquetipos sortean cada atributo por separado), `population_import_service.py` (audiencias desde un CSV/Excel real: una persona por fila, con mapeo de columnas y descarte de datos personales), `analysis_service.py`, `credits_service.py`.
 - `storage/repository.py`: CRUD de universos, estudios y resultados. Usa Supabase si hay `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL`; si no, filesystem local.
 
 ## Comandos verificados

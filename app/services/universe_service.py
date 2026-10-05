@@ -10,7 +10,7 @@ Cambios clave:
 
 import random
 from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from app.domain.models import ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
 
@@ -35,12 +35,15 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
 
     personas: List[PersonaSintetica] = []
     rng = random.Random(universo.id)  # Seed determinista
+    archetype_cycles = _ArchetypeCycles(rng)
 
     # Distribuir personas por perfil
     for perfil in perfiles:
+        if perfil.porcentaje <= 0:
+            continue  # Un grupo puesto en 0% a mano no aporta personas.
         count = max(1, round(universo.cantidad_personas * (perfil.porcentaje / total_pct)))
         for _ in range(count):
-            persona = _build_persona(universo, perfil, rng)
+            persona = _build_persona(universo, perfil, rng, archetype_cycles.next(perfil))
             personas.append(persona)
 
     # Ajustar al total exacto (puede haber diferencia por redondeo)
@@ -49,7 +52,7 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
     while len(personas) < universo.cantidad_personas:
         # Agregar al perfil mayoritario
         main_perfil = max(perfiles, key=lambda p: p.porcentaje)
-        personas.append(_build_persona(universo, main_perfil, rng))
+        personas.append(_build_persona(universo, main_perfil, rng, archetype_cycles.next(main_perfil)))
 
     # Shuffle y asignar IDs secuenciales
     rng.shuffle(personas)
@@ -101,15 +104,52 @@ SAMPLED_FIELDS = list(GENERIC_ATTRIBUTES.keys())
 OPTIONAL_FIELDS = ["objetivo"]
 
 
-def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random) -> PersonaSintetica:
-    """Construye una persona sintética sorteando atributos del perfil (o genéricos)."""
+class _ArchetypeCycles:
+    """Reparte los arquetipos de cada perfil en orden mezclado.
+
+    Cada perfil recorre todos sus arquetipos antes de repetir alguno, así la
+    diversidad que escribió la IA queda pareja. Solo usa el rng si el perfil
+    tiene arquetipos, para no alterar el sorteo de las audiencias viejas.
+    """
+
+    def __init__(self, rng: random.Random):
+        self._rng = rng
+        self._orders: Dict[str, List[int]] = {}
+        self._positions: Dict[str, int] = {}
+
+    def next(self, perfil: PerfilCliente) -> Optional[Dict[str, str]]:
+        if not perfil.arquetipos:
+            return None
+        key = perfil.nombre
+        if key not in self._orders:
+            self._orders[key] = self._rng.sample(range(len(perfil.arquetipos)), len(perfil.arquetipos))
+            self._positions[key] = 0
+        order = self._orders[key]
+        index = order[self._positions[key] % len(order)]
+        self._positions[key] += 1
+        return perfil.arquetipos[index]
+
+
+def _build_persona(
+    universo: Universo,
+    perfil: PerfilCliente,
+    rng: random.Random,
+    arquetipo: Optional[Dict[str, str]] = None,
+) -> PersonaSintetica:
+    """Construye una persona sintética.
+
+    Con arquetipo, copia la persona completa que escribió la IA (los campos que
+    falten se sortean como siempre). Sin arquetipo, sortea cada atributo del
+    perfil (o los genéricos) por separado.
+    """
     atributos = perfil.atributos or {}
+    arquetipo = arquetipo or {}
     valores: Dict[str, str] = {}
     for campo in SAMPLED_FIELDS:
-        valores[campo] = rng.choice(atributos.get(campo) or GENERIC_ATTRIBUTES[campo])
+        valores[campo] = arquetipo.get(campo) or rng.choice(atributos.get(campo) or GENERIC_ATTRIBUTES[campo])
     for campo in OPTIONAL_FIELDS:
         opciones = atributos.get(campo)
-        valores[campo] = rng.choice(opciones) if opciones else ""
+        valores[campo] = arquetipo.get(campo) or (rng.choice(opciones) if opciones else "")
 
     return PersonaSintetica(
         persona_id="",  # Se asigna después del shuffle
