@@ -43,7 +43,7 @@ def render_reportes_tab():
     with c1:
         filtro_universo = st.selectbox("Filtrar por audiencia", ["Todos"] + universos, key="rep_filter_univ")
     with c2:
-        filtro_template = st.selectbox("Filtrar por template", ["Todos"] + templates, key="rep_filter_tmpl")
+        filtro_template = st.selectbox("Filtrar por tipo", ["Todos"] + templates, key="rep_filter_tmpl")
 
     filtrados = estudios
     if filtro_universo != "Todos":
@@ -58,8 +58,8 @@ def render_reportes_tab():
                 "ID": e.id,
                 "Audiencia": e.universo_nombre,
                 "Pregunta": e.pregunta[:60] + "..." if len(e.pregunta) > 60 else e.pregunta,
-                "Template": e.template,
-                "RPP": e.respuestas_por_persona,
+                "Tipo": e.template,
+                "Respuestas por persona": e.respuestas_por_persona,
                 "Creado": e.created_at,
             }
             for e in filtrados

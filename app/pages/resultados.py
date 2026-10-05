@@ -1,23 +1,29 @@
 """
 app/pages/resultados.py — Página de Resultados con jerarquía ejecutiva.
 
-1. Resumen ejecutivo
-2. KPIs
-3. Insights por perfil
-4. Quotes destacadas
-5. Tabla completa (al final)
+1. Resumen del estudio (números, reacciones, motivos, grupos y citas)
+2. Informe con IA (a pedido)
+3. Respuestas completas y descargas
+4. Más vistas: por pregunta, comparación y biblioteca
 """
 
 import json
-from typing import Any, Dict, List
+import re
+from typing import Dict, List
 
 import pandas as pd
 import streamlit as st
 
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stat_card
-from app.services.analysis_service import build_executive_report, insights_by_profile, representative_responses
+from app.services.analysis_service import (
+    build_executive_report,
+    error_mask,
+    insights_by_profile,
+    representative_responses,
+    valid_responses,
+)
 from app.services.llm_service import LLMError, LLMService
-from app.state import get, go_to_page
+from app.state import go_to_page
 from app.storage.repository import list_studies, load_study_results
 
 
@@ -250,180 +256,228 @@ def _run_ai_analysis(estudio, resultados_df: pd.DataFrame) -> str:
         return f"Error inesperado: {e}"
 
 
+SENTIMENT_LABELS = {
+    "positive": "Positiva",
+    "negative": "Negativa",
+    "neutral": "Neutral",
+    "mixed": "Mixta",
+}
+INTENT_LABELS = {
+    "comprar": "Compraría",
+    "rechazar": "Rechazaría",
+    "explorar": "Quiere saber más",
+    "comparar": "Compararía opciones",
+}
+
+
+def _distribution(series: pd.Series, labels: Dict[str, str]) -> pd.DataFrame:
+    """Porcentaje por categoría, con etiquetas en español."""
+    values = series.fillna("").astype(str).str.strip().str.lower()
+    values = values[values != ""]
+    if values.empty:
+        return pd.DataFrame()
+    pct = (values.map(lambda v: labels.get(v, v.capitalize())).value_counts(normalize=True) * 100).round(1)
+    return pct.rename("%").to_frame()
+
+
+def _top_reasons(series: pd.Series, limit: int = 5) -> List[str]:
+    values = series.fillna("").astype(str).str.strip()
+    values = values[values != ""]
+    if values.empty:
+        return []
+    counts = values.str.rstrip(".").value_counts().head(limit)
+    total = len(values)
+    return [f"{texto} ({count} de {total})" for texto, count in counts.items()]
+
+
 def render_resultados_page():
-    """Renderiza la página de resultados con pestañas unificadas (Resultados, Preguntas, Comparar, Biblioteca)."""
+    """Página de resultados: primero el resumen del estudio, después el detalle."""
     render_page_intro(
         "Resultados",
-        "Visualización y Análisis de Estudios",
-        "Analizá respuestas con IA, agrupá por preguntas, compará variantes o descargá reportes y datos.",
+        "¿Qué respondió tu audiencia?",
+        "Arriba tenés el resumen; más abajo, las respuestas completas, descargas y comparaciones.",
     )
 
     estudios = list_studies()
     if not estudios:
         render_empty_state(
-            "No hay estudios ejecutados",
-            "Cuando ejecutes un estudio, los resultados aparecerán acá.",
-            cta_text="Ir a Estudios",
+            "Todavía no hay estudios",
+            "Cuando ejecutes un estudio, los resultados aparecen acá.",
+            cta_text="Hacer un estudio",
             cta_key="res_go_studies",
             on_cta=lambda: go_to_page("Estudios"),
         )
         return
 
-    tab_analysis, tab_questions, tab_compare, tab_library = st.tabs([
-        "📊 Análisis de Estudio",
-        "❓ Respuestas por Pregunta",
-        "⚖️ Comparar Estudios",
-        "📂 Biblioteca / Descargas"
+    by_id = {e.id: e for e in estudios}
+    if st.session_state.get("res_study_id") not in by_id:
+        st.session_state["res_study_id"] = estudios[0].id
+    study_id = st.selectbox(
+        "Estudio",
+        list(by_id.keys()),
+        key="res_study_id",
+        format_func=lambda sid: f"{by_id[sid].titulo or by_id[sid].pregunta[:60] or 'Sin título'} · {by_id[sid].universo_nombre}",
+    )
+    _render_study_summary(by_id[study_id])
+
+    st.divider()
+    render_section_title("Más vistas")
+    tab_questions, tab_compare, tab_library = st.tabs([
+        "Respuestas por pregunta",
+        "Comparar estudios",
+        "Todos los estudios y descargas",
     ])
-
-    with tab_analysis:
-        _render_analysis_tab(estudios)
-
     with tab_questions:
         from app.pages.preguntas import render_preguntas_tab
         render_preguntas_tab()
-
     with tab_compare:
         from app.pages.reportes import render_reportes_tab
         render_reportes_tab()
-
     with tab_library:
         from app.pages.biblioteca import render_biblioteca_tab
         render_biblioteca_tab()
 
 
-def _render_analysis_tab(estudios: List[Any]):
-    """Renderiza la vista principal de análisis de un estudio."""
+def _render_study_summary(estudio):
+    """Resumen de un estudio: números, reacciones, motivos, grupos y citas."""
+    st.markdown(f"**Pregunta:** {estudio.pregunta}")
+    st.caption(f"Audiencia: {estudio.universo_nombre} · {estudio.created_at}")
 
-    # Selector de estudio
-    def _fmt_option(e):
-        titulo = e.titulo or "Sin título"
-        return f"{titulo} · {e.universo_nombre} ({e.created_at})"
-
-    options = {_fmt_option(e): e for e in estudios}
-    selected = st.selectbox("Seleccionar estudio", list(options.keys()), key="res_study_select")
-    estudio = options[selected]
-
-    # Mostrar título del estudio
-    if estudio.titulo:
-        st.markdown(f"**Título:** {estudio.titulo}")
-    st.caption(f"Pregunta: {estudio.pregunta}")
-
-    # Cargar resultados
     resultados = load_study_results(estudio.id)
     if not resultados:
         render_empty_state(
-            "Sin resultados guardados",
-            f"El estudio '{estudio.id}' no tiene respuestas guardadas.",
+            "Este estudio no tiene respuestas",
+            "Puede que se haya cortado antes de recibir la primera respuesta. Probá ejecutarlo de nuevo.",
         )
         return
 
-    resultados_df = pd.DataFrame([r.to_dict() for r in resultados])
+    all_df = pd.DataFrame([r.to_dict() for r in resultados])
+    errores = int(error_mask(all_df).sum())
+    resultados_df = valid_responses(all_df)
 
-    # Métricas del estudio
-    total_personas = len(set(resultados_df["persona_id"]))
-    total_respuestas = len(resultados_df)
-    metric_cols = st.columns(2)
-    with metric_cols[0]:
-        st.metric("Personas encuestadas", total_personas)
-    with metric_cols[1]:
-        st.metric("Respuestas totales", total_respuestas)
-    st.divider()
+    planeadas = int(getattr(estudio, "respuestas_planeadas", 0) or 0)
+    if planeadas and len(all_df) < planeadas:
+        st.warning(
+            f"El estudio quedó incompleto: se guardaron {len(all_df)} de {planeadas} respuestas "
+            "(se cortó antes de terminar)."
+        )
+    if errores:
+        st.warning(
+            f"{errores} respuesta(s) fallaron por un error del modelo y no se cuentan en el análisis."
+        )
+    if resultados_df.empty:
+        render_empty_state(
+            "No hay respuestas válidas",
+            "Todas las llamadas al modelo fallaron. Revisá la configuración del modelo y ejecutá de nuevo.",
+        )
+        return
 
-    # Botón de descarga CSV prominente
-    import re
-    safe_titulo = re.sub(r'[<>\:"/\\|?*]', "_", estudio.titulo or estudio.id)
-    csv_bytes = resultados_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        "📥 Descargar CSV de respuestas",
-        data=csv_bytes,
-        file_name=f"{safe_titulo}.csv",
-        mime="text/csv",
-        use_container_width=True,
-        type="primary",
-    )
-    st.divider()
-
-    # ── Análisis con IA ───────────────────────────────────────────
-    render_section_title("Análisis con IA")
-    
-    if st.button("🤖 Analizar respuestas con IA", key="res_ai_analyze", use_container_width=True, type="primary"):
-        analisis = _run_ai_analysis(estudio, resultados_df)
-        st.session_state["res_ai_result"] = analisis
-        st.rerun()
-    
-    if "res_ai_result" in st.session_state:
-        with st.container(border=True):
-            st.markdown("### Análisis generado por IA")
-            st.markdown(st.session_state["res_ai_result"])
-            if st.button("🗑️ Cerrar análisis", key="res_ai_close"):
-                del st.session_state["res_ai_result"]
-                st.rerun()
-    
-    st.divider()
-
-    # ── 1. Resumen Ejecutivo ──────────────────────────────────────
-    report = build_executive_report(estudio, resultados_df)
-
-    render_section_title("Resumen Ejecutivo")
-    render_soft_panel("Conclusión principal", report["conclusion"])
-
-    # ── 2. KPIs ──────────────────────────────────────────────────
-    cols = st.columns(4)
+    # ── Números ──────────────────────────────────────────────────
+    cols = st.columns(3)
     with cols[0]:
-        render_stat_card("Personas", str(len(set(resultados_df["persona_id"]))))
+        render_stat_card("Personas", str(resultados_df["persona_id"].nunique()))
     with cols[1]:
-        render_stat_card("Respuestas", str(len(resultados_df)))
+        render_stat_card("Respuestas válidas", str(len(resultados_df)))
     with cols[2]:
-        render_stat_card("Perfiles", str(len(resultados_df["perfil"].unique())))
-    with cols[3]:
-        render_stat_card("Template", estudio.template)
+        render_stat_card("Grupos", str(resultados_df["perfil"].nunique()))
 
-    # ── 3. Insights por Perfil ───────────────────────────────────
-    render_section_title("Insights por perfil")
+    report = build_executive_report(estudio, resultados_df)
+    render_soft_panel("En pocas palabras", report["conclusion"])
+
+    # ── Reacciones ───────────────────────────────────────────────
+    sentiment_df = _distribution(resultados_df.get("sentiment", pd.Series(dtype=str)), SENTIMENT_LABELS)
+    intent_df = _distribution(resultados_df.get("intent", pd.Series(dtype=str)), INTENT_LABELS)
+    if not sentiment_df.empty or not intent_df.empty:
+        c1, c2 = st.columns(2)
+        with c1:
+            render_section_title("¿Cómo reaccionaron?")
+            if sentiment_df.empty:
+                st.caption("Sin datos.")
+            else:
+                st.bar_chart(sentiment_df, horizontal=True, x_label="", y_label="% de respuestas")
+        with c2:
+            render_section_title("¿Qué harían?")
+            if intent_df.empty:
+                st.caption("Sin datos.")
+            else:
+                st.bar_chart(intent_df, horizontal=True, x_label="", y_label="% de respuestas")
+
+    # ── Motivos ──────────────────────────────────────────────────
+    objeciones = _top_reasons(resultados_df.get("main_objection", pd.Series(dtype=str)))
+    motivos = _top_reasons(resultados_df.get("main_driver", pd.Series(dtype=str)))
+    if objeciones or motivos:
+        c1, c2 = st.columns(2)
+        with c1:
+            render_section_title("Lo que más frena")
+            st.markdown("\n".join(f"- {o}" for o in objeciones) or "Sin datos.")
+        with c2:
+            render_section_title("Lo que más mueve")
+            st.markdown("\n".join(f"- {m}" for m in motivos) or "Sin datos.")
+
+    # ── Por grupo ────────────────────────────────────────────────
+    render_section_title("Por grupo")
     insights_df = insights_by_profile(resultados_df)
     if not insights_df.empty:
-        st.dataframe(insights_df, use_container_width=True, hide_index=True)
-    else:
-        st.caption("Sin datos suficientes para insights por perfil.")
+        st.dataframe(
+            insights_df.rename(columns={"Perfil": "Grupo", "Temas clave": "Palabras más usadas"})
+            .drop(columns=["Largo promedio"], errors="ignore"),
+            use_container_width=True,
+            hide_index=True,
+        )
 
-    # ── 4. Quotes Destacadas ─────────────────────────────────────
-    render_section_title("Quotes destacadas")
+    # ── Citas ────────────────────────────────────────────────────
+    render_section_title("Algunas respuestas")
     quotes_df = representative_responses(resultados_df, limit_per_profile=2)
-    if not quotes_df.empty:
-        for _, row in quotes_df.iterrows():
-            with st.container():
-                st.markdown(f"**{row['Perfil']}** · {row['Persona']}")
-                st.info(row['Respuesta'][:300])
-    else:
-        st.caption("Sin quotes destacadas.")
+    for _, row in quotes_df.iterrows():
+        st.markdown(f"**{row['Perfil']}**")
+        st.info(row["Respuesta"][:300])
 
-    # ── 5. Tabla Completa (al final) ─────────────────────────────
-    render_section_title("Respuestas completas")
-    with st.expander("Ver tabla completa", expanded=False):
-        display_df = resultados_df[["persona_id", "perfil", "repeticion", "sentiment", "respuesta", "quote"]]
+    # ── Análisis con IA ──────────────────────────────────────────
+    render_section_title("Informe con IA")
+    ai_results: Dict[str, str] = st.session_state.setdefault("res_ai_results", {})
+    if estudio.id in ai_results:
+        with st.container(border=True):
+            st.markdown(ai_results[estudio.id])
+            if st.button("Cerrar informe", key=f"res_ai_close_{estudio.id}"):
+                ai_results.pop(estudio.id, None)
+                st.rerun()
+    else:
+        st.caption("Un consultor virtual lee todas las respuestas y escribe un informe. Tarda un poco.")
+        if st.button("Generar informe con IA", key=f"res_ai_analyze_{estudio.id}", use_container_width=True):
+            ai_results[estudio.id] = _run_ai_analysis(estudio, resultados_df)
+            st.rerun()
+
+    # ── Detalle y descargas ──────────────────────────────────────
+    safe_titulo = re.sub(r'[<>\:"/\\|?*]', "_", estudio.titulo or estudio.id)
+    with st.expander("Ver todas las respuestas y descargar"):
+        display_df = all_df[["perfil", "sentiment", "intent", "respuesta", "error"]].rename(columns={
+            "perfil": "Grupo", "sentiment": "Reacción", "intent": "Qué haría",
+            "respuesta": "Respuesta", "error": "Error",
+        })
         st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-    # ── Exportes ─────────────────────────────────────────────────
-    st.divider()
-    render_section_title("Exportes")
-
-    json_bytes = json.dumps([r.to_dict() for r in resultados], ensure_ascii=False, indent=2).encode("utf-8")
-
-    c1, c2 = st.columns(2)
-    with c1:
-        st.download_button(
-            "Descargar JSON",
-            data=json_bytes,
-            file_name=f"{safe_titulo}.json",
-            mime="application/json",
-            use_container_width=True,
-        )
-    with c2:
-        st.download_button(
-            "Descargar Informe MD",
-            data=report["markdown"].encode("utf-8"),
-            file_name=f"{safe_titulo}_informe.md",
-            mime="text/markdown",
-            use_container_width=True,
-        )
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.download_button(
+                "Descargar CSV",
+                data=all_df.to_csv(index=False).encode("utf-8"),
+                file_name=f"{safe_titulo}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+        with c2:
+            st.download_button(
+                "Descargar JSON",
+                data=json.dumps([r.to_dict() for r in resultados], ensure_ascii=False, indent=2).encode("utf-8"),
+                file_name=f"{safe_titulo}.json",
+                mime="application/json",
+                use_container_width=True,
+            )
+        with c3:
+            st.download_button(
+                "Descargar informe (MD)",
+                data=report["markdown"].encode("utf-8"),
+                file_name=f"{safe_titulo}_informe.md",
+                mime="text/markdown",
+                use_container_width=True,
+            )

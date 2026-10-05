@@ -141,6 +141,8 @@ class Estudio:
     contexto: str
     template: str = "exploratory"  # Tipo de estudio
     respuestas_por_persona: int = 1
+    # Total de respuestas pedidas al ejecutar; 0 = desconocido (estudios viejos).
+    respuestas_planeadas: int = 0
     created_at: str = field(default_factory=_now_iso)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -157,6 +159,7 @@ class Estudio:
             contexto=str(data.get("contexto", "")).strip(),
             template=str(data.get("template", "exploratory")).strip(),
             respuestas_por_persona=int(data.get("respuestas_por_persona", 1)),
+            respuestas_planeadas=int(data.get("respuestas_planeadas", 0) or 0),
             created_at=str(data.get("created_at", _now_iso())),
         )
 
@@ -180,6 +183,7 @@ class RespuestaEstudio:
     confidence: str = ""  # high, medium, low
     price_sensitivity: str = ""  # high, medium, low, none
     quote: str = ""  # Cita destacada de la respuesta
+    error: str = ""  # Mensaje del proveedor si la llamada falló; la respuesta no es válida
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -202,6 +206,7 @@ class RespuestaEstudio:
             confidence=str(data.get("confidence", "")).strip(),
             price_sensitivity=str(data.get("price_sensitivity", "")).strip(),
             quote=str(data.get("quote", "")).strip(),
+            error=str(data.get("error", "")).strip(),
         )
 
 
