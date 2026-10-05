@@ -103,3 +103,54 @@ class PerfilSerializationTests(TestCase):
     def test_attributes_round_trip(self):
         perfil = PerfilCliente("A", "a", 100, {"rol": ["x"]})
         self.assertEqual(perfil, PerfilCliente.from_dict(perfil.to_dict()))
+
+
+def arquetipo(edad, rol, precio, **extra):
+    return {"edad_rango": edad, "rol": rol, "sensibilidad_precio": precio, **extra}
+
+
+class ArchetypeTests(TestCase):
+    def payload(self):
+        return {"segmentos": [
+            {"nombre": "Tradicionales", "descripcion": "d", "porcentaje": 60, "arquetipos": [
+                arquetipo("50-60", "Dueño con oficio", "Alta"),
+                arquetipo("40-50", "Dueño heredero", "Media", campo_inventado="x", objetivo=" "),
+                "no es un dict",
+                {},
+            ] + [arquetipo(f"{20 + i}-{30 + i}", f"Rol {i}", "Baja") for i in range(12)]},
+            {"nombre": "Modernos", "descripcion": "m", "porcentaje": 40, "arquetipos": [
+                arquetipo("25-35", "Emprendedor", "Media"),
+                arquetipo("30-40", "Socio joven", "Baja"),
+            ]},
+        ]}
+
+    def test_parse_cleans_limits_and_derives_attributes(self):
+        tradicionales, modernos = parse_segments(self.payload())
+        self.assertEqual(10, len(tradicionales.arquetipos))
+        self.assertEqual(arquetipo("40-50", "Dueño heredero", "Media"), tradicionales.arquetipos[1])
+        self.assertEqual(["Media", "Baja"], modernos.atributos["sensibilidad_precio"])
+        self.assertEqual(["Emprendedor", "Socio joven"], modernos.atributos["rol"])
+
+    def test_expansion_copies_whole_archetypes_and_uses_all_before_repeating(self):
+        perfiles = parse_segments(self.payload())
+        universo = Universo(id="u_arq", nombre="T", descripcion="b", cantidad_personas=40, perfiles=perfiles)
+        personas = expand_universe(universo)
+        by_profile = {p.nombre: p.arquetipos for p in perfiles}
+        for persona in personas:
+            combo = {"edad_rango": persona.edad_rango, "rol": persona.rol, "sensibilidad_precio": persona.sensibilidad_precio}
+            self.assertIn(combo, by_profile[persona.perfil])
+        tradicionales = [p.rol for p in personas if p.perfil == "Tradicionales"]
+        self.assertEqual(24, len(tradicionales))
+        # 24 personas con 10 arquetipos: todos aparecen al menos 2 veces y ninguno más de 3.
+        counts = [tradicionales.count(a["rol"]) for a in by_profile["Tradicionales"]]
+        self.assertTrue(all(2 <= c <= 3 for c in counts), counts)
+
+    def test_archetype_expansion_is_deterministic(self):
+        perfiles = parse_segments(self.payload())
+        universo = Universo(id="u_arq", nombre="T", descripcion="b", cantidad_personas=30, perfiles=perfiles)
+        first = [(p.perfil, p.rol) for p in expand_universe(universo)]
+        self.assertEqual(first, [(p.perfil, p.rol) for p in expand_universe(universo)])
+
+    def test_archetypes_round_trip(self):
+        perfil = parse_segments(self.payload())[1]
+        self.assertEqual(perfil, PerfilCliente.from_dict(perfil.to_dict()))

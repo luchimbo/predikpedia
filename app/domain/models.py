@@ -19,12 +19,22 @@ class PerfilCliente:
     # Valores posibles por campo de PersonaSintetica (edad_rango, rol, ...).
     # Vacío = la expansión usa los valores genéricos.
     atributos: Dict[str, List[str]] = field(default_factory=dict)
+    # Personas completas y coherentes (campo -> valor) escritas por la IA.
+    # Si hay, la expansión copia un arquetipo entero en vez de sortear cada
+    # atributo por separado.
+    arquetipos: List[Dict[str, str]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "PerfilCliente":
+        raw_arquetipos = data.get("arquetipos") or []
+        arquetipos = [
+            {str(k): str(v).strip() for k, v in item.items() if str(v).strip()}
+            for item in raw_arquetipos
+            if isinstance(item, dict)
+        ] if isinstance(raw_arquetipos, list) else []
         raw_atributos = data.get("atributos") or {}
         atributos = {
             str(key): [str(v).strip() for v in values if str(v).strip()]
@@ -36,6 +46,7 @@ class PerfilCliente:
             descripcion=str(data.get("descripcion", "")).strip(),
             porcentaje=float(data.get("porcentaje", 0)),
             atributos={k: v for k, v in atributos.items() if v},
+            arquetipos=[a for a in arquetipos if a],
         )
 
 
@@ -64,6 +75,8 @@ class PersonaSintetica:
     canal_preferido: str = ""
     contexto_operativo: str = ""
     notas: str = ""
+    # Columnas de la fila real de la que sale la persona (audiencias desde datos reales).
+    datos_reales: Dict[str, str] = field(default_factory=dict)
 
     created_at: str = field(default_factory=_now_iso)
 
@@ -92,6 +105,9 @@ class PersonaSintetica:
             canal_preferido=str(data.get("canal_preferido", "")).strip(),
             contexto_operativo=str(data.get("contexto_operativo", "")).strip(),
             notas=str(data.get("notas", "")).strip(),
+            datos_reales={
+                str(k): str(v) for k, v in (data.get("datos_reales") or {}).items()
+            } if isinstance(data.get("datos_reales"), dict) else {},
             created_at=str(data.get("created_at", _now_iso())),
         )
 
@@ -104,6 +120,9 @@ class Universo:
     cantidad_personas: int
     prompt_perfil: str = ""
     perfiles: List[PerfilCliente] = field(default_factory=list)
+    # "descripcion" (la IA diseña los grupos) o "datos_reales" (filas de un archivo).
+    origen: str = "descripcion"
+    fuente: str = ""
     created_at: str = field(default_factory=_now_iso)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -114,6 +133,8 @@ class Universo:
             "cantidad_personas": self.cantidad_personas,
             "prompt_perfil": self.prompt_perfil,
             "perfiles": [p.to_dict() for p in self.perfiles],
+            "origen": self.origen,
+            "fuente": self.fuente,
             "created_at": self.created_at,
         }
 
@@ -127,6 +148,8 @@ class Universo:
             cantidad_personas=int(data.get("cantidad_personas", 0)),
             prompt_perfil=str(data.get("prompt_perfil", "")).strip(),
             perfiles=perfiles,
+            origen=str(data.get("origen", "descripcion")).strip() or "descripcion",
+            fuente=str(data.get("fuente", "")).strip(),
             created_at=str(data.get("created_at", _now_iso())),
         )
 
@@ -141,6 +164,8 @@ class Estudio:
     contexto: str
     template: str = "exploratory"  # Tipo de estudio
     respuestas_por_persona: int = 1
+    # Total de respuestas pedidas al ejecutar; 0 = desconocido (estudios viejos).
+    respuestas_planeadas: int = 0
     created_at: str = field(default_factory=_now_iso)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -157,6 +182,7 @@ class Estudio:
             contexto=str(data.get("contexto", "")).strip(),
             template=str(data.get("template", "exploratory")).strip(),
             respuestas_por_persona=int(data.get("respuestas_por_persona", 1)),
+            respuestas_planeadas=int(data.get("respuestas_planeadas", 0) or 0),
             created_at=str(data.get("created_at", _now_iso())),
         )
 
@@ -180,6 +206,7 @@ class RespuestaEstudio:
     confidence: str = ""  # high, medium, low
     price_sensitivity: str = ""  # high, medium, low, none
     quote: str = ""  # Cita destacada de la respuesta
+    error: str = ""  # Mensaje del proveedor si la llamada falló; la respuesta no es válida
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -202,6 +229,7 @@ class RespuestaEstudio:
             confidence=str(data.get("confidence", "")).strip(),
             price_sensitivity=str(data.get("price_sensitivity", "")).strip(),
             quote=str(data.get("quote", "")).strip(),
+            error=str(data.get("error", "")).strip(),
         )
 
 

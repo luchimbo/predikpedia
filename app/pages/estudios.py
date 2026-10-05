@@ -1,28 +1,36 @@
 """
-app/pages/estudios.py — Página de Estudios con wizard de 4 pasos.
+app/pages/estudios.py — Página de Estudios.
 
-Paso 1: Elegir audiencia
-Paso 2: Configurar pregunta y contexto
-Paso 3: Configurar muestra
-Paso 4: Revisar costo y ejecutar
+Una sola pantalla: elegir audiencia, escribir la pregunta y ejecutar.
+El tamaño de la muestra vive en "Opciones avanzadas" con defaults razonables.
+Las respuestas se guardan a medida que llegan, así que cortar la ejecución
+(recargar, cambiar de página) no pierde lo ya respondido.
 """
 
 from datetime import datetime
-from typing import List
+from typing import Any, Dict, List, Optional
 
-import pandas as pd
 import streamlit as st
 
-from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stepper, render_stat_card
-from app.domain.models import Estudio, RespuestaEstudio
+from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel
+from app.domain.models import Estudio, RespuestaEstudio, Universo
 from app.services.llm_service import LLMError, LLMService
-from app.state import get, go_to_page, set
+from app.services.universe_service import build_expansion_snapshot, expand_universe
+from app.state import go_to_page
 from app.storage.repository import (
     find_latest_expansion,
     list_universes,
+    save_expansion,
     save_study,
     save_study_results,
 )
+
+DEFAULT_SAMPLE = 50
+SAVE_EVERY = 10
+PERSONA_FIELDS = [
+    "edad_rango", "rol", "industria", "objetivo", "principal_pain", "motivador",
+    "objecion_base", "sensibilidad_precio", "comportamiento", "canal_preferido",
+]
 
 
 def _new_study_id(universe_id: str) -> str:
@@ -60,353 +68,218 @@ def _build_user_prompt(pregunta: str) -> str:
     )
 
 
-def _render_step_1_select_audience():
-    """Paso 1: Seleccionar audiencia."""
-    render_section_title("1. Elegí una audiencia")
-    render_soft_panel(
-        "Audiencia del estudio",
-        "Seleccioná una audiencia que ya haya sido expandida en personas sintéticas.",
+def _persona_profile(persona: Dict[str, Any]) -> str:
+    perfil = str(persona.get("perfil", "")).strip() or "General"
+    perfil_desc = f"Grupo: {perfil}. {persona.get('perfil_descripcion', '')}"
+    detalles = [f"{campo}: {persona[campo]}" for campo in PERSONA_FIELDS if persona.get(campo)]
+    # Audiencias desde datos reales: los datos de la fila van tal cual.
+    datos_reales = persona.get("datos_reales") or {}
+    detalles += [f"{columna}: {valor}" for columna, valor in datos_reales.items() if str(valor).strip()]
+    return f"{perfil_desc}. " + "; ".join(detalles) if detalles else perfil_desc
+
+
+def _personas_for(universo: Universo) -> List[Dict[str, Any]]:
+    """Personas de la audiencia. Si nunca se generaron, se generan ahora.
+
+    La generación es determinista a partir de los segmentos guardados y no
+    llama al modelo, así que no hace falta mandar al usuario a otra pantalla.
+    """
+    expansion = find_latest_expansion(universo.id)
+    if expansion:
+        return list(expansion["payload"].personas)
+    if universo.origen == "datos_reales":
+        # Regenerar con expand_universe inventaría atributos que no están en los datos.
+        raise ValueError("No se encontraron las personas de esta audiencia. Volvé a cargar el archivo en Audiencias.")
+    personas = expand_universe(universo)
+    snapshot = build_expansion_snapshot(universo, personas)
+    save_expansion(universo.id, snapshot)
+    return list(snapshot.personas)
+
+
+def _parse_result(result: Any) -> Dict[str, str]:
+    if isinstance(result, dict):
+        texto = str(result.get("response_text", result.get("_raw", ""))).strip()
+        campos = {
+            k: str(result.get(k, "")).strip()
+            for k in ["sentiment", "intent", "main_objection", "main_driver", "confidence", "price_sensitivity", "quote"]
+        }
+    else:
+        texto = str(result).strip()
+        campos = {k: "" for k in ["sentiment", "intent", "main_objection", "main_driver", "confidence", "price_sensitivity", "quote"]}
+    campos["respuesta"] = texto
+    campos["quote"] = campos["quote"] or texto[:120]
+    return campos
+
+
+def _execute_study(estudio: Estudio, personas: List[Dict[str, Any]], engine: LLMService) -> List[RespuestaEstudio]:
+    """Ejecuta el estudio guardando las respuestas cada pocas llamadas."""
+    save_study(estudio)
+    respuestas: List[RespuestaEstudio] = []
+    total = len(personas) * estudio.respuestas_por_persona
+
+    progress = st.progress(0.0)
+    status_text = st.empty()
+    st.caption("Podés salir de esta pantalla cuando quieras: lo que ya se respondió queda guardado.")
+
+    user_prompt = _build_user_prompt(estudio.pregunta)
+    for idx, persona in enumerate(personas, start=1):
+        persona_id = str(persona.get("persona_id", "")) or f"P_{idx:06d}"
+        perfil = str(persona.get("perfil", "")).strip() or "General"
+        system_prompt = _build_system_prompt(_persona_profile(persona), estudio.contexto)
+
+        for rep in range(1, estudio.respuestas_por_persona + 1):
+            base = dict(
+                estudio_id=estudio.id,
+                persona_id=persona_id,
+                perfil=perfil,
+                repeticion=rep,
+                pregunta=estudio.pregunta,
+                contexto=estudio.contexto,
+            )
+            try:
+                result = engine.generate(
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    agent_id=persona_id,
+                    expect_json=True,
+                )
+                campos = _parse_result(result)
+                respuestas.append(RespuestaEstudio(**base, sintesis=campos["respuesta"][:180], **campos))
+            except LLMError as exc:
+                respuestas.append(RespuestaEstudio(**base, respuesta="", sintesis="Error del modelo", error=str(exc)))
+
+            progress.progress(len(respuestas) / total)
+            status_text.markdown(f"Respuestas: **{len(respuestas)} de {total}** · último perfil: {perfil}")
+            if len(respuestas) % SAVE_EVERY == 0:
+                save_study_results(estudio.id, respuestas)
+
+    save_study_results(estudio.id, respuestas)
+    return respuestas
+
+
+def render_estudios_page():
+    """Renderiza la página de estudios en una sola pantalla."""
+    render_page_intro(
+        "Estudios",
+        "Hacé una pregunta a tu audiencia",
+        "Elegí a quién preguntarle, escribí la pregunta y ejecutá. Al terminar vas directo a los resultados.",
     )
 
     universos = list_universes()
     if not universos:
         render_empty_state(
-            "No hay audiencias disponibles",
-            "Primero creá y expandí una audiencia en la página de Audiencias.",
-            cta_text="Ir a Audiencias",
+            "Todavía no tenés audiencias",
+            "Primero creá una audiencia: es la gente a la que le vas a preguntar.",
+            cta_text="Crear audiencia",
             cta_key="est_go_audiences",
             on_cta=lambda: go_to_page("Audiencias"),
         )
         return
 
-    options = {f"{u.nombre} ({u.cantidad_personas} personas)": u for u in universos}
-    selected = st.selectbox("Audiencia", list(options.keys()), key="est_audience_select")
-    universo = options[selected]
+    engine = LLMService(api_key=st.session_state.get("saved_api_key") or None)
+    llm_ready = engine.is_ready()
 
-    # Verificar que tenga expansión
-    expansion = find_latest_expansion(universo.id)
-    if not expansion:
-        st.warning("Esta audiencia no tiene una expansión reciente. Expandila primero en Audiencias.")
-        if st.button("Ir a Audiencias", key="est_expand_first", use_container_width=True):
-            go_to_page("Audiencias")
-        return
-
-    st.session_state["est_selected_universe"] = universo
-    st.session_state["est_expansion"] = expansion
-
-    personas = expansion["payload"].personas
-    st.success(f"Audiencia seleccionada: {universo.nombre} ({len(personas)} personas expandidas)")
-
-    if st.button("Continuar →", key="est_step1_next", use_container_width=True):
-        set("wiz_study_step", 2)
-        st.rerun()
-
-
-def _render_step_2_configure():
-    """Paso 2: Configurar pregunta y contexto."""
-    render_section_title("2. Configurá el estudio")
-
-    titulo = st.text_input(
-        "Título del estudio",
-        key="est_titulo",
-        placeholder="Ej: Propuesta de valor Q3 2024",
+    # ── 1. Audiencia ─────────────────────────────────────────────
+    render_section_title("1. ¿A quién le preguntás?")
+    ids = [u.id for u in universos]
+    preselect: Optional[str] = st.session_state.pop("est_preselect_universe", None)
+    if preselect in ids:
+        st.session_state["est_audience_id"] = preselect
+    if st.session_state.get("est_audience_id") not in ids:
+        st.session_state["est_audience_id"] = ids[0]
+    by_id = {u.id: u for u in universos}
+    universe_id = st.selectbox(
+        "Audiencia",
+        ids,
+        key="est_audience_id",
+        format_func=lambda uid: f"{by_id[uid].nombre} · {by_id[uid].cantidad_personas} personas",
     )
+    universo = by_id[universe_id]
+    if universo.descripcion:
+        st.caption(universo.descripcion[:240] + ("..." if len(universo.descripcion) > 240 else ""))
+
+    # ── 2. Pregunta ──────────────────────────────────────────────
+    render_section_title("2. ¿Qué querés saber?")
     pregunta = st.text_area(
-        "Pregunta principal del estudio",
+        "Pregunta",
         key="est_pregunta",
         height=100,
-        placeholder="Ej: ¿Qué propuesta de valor te haría elegir esta opción sobre las alternativas?",
+        placeholder="Ej: ¿Qué te haría cambiar de proveedor de harina? ¿Qué te frena hoy?",
     )
     contexto = st.text_area(
-        "Contexto del estudio (opcional)",
+        "Contexto (opcional)",
         key="est_contexto",
         height=80,
-        placeholder="Ej: Mercado competitivo, inflación alta y alta desconfianza en promesas de marca.",
+        placeholder="Datos que cambian la decisión: precio, alternativas que ya usan, situación del mercado...",
+        help="Lo que más ayuda son datos concretos (precios, alternativas, coyuntura), no adjetivos.",
+    )
+    titulo = st.text_input(
+        "Nombre del estudio (opcional)",
+        key="est_titulo",
+        placeholder="Si lo dejás vacío se usa la pregunta",
     )
 
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("← Volver", key="est_step2_back", use_container_width=True):
-            set("wiz_study_step", 1)
-            st.rerun()
-    with c2:
-        if st.button("Continuar →", key="est_step2_next", use_container_width=True):
-            if not titulo.strip():
-                st.error("El título del estudio es obligatorio.")
-            elif not pregunta.strip():
-                st.error("La pregunta del estudio es obligatoria.")
-            else:
-                st.session_state["est_titulo_saved"] = titulo.strip()
-                st.session_state["est_pregunta_saved"] = pregunta.strip()
-                st.session_state["est_contexto_saved"] = contexto.strip()
-                set("wiz_study_step", 3)
-                st.rerun()
-
-
-def _render_step_3_sample():
-    """Paso 3: Configurar muestra."""
-    render_section_title("3. Configurá la muestra")
-
-    expansion = st.session_state.get("est_expansion")
-    if not expansion:
-        st.error("No hay expansión seleccionada.")
-        return
-
-    personas = expansion["payload"].personas
-    total = len(personas)
-
-    c1, c2, c3 = st.columns(3)
-    with c1:
+    with st.expander("Opciones avanzadas"):
+        max_personas = max(1, universo.cantidad_personas)
         limite = st.number_input(
-            "Personas a procesar",
+            "Cantidad de personas que responden",
             min_value=1,
-            max_value=total,
-            value=min(120, total),
-            key="est_limite",
+            max_value=max_personas,
+            value=min(DEFAULT_SAMPLE, max_personas),
+            key=f"est_limite_{universo.id}",
+            help="Más personas = resultados más estables, pero tarda más.",
         )
-    with c2:
         rpp = st.number_input(
             "Respuestas por persona",
             min_value=1,
             max_value=5,
             value=1,
             key="est_rpp",
+            help="Pedirle más de una respuesta a cada persona sirve para ver cuánto varía.",
         )
-    with c3:
-        render_stat_card("Personas disponibles", str(total))
 
-    total_respuestas = int(limite) * int(rpp)
+    total = int(limite) * int(rpp)
+
+    # ── 3. Ejecutar ──────────────────────────────────────────────
+    render_section_title("3. Ejecutar")
     render_soft_panel(
         "Resumen",
-        f"**Personas a procesar:** {int(limite)}\n\n"
-        f"**Respuestas esperadas:** {total_respuestas}\n\n"
-        f"**Audiencia:** {st.session_state.get('est_selected_universe', {}).nombre if st.session_state.get('est_selected_universe') else 'N/A'}",
+        f"Le vas a preguntar a **{int(limite)} personas** de **{universo.nombre}** "
+        f"({total} respuestas en total).",
     )
+    if not llm_ready:
+        st.warning("No hay un modelo de IA disponible. Revisá la configuración antes de ejecutar.")
 
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("← Volver", key="est_step3_back", use_container_width=True):
-            set("wiz_study_step", 2)
-            st.rerun()
-    with c2:
-        if st.button("Continuar →", key="est_step3_next", use_container_width=True):
-            st.session_state["est_limite_saved"] = int(limite)
-            st.session_state["est_rpp_saved"] = int(rpp)
-            set("wiz_study_step", 4)
-            st.rerun()
-
-
-def _render_step_4_execute():
-    """Paso 4: Revisar costo y ejecutar."""
-    render_section_title("4. Ejecutar estudio")
-
-    universo = st.session_state.get("est_selected_universe")
-    expansion = st.session_state.get("est_expansion")
-    titulo = st.session_state.get("est_titulo_saved", "")
-    pregunta = st.session_state.get("est_pregunta_saved", "")
-    contexto = st.session_state.get("est_contexto_saved", "")
-    limite = int(st.session_state.get("est_limite_saved", 120))
-    rpp = int(st.session_state.get("est_rpp_saved", 1))
-
-    if not universo or not expansion:
-        st.error("Faltan datos del estudio.")
-        return
-
-    personas = expansion["payload"].personas[:limite]
-    total_tareas = len(personas) * rpp
-
-    # Estimar costo (Bypassed)
-    credits_engine = st.session_state.get("credits_engine")
-
-    # Verificar API
-    saved_key = st.session_state.get("saved_api_key", "")
-    if not LLMService().is_ready():
-        st.error("No hay API key configurada. Configurala en Configuración.")
-        return
-
-    st.markdown("**¿Ejecutar el estudio ahora?**")
-    
-    # Confirmación prominente de la muestra
-    confirm_cols = st.columns(3)
-    with confirm_cols[0]:
-        render_stat_card("Personas a procesar", str(len(personas)))
-    with confirm_cols[1]:
-        render_stat_card("Respuestas por persona", str(rpp))
-    with confirm_cols[2]:
-        render_stat_card("Total de tareas", str(total_tareas))
-    
-    st.info(f"Se procesarán **{len(personas)}** personas de la audiencia '{universo.nombre}'.")
-
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("← Volver", key="est_step4_back", use_container_width=True):
-            set("wiz_study_step", 3)
-            st.rerun()
-    with c2:
-        if st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary"):
-            st.session_state["est_stop_flag"] = False
-            _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_engine)
-
-
-def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_engine):
-    """Ejecuta el estudio con progreso."""
-    try:
-        engine = LLMService()
-        if not engine.is_ready():
-            st.error("API key inválida o no configurada.")
+    if st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary", disabled=not llm_ready):
+        if not pregunta.strip():
+            st.error("Escribí la pregunta del estudio.")
+            return
+        try:
+            personas = _personas_for(universo)[: int(limite)]
+        except Exception as exc:
+            st.error(f"No se pudieron preparar las personas de la audiencia: {exc}")
             return
 
         estudio = Estudio(
             id=_new_study_id(universo.id),
             universo_id=universo.id,
             universo_nombre=universo.nombre,
-            titulo=titulo.strip(),
+            titulo=titulo.strip() or pregunta.strip()[:80],
             pregunta=pregunta.strip(),
             contexto=contexto.strip(),
             template="custom",
-            respuestas_por_persona=rpp,
+            respuestas_por_persona=int(rpp),
+            respuestas_planeadas=len(personas) * int(rpp),
         )
-        save_study(estudio)
+        try:
+            respuestas = _execute_study(estudio, personas, engine)
+        except Exception as exc:
+            st.error(f"Error al ejecutar el estudio: {exc}")
+            return
 
-        respuestas: List[RespuestaEstudio] = []
-        total = len(personas) * rpp
-        completadas = 0
-
-        progress = st.progress(0.0)
-        status_text = st.empty()
-        stop_container = st.empty()
-
-        for idx, persona_dict in enumerate(personas):
-            # Botón de detener (se recrea cada iteración para que sea clickeable)
-            if stop_container.button("⛔ Detener estudio", key=f"est_stop_{idx}", use_container_width=True):
-                st.session_state["est_stop_flag"] = True
-                st.warning("Deteniendo estudio...")
-
-            if st.session_state.get("est_stop_flag", False):
-                status_text.error("Estudio detenido por el usuario")
-                break
-
-            if isinstance(persona_dict, dict):
-                persona = persona_dict
-            else:
-                persona = persona_dict.to_dict() if hasattr(persona_dict, 'to_dict') else {}
-
-            persona_id = str(persona.get("persona_id", "")) or f"P_{len(respuestas) + 1:06d}"
-            perfil = str(persona.get("perfil", "")).strip() or "General"
-
-            # Construir perfil para system prompt
-            perfil_desc = f"Perfil: {perfil}. {persona.get('perfil_descripcion', '')}"
-            detalles = []
-            for campo in ["edad_rango", "rol", "industria", "objetivo", "principal_pain", "motivador", "objecion_base", "sensibilidad_precio", "comportamiento", "canal_preferido"]:
-                val = persona.get(campo, "")
-                if val:
-                    detalles.append(f"{campo}: {val}")
-            perfil_completo = f"{perfil_desc}. " + "; ".join(detalles) if detalles else perfil_desc
-
-            system_prompt = _build_system_prompt(perfil_completo, contexto)
-
-            for rep in range(1, rpp + 1):
-                user_prompt = _build_user_prompt(pregunta)
-
-                try:
-                    result = engine.generate(
-                        system_prompt=system_prompt,
-                        user_prompt=user_prompt,
-                        agent_id=persona_id,
-                        expect_json=True,
-                    )
-
-                    # Parsear resultado
-                    if isinstance(result, dict):
-                        respuesta_txt = str(result.get("response_text", result.get("_raw", ""))).strip()
-                        sentiment = str(result.get("sentiment", "")).strip()
-                        intent = str(result.get("intent", "")).strip()
-                        main_objection = str(result.get("main_objection", "")).strip()
-                        main_driver = str(result.get("main_driver", "")).strip()
-                        confidence = str(result.get("confidence", "")).strip()
-                        price_sensitivity = str(result.get("price_sensitivity", "")).strip()
-                        quote = str(result.get("quote", "")).strip()
-                    else:
-                        respuesta_txt = str(result).strip()
-                        sentiment = intent = main_objection = main_driver = confidence = price_sensitivity = quote = ""
-
-                    respuestas.append(RespuestaEstudio(
-                        estudio_id=estudio.id,
-                        persona_id=persona_id,
-                        perfil=perfil,
-                        repeticion=rep,
-                        pregunta=pregunta,
-                        contexto=contexto,
-                        respuesta=respuesta_txt,
-                        sintesis=respuesta_txt[:180],
-                        sentiment=sentiment,
-                        intent=intent,
-                        main_objection=main_objection,
-                        main_driver=main_driver,
-                        confidence=confidence,
-                        price_sensitivity=price_sensitivity,
-                        quote=quote or respuesta_txt[:120],
-                    ))
-
-                    completadas += 1
-                    progress.progress(completadas / total)
-
-                except LLMError as e:
-                    st.warning(f"Error en {persona_id}: {e}")
-                    respuestas.append(RespuestaEstudio(
-                        estudio_id=estudio.id,
-                        persona_id=persona_id,
-                        perfil=perfil,
-                        repeticion=rep,
-                        pregunta=pregunta,
-                        contexto=contexto,
-                        respuesta=f"[ERROR: {e}]",
-                        sintesis="Error de LLM",
-                    ))
-                    completadas += 1
-
-            status_text.markdown(f"🤖 **Procesando perfiles:** `{completadas}` de `{total}` respuestas (`{persona_id}` · `{perfil}`)...")
-
-        # Guardar resultados (parciales o completos)
-        save_study_results(estudio.id, respuestas)
-
-        detenido = st.session_state.get("est_stop_flag", False)
-        if detenido:
-            status_text.error(f"Estudio detenido. Se guardaron {len(respuestas)} respuestas de {total} planificadas.")
-        else:
-            status_text.success(f"¡Estudio completado! Se procesaron {len(personas)} personas.")
-
-        set("tmp_last_study", estudio)
-        set("tmp_study_results", [r.to_dict() for r in respuestas])
-
+        credits_engine = st.session_state.get("credits_engine")
         if credits_engine:
             credits_engine.consume("Simulación de estudio (1 agente)", quantity=len(respuestas))
 
-        if st.button("Ver resultados →", key="est_go_results", use_container_width=True):
-            go_to_page("Resultados")
-
-    except Exception as exc:
-        st.error(f"Error al ejecutar el estudio: {exc}")
-
-
-def render_estudios_page():
-    """Renderiza la página completa de estudios con wizard de 4 pasos."""
-    render_page_intro(
-        "Estudios",
-        "Configurá y ejecutá estudios",
-        "Elegí una audiencia, escribí tu pregunta y corré simulaciones con seguimiento de progreso.",
-    )
-
-    step = get("wiz_study_step", 1)
-    step_labels = ["Audiencia", "Pregunta", "Muestra", "Ejecutar"]
-    render_stepper(step_labels, step, key_prefix="est_wiz")
-    st.divider()
-
-    if step == 1:
-        _render_step_1_select_audience()
-    elif step == 2:
-        _render_step_2_configure()
-    elif step == 3:
-        _render_step_3_sample()
-    elif step == 4:
-        _render_step_4_execute()
+        st.session_state["res_study_id"] = estudio.id
+        go_to_page("Resultados")
