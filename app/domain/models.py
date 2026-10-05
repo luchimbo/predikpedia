@@ -64,6 +64,8 @@ class PersonaSintetica:
     canal_preferido: str = ""
     contexto_operativo: str = ""
     notas: str = ""
+    # Columnas de la fila real de la que sale la persona (audiencias desde datos reales).
+    datos_reales: Dict[str, str] = field(default_factory=dict)
 
     created_at: str = field(default_factory=_now_iso)
 
@@ -92,6 +94,9 @@ class PersonaSintetica:
             canal_preferido=str(data.get("canal_preferido", "")).strip(),
             contexto_operativo=str(data.get("contexto_operativo", "")).strip(),
             notas=str(data.get("notas", "")).strip(),
+            datos_reales={
+                str(k): str(v) for k, v in (data.get("datos_reales") or {}).items()
+            } if isinstance(data.get("datos_reales"), dict) else {},
             created_at=str(data.get("created_at", _now_iso())),
         )
 
@@ -104,6 +109,9 @@ class Universo:
     cantidad_personas: int
     prompt_perfil: str = ""
     perfiles: List[PerfilCliente] = field(default_factory=list)
+    # "descripcion" (la IA diseña los grupos) o "datos_reales" (filas de un archivo).
+    origen: str = "descripcion"
+    fuente: str = ""
     created_at: str = field(default_factory=_now_iso)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -114,6 +122,8 @@ class Universo:
             "cantidad_personas": self.cantidad_personas,
             "prompt_perfil": self.prompt_perfil,
             "perfiles": [p.to_dict() for p in self.perfiles],
+            "origen": self.origen,
+            "fuente": self.fuente,
             "created_at": self.created_at,
         }
 
@@ -127,6 +137,8 @@ class Universo:
             cantidad_personas=int(data.get("cantidad_personas", 0)),
             prompt_perfil=str(data.get("prompt_perfil", "")).strip(),
             perfiles=perfiles,
+            origen=str(data.get("origen", "descripcion")).strip() or "descripcion",
+            fuente=str(data.get("fuente", "")).strip(),
             created_at=str(data.get("created_at", _now_iso())),
         )
 

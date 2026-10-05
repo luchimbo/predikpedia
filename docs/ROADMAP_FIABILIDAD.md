@@ -1,6 +1,6 @@
 # Predikpedia: fiabilidad, aprendizaje con datos reales y contexto (roadmap)
 
-> Etapa 0 (arreglar lo roto y simplificar el flujo) ya está implementada. Fases 1 a 3 pendientes.
+> Etapa 0 (arreglar lo roto y simplificar el flujo) ya está implementada. De la Fase 2, la población desde datos reales también (Audiencias → "Subir datos reales"). Fase 1 y el resto de las Fases 2 y 3 siguen pendientes.
 
 ## Context
 

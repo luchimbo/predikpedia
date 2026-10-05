@@ -15,7 +15,7 @@
 - `navigation.py`: sidebar y `NAV_OPTIONS` (Inicio, Audiencias, Estudios, Resultados, Configuracion).
 - `pages/`: una pagina por pantalla. `audiencias.py` (wizard 2 pasos: describir y revisar), `estudios.py` (una sola pantalla; guarda respuestas incrementalmente y navega a Resultados), `resultados.py` (resumen del estudio arriba; preguntas, comparacion y descargas como vistas secundarias). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
 - `domain/`: `models.py` (`Universo`, `PerfilCliente`, etc.), `templates.py` (templates de estudio), `coherence_engine.py`.
-- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `universe_service.py` (expansion de personas), `analysis_service.py`, `credits_service.py`.
+- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `universe_service.py` (expansion de personas desde descripcion), `population_import_service.py` (audiencias desde un CSV/Excel real: una persona por fila, con mapeo de columnas y descarte de datos personales), `analysis_service.py`, `credits_service.py`.
 - `storage/repository.py`: CRUD de universos, estudios y resultados. Usa Supabase si hay `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL`; si no, filesystem local.
 
 ## Comandos verificados
@@ -31,7 +31,7 @@
 ## Dependencias y entorno
 
 - El repo trae `.venv/` y `node_modules/` locales; excluilos de busquedas y ediciones porque contaminan `glob`/`grep`.
-- `requirements.txt` no incluye `pandas`, aunque el codigo lo importa.
+- `requirements.txt` incluye `pandas` y `openpyxl` (lectura de Excel en Audiencias).
 - El proveedor LLM ya no se elige por prefijo de clave. Lo decide `app/services/llm_routing.py` en cada request:
   - `LLM_PROVIDER=schedule` (default): Ollama local entre `LLM_LOCAL_START` (inclusive) y `LLM_LOCAL_END` (exclusiva) en `LLM_SCHEDULE_TIMEZONE`; OpenRouter fuera de esa franja.
   - `LLM_PROVIDER=local` u `openrouter` fuerzan el proveedor.

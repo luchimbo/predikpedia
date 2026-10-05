@@ -16,6 +16,16 @@ from app.components.shell import render_empty_state, render_page_intro, render_s
 from app.domain.models import PerfilCliente, Universo
 from app.services.audience_design_service import AudienceDesignError, design_segments
 from app.services.llm_service import LLMService
+from app.services.population_import_service import (
+    ROLE_ATTRIBUTE,
+    ROLE_GROUP,
+    ROLES,
+    PopulationImportError,
+    build_population,
+    is_personal_column,
+    read_table,
+    suggest_mapping,
+)
 from app.services.universe_service import build_expansion_snapshot, expand_universe
 from app.state import get, go_to_page, set
 from app.storage.repository import list_universes, save_expansion, save_universe
@@ -101,22 +111,55 @@ def _generate(nombre: str, descripcion: str, cantidad: int, usar_ia: bool):
     st.session_state["aud_temp_snapshot"] = build_expansion_snapshot(universo, personas)
 
 
+MODE_DESCRIBE = "Describir con palabras"
+MODE_UPLOAD = "Subir datos reales"
+
+
+def _restore_form(defaults):
+    """Restaura widgets desde aud_form.
+
+    Streamlit borra el estado de los widgets que no se dibujan, así que al
+    volver desde "Revisar" se restauran desde la copia guardada en aud_form.
+    """
+    form = st.session_state.get("aud_form", {})
+    for key, default in defaults:
+        if key not in st.session_state:
+            st.session_state[key] = form.get(key, default)
+
+
+def _finish_step_1(form: dict):
+    st.session_state["aud_form"] = form
+    st.session_state.pop("aud_just_saved", None)
+    set("wiz_audience_step", 2)
+    st.rerun()
+
+
 def _render_step_1_define():
-    """Paso 1: describir la audiencia y generar las personas."""
+    """Paso 1: describir la audiencia (o subir datos reales) y generar las personas."""
     _render_just_saved()
 
-    render_section_title("1. Describí a quién querés preguntarle")
+    render_section_title("1. ¿A quién querés preguntarle?")
+    _restore_form([("aud_modo", MODE_DESCRIBE), ("aud_nombre", ""), ("aud_descripcion", ""), ("aud_cantidad", 100)])
+    modo = st.radio(
+        "¿Cómo querés armar la audiencia?",
+        [MODE_DESCRIBE, MODE_UPLOAD],
+        key="aud_modo",
+        horizontal=True,
+        help=(
+            "Con palabras, la IA arma los grupos a partir de tu descripción. "
+            "Con datos reales, cada persona es una fila de tu archivo (encuesta, clientes, padrón)."
+        ),
+    )
+    if modo == MODE_UPLOAD:
+        _render_upload_form()
+    else:
+        _render_describe_form()
 
+
+def _render_describe_form():
     if st.button("Cargar un ejemplo", key="aud_load_example"):
         st.session_state.update(EXAMPLE)
         st.rerun()
-
-    # Streamlit borra el estado de los widgets que no se dibujan, así que al
-    # volver desde "Revisar" se restauran desde la copia guardada en aud_form.
-    form = st.session_state.get("aud_form", {})
-    for key, default in (("aud_nombre", ""), ("aud_descripcion", ""), ("aud_cantidad", 100)):
-        if key not in st.session_state:
-            st.session_state[key] = form.get(key, default)
 
     nombre = st.text_input(
         "Nombre de la audiencia",
@@ -157,12 +200,117 @@ def _render_step_1_define():
         except Exception as exc:
             st.error(f"No se pudieron generar las personas: {exc}")
             return
-        st.session_state["aud_form"] = {
-            "aud_nombre": nombre, "aud_descripcion": descripcion, "aud_cantidad": int(cantidad),
+        _finish_step_1({
+            "aud_modo": MODE_DESCRIBE, "aud_nombre": nombre,
+            "aud_descripcion": descripcion, "aud_cantidad": int(cantidad),
+        })
+
+
+def _render_upload_form():
+    st.caption(
+        "Subí un CSV o Excel con **una fila por persona real** (por ejemplo una encuesta o tu base de clientes). "
+        "Cada persona de la audiencia va a ser una de esas filas, con todos sus datos juntos."
+    )
+    uploaded = st.file_uploader("Archivo", type=["csv", "xlsx", "xls"], key="aud_file")
+    is_new_file = False
+    if uploaded is not None:
+        previous = st.session_state.get("aud_upload") or {}
+        is_new_file = previous.get("name") != uploaded.name or previous.get("data") != uploaded.getvalue()
+        st.session_state["aud_upload"] = {"name": uploaded.name, "data": uploaded.getvalue()}
+    upload = st.session_state.get("aud_upload")
+    if not upload:
+        return
+
+    try:
+        df = read_table(upload["data"], upload["name"])
+    except PopulationImportError as exc:
+        st.error(str(exc))
+        return
+    if is_new_file:
+        # Por defecto, una persona por fila real.
+        st.session_state["aud_cantidad"] = len(df)
+    st.markdown(f"**{upload['name']}** · {len(df)} filas · {len(df.columns)} columnas")
+
+    # ── Para qué sirve cada columna ──────────────────────────────
+    form = st.session_state.get("aud_form", {})
+    saved_mapping = form.get("mapping") if form.get("archivo") == upload["name"] else None
+    mapping = saved_mapping or suggest_mapping(df)
+    editor_df = pd.DataFrame([
+        {
+            "Columna": col,
+            "Ejemplo": next((str(v) for v in df[col].dropna().head(3) if str(v).strip()), ""),
+            "Uso": mapping.get(col, ROLE_ATTRIBUTE),
         }
-        st.session_state.pop("aud_just_saved", None)
-        set("wiz_audience_step", 2)
-        st.rerun()
+        for col in df.columns
+    ])
+    st.markdown("**¿Para qué sirve cada columna?**")
+    edited = st.data_editor(
+        editor_df,
+        key=f"aud_mapping_{upload['name']}_{len(upload['data'])}",
+        hide_index=True,
+        use_container_width=True,
+        disabled=["Columna", "Ejemplo"],
+        column_config={
+            "Uso": st.column_config.SelectboxColumn("Uso", options=ROLES, required=True),
+        },
+    )
+    mapping = dict(zip(edited["Columna"], edited["Uso"]))
+    st.caption(
+        "**atributo**: dato de la persona que ve la IA · **grupo**: segmento para leer resultados · "
+        "**peso**: ponderador de la encuesta · **respuesta real**: lo que la gente contestó a tu pregunta; "
+        "no se le muestra a la IA (si la ve, copia la respuesta) · **ignorar**: no se usa."
+    )
+    personales = [c for c, rol in mapping.items() if rol in (ROLE_ATTRIBUTE, ROLE_GROUP) and is_personal_column(c)]
+    if personales:
+        st.warning(
+            "Estas columnas parecen datos personales y se van a mandar a la IA: "
+            + ", ".join(personales) + ". Marcalas como **ignorar** salvo que estés seguro."
+        )
+
+    nombre = st.text_input(
+        "Nombre de la audiencia",
+        key="aud_nombre",
+        placeholder="Ej: Clientes encuesta 2025",
+    )
+    descripcion = st.text_area(
+        "Contexto de esta población (opcional)",
+        key="aud_descripcion",
+        height=100,
+        placeholder="Ej: Encuesta a clientes de panaderías de GBA, marzo 2025.",
+    )
+    cantidad = st.number_input(
+        "¿Cuántas personas?",
+        min_value=1,
+        max_value=100000,
+        step=10,
+        key="aud_cantidad",
+        help=(
+            f"El archivo tiene {len(df)} filas. Si pedís más personas que filas, algunas filas se repiten "
+            "(cada una responde por su cuenta). Si hay columna de peso, las filas salen según su peso."
+        ),
+    )
+
+    if st.button("Generar personas", key="aud_generate_real", use_container_width=True, type="primary"):
+        try:
+            universo, personas = build_population(
+                df,
+                mapping,
+                int(cantidad),
+                universe_id=_new_universe_id(nombre or upload["name"]),
+                nombre=nombre or upload["name"].rsplit(".", 1)[0],
+                descripcion=descripcion,
+                fuente=f"{upload['name']} ({len(df)} filas)",
+            )
+        except PopulationImportError as exc:
+            st.error(str(exc))
+            return
+        st.session_state["aud_temp_universo"] = universo
+        st.session_state["aud_temp_personas"] = personas
+        st.session_state["aud_temp_snapshot"] = build_expansion_snapshot(universo, personas)
+        _finish_step_1({
+            "aud_modo": MODE_UPLOAD, "aud_nombre": nombre, "aud_descripcion": descripcion,
+            "aud_cantidad": int(cantidad), "archivo": upload["name"], "mapping": mapping,
+        })
 
 
 def _render_step_2_review():
@@ -198,6 +346,40 @@ def _render_step_2_review():
     ])
     st.dataframe(df_resumen, use_container_width=True, hide_index=True)
 
+    if universo.origen == "datos_reales":
+        st.caption(f"Cada persona es una fila real de **{universo.fuente}**.")
+        with st.expander("Ver algunas personas de ejemplo"):
+            st.dataframe(
+                pd.DataFrame([{"Grupo": p.perfil, **p.datos_reales} for p in personas[:25]]),
+                use_container_width=True,
+                hide_index=True,
+            )
+    else:
+        _render_generated_examples(personas)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        back_label = "← Cambiar archivo o columnas" if universo.origen == "datos_reales" else "← Cambiar la descripción"
+        if st.button(back_label, key="aud_step2_back", use_container_width=True):
+            set("wiz_audience_step", 1)
+            st.rerun()
+    with c2:
+        if st.button("Guardar audiencia", key="aud_save", use_container_width=True, type="primary"):
+            try:
+                save_universe(universo)
+                save_expansion(universo.id, snapshot)
+            except Exception as exc:
+                st.error(f"Error al guardar: {exc}")
+                return
+            for key in ["aud_temp_universo", "aud_temp_personas", "aud_temp_snapshot",
+                        "aud_form", "aud_upload", "aud_modo", "aud_nombre", "aud_descripcion", "aud_cantidad"]:
+                st.session_state.pop(key, None)
+            st.session_state["aud_just_saved"] = {"id": universo.id, "nombre": universo.nombre}
+            set("wiz_audience_step", 1)
+            st.rerun()
+
+
+def _render_generated_examples(personas):
     with st.expander("Ver algunas personas de ejemplo"):
         df_personas = pd.DataFrame([
             {
@@ -215,33 +397,13 @@ def _render_step_2_review():
         ])
         st.dataframe(df_personas, use_container_width=True, hide_index=True)
 
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("← Cambiar la descripción", key="aud_step2_back", use_container_width=True):
-            set("wiz_audience_step", 1)
-            st.rerun()
-    with c2:
-        if st.button("Guardar audiencia", key="aud_save", use_container_width=True, type="primary"):
-            try:
-                save_universe(universo)
-                save_expansion(universo.id, snapshot)
-            except Exception as exc:
-                st.error(f"Error al guardar: {exc}")
-                return
-            for key in ["aud_temp_universo", "aud_temp_personas", "aud_temp_snapshot",
-                        "aud_form", "aud_nombre", "aud_descripcion", "aud_cantidad"]:
-                st.session_state.pop(key, None)
-            st.session_state["aud_just_saved"] = {"id": universo.id, "nombre": universo.nombre}
-            set("wiz_audience_step", 1)
-            st.rerun()
-
 
 def render_audiencias_page():
     """Renderiza la página completa de audiencias con wizard de 2 pasos."""
     render_page_intro(
         "Audiencias",
         "¿A quién querés preguntarle?",
-        "Describí a tu público con tus palabras. La app arma los grupos y las personas que después van a responder tus preguntas.",
+        "Describí a tu público con tus palabras o subí datos reales (encuesta, clientes). Esas personas van a responder tus preguntas.",
     )
 
     step = get("wiz_audience_step", 1)
@@ -271,6 +433,7 @@ def render_audiencias_page():
                 "Nombre": u.nombre,
                 "Descripción": u.descripcion[:80] + "..." if len(u.descripcion) > 80 else u.descripcion,
                 "Personas": u.cantidad_personas,
+                "Origen": u.fuente if u.origen == "datos_reales" else "Descripción",
                 "Creado": u.created_at,
             }
             for u in universos

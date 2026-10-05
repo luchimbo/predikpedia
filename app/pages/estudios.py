@@ -70,8 +70,11 @@ def _build_user_prompt(pregunta: str) -> str:
 
 def _persona_profile(persona: Dict[str, Any]) -> str:
     perfil = str(persona.get("perfil", "")).strip() or "General"
-    perfil_desc = f"Perfil: {perfil}. {persona.get('perfil_descripcion', '')}"
+    perfil_desc = f"Grupo: {perfil}. {persona.get('perfil_descripcion', '')}"
     detalles = [f"{campo}: {persona[campo]}" for campo in PERSONA_FIELDS if persona.get(campo)]
+    # Audiencias desde datos reales: los datos de la fila van tal cual.
+    datos_reales = persona.get("datos_reales") or {}
+    detalles += [f"{columna}: {valor}" for columna, valor in datos_reales.items() if str(valor).strip()]
     return f"{perfil_desc}. " + "; ".join(detalles) if detalles else perfil_desc
 
 
@@ -84,6 +87,9 @@ def _personas_for(universo: Universo) -> List[Dict[str, Any]]:
     expansion = find_latest_expansion(universo.id)
     if expansion:
         return list(expansion["payload"].personas)
+    if universo.origen == "datos_reales":
+        # Regenerar con expand_universe inventaría atributos que no están en los datos.
+        raise ValueError("No se encontraron las personas de esta audiencia. Volvé a cargar el archivo en Audiencias.")
     personas = expand_universe(universo)
     snapshot = build_expansion_snapshot(universo, personas)
     save_expansion(universo.id, snapshot)
