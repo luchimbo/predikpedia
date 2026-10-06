@@ -30,3 +30,7 @@ Thumbs.db
 *.log
 
 .vercel
+
+# Salidas sueltas de depuración
+last_prompt.txt
+token_usage_log.json
