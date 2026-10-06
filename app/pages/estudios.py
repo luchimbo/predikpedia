@@ -9,13 +9,16 @@ Paso 4: Revisar costo y ejecutar
 
 from datetime import datetime
 from typing import List
+from uuid import uuid4
 
 import pandas as pd
 import streamlit as st
 
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stepper, render_stat_card
+from app.components.evidence import session_store
 from app.domain.models import Estudio, RespuestaEstudio
 from app.services.llm_service import LLMError, LLMService
+from app.services.simulation_service import planned_tasks, run_simulation, social_graph
 from app.state import get, go_to_page, set
 from app.storage.repository import (
     find_latest_expansion,
@@ -27,37 +30,7 @@ from app.storage.repository import (
 
 def _new_study_id(universe_id: str) -> str:
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    return f"study_{universe_id}_{ts}"
-
-
-def _build_system_prompt(persona_profile: str, context: str = "") -> str:
-    """Construye el system prompt genérico para una persona sintética."""
-    ctx = f"\n\nContexto del estudio: {context}" if context else ""
-    return (
-        f"Actuá como la persona descrita en tu perfil. Respondé la pregunta "
-        f"de forma abierta y honesta, en primera persona. Sé específico sobre tu contexto, "
-        f"necesidades y limitaciones. No uses lenguaje corporativo genérico.{ctx}\n\n"
-        f"Perfil: {persona_profile}\n\n"
-        f"Respondé en primera persona, con realismo y consistencia con tu perfil. "
-        f"Sé concreto y accionable en máximo 150 palabras."
-    )
-
-
-def _build_user_prompt(pregunta: str) -> str:
-    """Construye el user prompt pidiendo salida estructurada."""
-    return (
-        f"{pregunta}\n\n"
-        f"Respondé en formato JSON con exactamente estos campos:\n"
-        f'{{\n'
-        f'  "response_text": "Tu respuesta completa en primera persona",\n'
-        f'  "sentiment": "positive | negative | neutral | mixed",\n'
-        f'  "intent": "explorar | comprar | rechazar | comparar",\n'
-        f'  "main_objection": "Principal objeción o fricción",\n'
-        f'  "main_driver": "Principal motivador",\n'
-        f'  "confidence": "high | medium | low",\n'
-        f'  "quote": "Cita destacada de tu respuesta"\n'
-        f'}}'
-    )
+    return f"study_{universe_id}_{ts}_{uuid4().hex[:8]}"
 
 
 def _render_step_1_select_audience():
@@ -95,6 +68,9 @@ def _render_step_1_select_audience():
     st.session_state["est_expansion"] = expansion
 
     personas = expansion["payload"].personas
+    if any(p.get("evidence_refs") for p in personas) and not st.session_state.get("private_storage_available", False):
+        st.warning("Esta audiencia usa evidencia privada. Abrí la app en el equipo de origen con scripts/start_private_app.ps1 para continuar.")
+        return
     st.success(f"Audiencia seleccionada: {universo.nombre} ({len(personas)} personas expandidas)")
 
     if st.button("Continuar →", key="est_step1_next", use_container_width=True):
@@ -105,6 +81,27 @@ def _render_step_1_select_audience():
 def _render_step_2_configure():
     """Paso 2: Configurar pregunta y contexto."""
     render_section_title("2. Configurá el estudio")
+    modes = {"survey": "Encuesta independiente", "interview": "Entrevista con seguimiento", "social": "Interacción entre agentes"}
+    saved_mode = st.session_state.get("est_mode_saved", "survey")
+    mode = st.selectbox("Modalidad", list(modes), format_func=modes.get,
+                        index=list(modes).index(saved_mode), key="est_mode")
+    memory_enabled, follow_up, social_seed = False, [], 42
+    if mode == "survey":
+        st.caption("Cada repetición responde sin ver respuestas anteriores ni opiniones de otros agentes.")
+    else:
+        private_available = bool(st.session_state.get("private_storage_available", False))
+        memory_enabled = st.checkbox("Conservar y recuperar historial de este participante", value=private_available,
+                                     disabled=not private_available, key="est_memory",
+                                     help="El historial queda separado por usuario, audiencia e identidad. Las respuestas simuladas no se convierten en hechos de origen.")
+        if mode == "interview":
+            raw_follow_up = st.text_area("Preguntas de seguimiento (una por línea, hasta cuatro)",
+                                         value="\n".join(st.session_state.get("est_follow_up_saved", [])), key="est_follow_up")
+            follow_up = [line.strip() for line in raw_follow_up.splitlines() if line.strip()]
+            st.caption("Las preguntas del mismo estudio comparten historial, aunque no lo conserves para futuras entrevistas.")
+        else:
+            st.caption("Primero responde cada agente por separado. Después ve las opiniones iniciales de hasta dos vecinos y vuelve a responder.")
+            with st.expander("Configuración de la red"):
+                social_seed = int(st.number_input("Semilla para asignar vecinos", min_value=0, value=42, step=1, key="est_social_seed"))
 
     titulo = st.text_input(
         "Título del estudio",
@@ -135,10 +132,16 @@ def _render_step_2_configure():
                 st.error("El título del estudio es obligatorio.")
             elif not pregunta.strip():
                 st.error("La pregunta del estudio es obligatoria.")
+            elif len(follow_up) > 4:
+                st.error("La entrevista admite hasta cuatro preguntas de seguimiento. Reducí la lista para continuar.")
             else:
                 st.session_state["est_titulo_saved"] = titulo.strip()
                 st.session_state["est_pregunta_saved"] = pregunta.strip()
                 st.session_state["est_contexto_saved"] = contexto.strip()
+                st.session_state["est_mode_saved"] = mode
+                st.session_state["est_memory_saved"] = memory_enabled
+                st.session_state["est_follow_up_saved"] = follow_up
+                st.session_state["est_social_seed_saved"] = social_seed
                 set("wiz_study_step", 3)
                 st.rerun()
 
@@ -154,6 +157,7 @@ def _render_step_3_sample():
 
     personas = expansion["payload"].personas
     total = len(personas)
+    mode = st.session_state.get("est_mode_saved", "survey")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -165,17 +169,20 @@ def _render_step_3_sample():
             key="est_limite",
         )
     with c2:
-        rpp = st.number_input(
-            "Respuestas por persona",
-            min_value=1,
-            max_value=5,
-            value=1,
-            key="est_rpp",
-        )
+        if mode == "survey":
+            rpp = st.number_input("Respuestas por persona", min_value=1, max_value=5, value=1, key="est_rpp")
+        else:
+            rpp = 1
+            if mode == "interview":
+                render_stat_card("Preguntas por persona", str(1 + len(st.session_state.get("est_follow_up_saved", []))))
+            else:
+                render_stat_card("Rondas", "2")
     with c3:
         render_stat_card("Personas disponibles", str(total))
 
-    total_respuestas = int(limite) * int(rpp)
+    rpp = int(rpp) if mode == "survey" else 1
+    per_person = 2 if mode == "social" else (1 + len(st.session_state.get("est_follow_up_saved", [])) if mode == "interview" else rpp)
+    total_respuestas = int(limite) * per_person
     render_soft_panel(
         "Resumen",
         f"**Personas a procesar:** {int(limite)}\n\n"
@@ -190,6 +197,9 @@ def _render_step_3_sample():
             st.rerun()
     with c2:
         if st.button("Continuar →", key="est_step3_next", use_container_width=True):
+            if mode == "social" and int(limite) < 2:
+                st.error("La interacción necesita al menos dos personas. Aumentá la muestra para continuar.")
+                return
             st.session_state["est_limite_saved"] = int(limite)
             st.session_state["est_rpp_saved"] = int(rpp)
             set("wiz_study_step", 4)
@@ -213,7 +223,9 @@ def _render_step_4_execute():
         return
 
     personas = expansion["payload"].personas[:limite]
-    total_tareas = len(personas) * rpp
+    mode = st.session_state.get("est_mode_saved", "survey")
+    per_person = 2 if mode == "social" else (1 + len(st.session_state.get("est_follow_up_saved", [])) if mode == "interview" else rpp)
+    total_tareas = len(personas) * per_person
 
     # Estimar costo (Bypassed)
     credits_engine = st.session_state.get("credits_engine")
@@ -231,7 +243,7 @@ def _render_step_4_execute():
     with confirm_cols[0]:
         render_stat_card("Personas a procesar", str(len(personas)))
     with confirm_cols[1]:
-        render_stat_card("Respuestas por persona", str(rpp))
+        render_stat_card("Tareas por persona", str(per_person))
     with confirm_cols[2]:
         render_stat_card("Total de tareas", str(total_tareas))
     
@@ -249,144 +261,64 @@ def _render_step_4_execute():
 
 
 def _execute_study(universo, personas, titulo, pregunta, contexto, rpp, credits_engine):
-    """Ejecuta el estudio con progreso."""
+    """Run through the UI-free simulation service, checkpointing every response."""
     try:
         engine = LLMService()
         if not engine.is_ready():
-            st.error("API key inválida o no configurada.")
+            st.error("No hay un modelo disponible. Revisá Configuración y volvé a ejecutar.")
             return
-
+        personas = [p if isinstance(p, dict) else p.to_dict() for p in personas]
+        mode = st.session_state.get("est_mode_saved", "survey")
         estudio = Estudio(
-            id=_new_study_id(universo.id),
-            universo_id=universo.id,
-            universo_nombre=universo.nombre,
-            titulo=titulo.strip(),
-            pregunta=pregunta.strip(),
-            contexto=contexto.strip(),
-            template="custom",
-            respuestas_por_persona=rpp,
+            id=_new_study_id(universo.id), universo_id=universo.id,
+            universo_nombre=universo.nombre, titulo=titulo.strip(),
+            pregunta=pregunta.strip(), contexto=contexto.strip(), template="custom",
+            respuestas_por_persona=rpp if mode == "survey" else 1,
+            simulation_version="realism_v2", mode=mode,
+            memory_enabled=st.session_state.get("est_memory_saved", False) if mode != "survey" else False,
+            follow_up_questions=st.session_state.get("est_follow_up_saved", []) if mode == "interview" else [],
+            social_seed=st.session_state.get("est_social_seed_saved", 42),
         )
+        if mode == "social":
+            estudio.interaction_graph = social_graph([p["persona_id"] for p in personas], estudio.social_seed)
         save_study(estudio)
-
         respuestas: List[RespuestaEstudio] = []
-        total = len(personas) * rpp
-        completadas = 0
+        progress, status_text, stop_container = st.progress(0.0), st.empty(), st.empty()
+        stop_checks = 0
 
-        progress = st.progress(0.0)
-        status_text = st.empty()
-        stop_container = st.empty()
-
-        for idx, persona_dict in enumerate(personas):
-            # Botón de detener (se recrea cada iteración para que sea clickeable)
-            if stop_container.button("⛔ Detener estudio", key=f"est_stop_{idx}", use_container_width=True):
+        def should_stop():
+            nonlocal stop_checks
+            def mark_stopped():
                 st.session_state["est_stop_flag"] = True
-                st.warning("Deteniendo estudio...")
+            if stop_container.button("Detener estudio", key=f"est_stop_{stop_checks}", use_container_width=True, on_click=mark_stopped):
+                st.session_state["est_stop_flag"] = True
+            stop_checks += 1
+            return st.session_state.get("est_stop_flag", False)
 
-            if st.session_state.get("est_stop_flag", False):
-                status_text.error("Estudio detenido por el usuario")
-                break
+        def on_response(answer, done, total):
+            respuestas.append(answer)
+            save_study_results(estudio.id, respuestas)
+            progress.progress(done / total)
+            status_text.markdown(f"Procesando: **{done} de {total}** tareas · {answer.phase}")
+            if answer.respuesta.startswith("[ERROR:"):
+                st.warning(f"{answer.persona_id}: no se obtuvo una respuesta válida.")
 
-            if isinstance(persona_dict, dict):
-                persona = persona_dict
-            else:
-                persona = persona_dict.to_dict() if hasattr(persona_dict, 'to_dict') else {}
-
-            persona_id = str(persona.get("persona_id", "")) or f"P_{len(respuestas) + 1:06d}"
-            perfil = str(persona.get("perfil", "")).strip() or "General"
-
-            # Construir perfil para system prompt
-            perfil_desc = f"Perfil: {perfil}. {persona.get('perfil_descripcion', '')}"
-            detalles = []
-            for campo in ["edad_rango", "rol", "industria", "objetivo", "principal_pain", "motivador", "objecion_base", "sensibilidad_precio", "comportamiento", "canal_preferido"]:
-                val = persona.get(campo, "")
-                if val:
-                    detalles.append(f"{campo}: {val}")
-            perfil_completo = f"{perfil_desc}. " + "; ".join(detalles) if detalles else perfil_desc
-
-            system_prompt = _build_system_prompt(perfil_completo, contexto)
-
-            for rep in range(1, rpp + 1):
-                user_prompt = _build_user_prompt(pregunta)
-
-                try:
-                    result = engine.generate(
-                        system_prompt=system_prompt,
-                        user_prompt=user_prompt,
-                        agent_id=persona_id,
-                        expect_json=True,
-                    )
-
-                    # Parsear resultado
-                    if isinstance(result, dict):
-                        respuesta_txt = str(result.get("response_text", result.get("_raw", ""))).strip()
-                        sentiment = str(result.get("sentiment", "")).strip()
-                        intent = str(result.get("intent", "")).strip()
-                        main_objection = str(result.get("main_objection", "")).strip()
-                        main_driver = str(result.get("main_driver", "")).strip()
-                        confidence = str(result.get("confidence", "")).strip()
-                        price_sensitivity = str(result.get("price_sensitivity", "")).strip()
-                        quote = str(result.get("quote", "")).strip()
-                    else:
-                        respuesta_txt = str(result).strip()
-                        sentiment = intent = main_objection = main_driver = confidence = price_sensitivity = quote = ""
-
-                    respuestas.append(RespuestaEstudio(
-                        estudio_id=estudio.id,
-                        persona_id=persona_id,
-                        perfil=perfil,
-                        repeticion=rep,
-                        pregunta=pregunta,
-                        contexto=contexto,
-                        respuesta=respuesta_txt,
-                        sintesis=respuesta_txt[:180],
-                        sentiment=sentiment,
-                        intent=intent,
-                        main_objection=main_objection,
-                        main_driver=main_driver,
-                        confidence=confidence,
-                        price_sensitivity=price_sensitivity,
-                        quote=quote or respuesta_txt[:120],
-                    ))
-
-                    completadas += 1
-                    progress.progress(completadas / total)
-
-                except LLMError as e:
-                    st.warning(f"Error en {persona_id}: {e}")
-                    respuestas.append(RespuestaEstudio(
-                        estudio_id=estudio.id,
-                        persona_id=persona_id,
-                        perfil=perfil,
-                        repeticion=rep,
-                        pregunta=pregunta,
-                        contexto=contexto,
-                        respuesta=f"[ERROR: {e}]",
-                        sintesis="Error de LLM",
-                    ))
-                    completadas += 1
-
-            status_text.markdown(f"🤖 **Procesando perfiles:** `{completadas}` de `{total}` respuestas (`{persona_id}` · `{perfil}`)...")
-
-        # Guardar resultados (parciales o completos)
-        save_study_results(estudio.id, respuestas)
-
-        detenido = st.session_state.get("est_stop_flag", False)
-        if detenido:
-            status_text.error(f"Estudio detenido. Se guardaron {len(respuestas)} respuestas de {total} planificadas.")
+        run_simulation(estudio, personas, engine, store=session_store(),
+                       on_response=on_response, should_stop=should_stop)
+        total = planned_tasks(estudio, len(personas))
+        if st.session_state.get("est_stop_flag", False):
+            status_text.warning(f"Estudio detenido. Se guardaron {len(respuestas)} de {total} tareas.")
         else:
-            status_text.success(f"¡Estudio completado! Se procesaron {len(personas)} personas.")
-
+            valid = sum(not r.respuesta.startswith("[ERROR:") for r in respuestas)
+            status_text.success(f"Estudio terminado: {valid} respuestas válidas de {total} tareas.")
         set("tmp_last_study", estudio)
         set("tmp_study_results", [r.to_dict() for r in respuestas])
-
         if credits_engine:
             credits_engine.consume("Simulación de estudio (1 agente)", quantity=len(respuestas))
-
         if st.button("Ver resultados →", key="est_go_results", use_container_width=True):
             go_to_page("Resultados")
-
     except Exception as exc:
-        st.error(f"Error al ejecutar el estudio: {exc}")
+        st.error(f"No se pudo completar el estudio: {exc}")
 
 
 def render_estudios_page():

@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List
 
 from app.domain.models import ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
+from app.storage.evidence_repository import identity_for
 
 
 def expand_universe(universo: Universo) -> List[PersonaSintetica]:
@@ -36,9 +37,19 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
     personas: List[PersonaSintetica] = []
     rng = random.Random(universo.id)  # Seed determinista
 
-    # Distribuir personas por perfil
-    for perfil in perfiles:
-        count = max(1, round(universo.cantidad_personas * (perfil.porcentaje / total_pct)))
+    # En los diseños nuevos, mayores restos conserva el total exacto sin
+    # sobreasignar segmentos pequeños ni dar personas a segmentos con peso 0.
+    counts = None
+    if any(p.arquetipos for p in perfiles):
+        cuotas = [universo.cantidad_personas * p.porcentaje / total_pct for p in perfiles]
+        counts = [int(cuota) for cuota in cuotas]
+        orden = sorted(range(len(perfiles)), key=lambda i: cuotas[i] - counts[i], reverse=True)
+        for i in orden[:universo.cantidad_personas - sum(counts)]:
+            counts[i] += 1
+
+    # Distribuir personas por perfil (camino anterior sin cambios para legacy).
+    for index, perfil in enumerate(perfiles):
+        count = counts[index] if counts is not None else max(1, round(universo.cantidad_personas * (perfil.porcentaje / total_pct)))
         for _ in range(count):
             persona = _build_persona(universo, perfil, rng)
             personas.append(persona)
@@ -56,6 +67,7 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
     for i, persona in enumerate(personas, start=1):
         persona.persona_numero = i
         persona.persona_id = f"P_{i:06d}"
+        persona.identity_id = identity_for(universo.id, persona.to_dict())
 
     return personas
 
@@ -103,6 +115,20 @@ OPTIONAL_FIELDS = ["objetivo"]
 
 def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random) -> PersonaSintetica:
     """Construye una persona sintética sorteando atributos del perfil (o genéricos)."""
+    if perfil.arquetipos:
+        # Un solo sorteo conserva los vínculos entre atributos. El camino legacy
+        # mantiene su secuencia de RNG para reproducir las audiencias anteriores.
+        arquetipo = rng.choices(perfil.arquetipos, weights=[a.peso for a in perfil.arquetipos], k=1)[0]
+        return PersonaSintetica(
+            persona_id="", persona_numero=0,
+            universo_id=universo.id, universo_nombre=universo.nombre,
+            perfil=perfil.nombre, perfil_descripcion=perfil.descripcion,
+            perfil_porcentaje_objetivo=perfil.porcentaje,
+            contexto_operativo=universo.descripcion or "",
+            arquetipo=arquetipo.nombre,
+            **{campo: arquetipo.atributos.get(campo, "")
+               for campo in SAMPLED_FIELDS + OPTIONAL_FIELDS + ["notas"]},
+        )
     atributos = perfil.atributos or {}
     valores: Dict[str, str] = {}
     for campo in SAMPLED_FIELDS:

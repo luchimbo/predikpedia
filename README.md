@@ -36,10 +36,10 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
 
 1. Definís un **universo**: nombre, descripción (quiénes son, contexto) y cantidad de personas.
 2. Al tocar *Generar personas sintéticas* pasan dos cosas:
-   - **Diseño de segmentos (1 llamada al LLM):** `audience_design_service.design_segments()` lee la descripción y devuelve de 1 a 4 segmentos (`PerfilCliente`) con su porcentaje, una descripción y, para cada atributo (rango de edad, rol, rubro, objetivo, dolor principal, motivador, objeción, sensibilidad al precio, comportamiento y canal), los valores que tienen sentido para ese segmento. Si el brief menciona segmentos o proporciones, los respeta.
-   - **Expansión (sin LLM):** `universe_service.expand_universe()` reparte las personas según los porcentajes y a cada una le sortea atributos **dentro de los valores de su segmento**. El costo no depende de la cantidad de personas.
+   - **Diseño de segmentos (1 llamada al LLM):** `audience_design_service.design_segments()` pide de 1 a 4 segmentos (`PerfilCliente`, acepta hasta 6), con porcentaje, descripción y de 1 a 4 **arquetipos**. Cada arquetipo contiene una combinación completa de atributos coherentes. Pide respetar proporciones explícitas, marcar datos desconocidos como `No especificado` y distinguir los supuestos de lo dicho en el brief.
+   - **Expansión (sin LLM):** `universe_service.expand_universe()` reparte las personas según los porcentajes y elige un arquetipo completo por persona según su peso relativo, sin mezclar sus atributos. En diseños nuevos distribuye los segmentos por mayores restos para conservar la muestra exacta. El costo no depende de la cantidad de personas.
    - Si no hay modelo configurado, la llamada falla o se desmarca la opción de IA, se usa un perfil `General` con atributos genéricos (edad, rol, industria, etc. de listas fijas) y la descripción solo queda como contexto.
-   - El azar usa como semilla el `id` del universo, así que expandir el mismo universo siempre da las mismas personas. Las audiencias guardadas antes de este cambio (sin `atributos`) siguen generando exactamente las mismas personas.
+   - El azar usa como semilla el `id` del universo. Las audiencias guardadas sin `arquetipos` conservan el algoritmo anterior y su secuencia de azar, con listas propias de atributos o los genéricos. Los snapshots existentes no se regeneran automáticamente.
 3. Al guardar, se persisten el universo (`universos/<id>.json`) y un snapshot de la expansión con todas las personas (`universos/expansiones/<id>_<fecha>.json`).
 
 ### 2. Estudio (una pregunta a cada persona)
@@ -47,13 +47,13 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
 1. Elegís una audiencia ya expandida, escribís título, **pregunta** y **contexto** (qué se les muestra o en qué situación están).
 2. Configurás la muestra: cuántas personas usar (por defecto hasta 120) y cuántas respuestas por persona (1 a 5).
 3. Al ejecutar, `estudios.py` recorre las personas **de a una, en secuencia**. Para cada una:
-   - Arma un *system prompt* que le pide al modelo actuar como esa persona (perfil + atributos + contexto del estudio), responder en primera persona, con realismo y en un máximo de 150 palabras.
-   - Envía la pregunta pidiendo un **JSON** con `response_text`, `sentiment`, `intent`, `main_objection`, `main_driver`, `confidence` y `quote`.
-   - Guarda cada respuesta como `RespuestaEstudio`. Si el modelo falla, la registra como `[ERROR: ...]` y sigue con la siguiente.
+   - `study_response_service` arma un *system prompt* con perfil, notas y contexto operativo. Integra una política de coherencia que permite dudas o desinterés, pide no inventar presupuestos ni experiencias y distingue el estímulo de hechos demostrados.
+   - Pide un **JSON** con `response_text`, `sentiment`, `intent`, `main_objection`, `main_driver`, `confidence`, `price_sensitivity` y `quote`. Intención admite `no_se`, `no_aplica` e `indiferente`; driver y objeción pueden quedar vacíos.
+   - Valida campos y categorías antes de guardar `RespuestaEstudio`. Si el modelo falla o el contrato es inválido, registra `[ERROR: ...]` y sigue. Las citas ajenas a la respuesta se sustituyen por un fragmento del texto.
 4. Hay un botón para **detener** el estudio a mitad de camino; las respuestas obtenidas hasta ese momento se guardan igual.
-5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`).
+5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`). Nuevas corridas registran `simulation_version="realism_v1"`; anteriores cargan como `legacy`. Las repeticiones siguen siendo respuestas independientes, sin memoria conversacional.
 
-### 3. Resultados (análisis sin LLM)
+### 3. Resultados (reglas y análisis opcional con IA)
 
 `analysis_service.build_executive_report()` analiza las respuestas **con reglas y conteo de palabras**, sin llamar al modelo:
 
@@ -64,6 +64,8 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
 - **Próximas preguntas sugeridas** y un informe en Markdown descargable.
 
 La página de Resultados también permite comparar estudios, ver todas las respuestas de una misma pregunta a lo largo de varias corridas y descargar los datos.
+
+El botón **Analizar respuestas con IA** agrega un análisis opcional por chunks y una consolidación. Distingue opiniones sintéticas de conducta observada y conserva dudas e indiferencia. Los análisis y KPIs de la pestaña principal excluyen respuestas vacías y errores operativos; CSV, JSON y tabla completa mantienen los datos originales.
 
 ### Llamadas al LLM
 
@@ -81,7 +83,13 @@ Todas pasan por `LLMService.generate()`:
 ### Código preparado pero sin usar
 
 - `domain/templates.py` define templates de estudio (Exploratorio, Concept Test, Messaging Test, Pricing Test, Feature Feedback) con prompts y salidas propias, pero el wizard de Estudios usa un prompt genérico (`template="custom"`).
-- `domain/coherence_engine.py` tiene filtros de "sinceridad" y escepticismo (para evitar que el modelo sea complaciente), pero ningún flujo lo invoca todavía.
+- Los filtros legacy de `domain/coherence_engine.py` con umbrales psicométricos siguen sin usarse. Estudios utiliza su nueva política general de coherencia, sin porcentajes ni correlaciones no calibrados.
+
+## Realismo y relación con MiroFish
+
+La dirección de desarrollo toma como referencia perfiles, memoria, evidencia de origen e interacción de agentes de [MiroFish](https://github.com/666ghj/MiroFish). Predikpedia hoy ejecuta estudios de respuestas individuales; no ejecuta OASIS ni una red social de agentes.
+
+Esta primera etapa conserva atributos vinculados y permite incertidumbre. No demuestra precisión predictiva: una población grande reutiliza un número limitado de arquetipos y requiere contraste con datos reales. Alcance, pruebas y siguientes etapas: [docs/REALISMO.md](docs/REALISMO.md).
 
 ## Estructura del código
 

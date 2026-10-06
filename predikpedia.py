@@ -47,6 +47,11 @@ else:
 set_active_user(_user_id)
 
 init_state()
+st.session_state["data_owner_id"] = _user_id
+st.session_state["private_storage_available"] = (
+    not bool(_params.get("uid", ""))
+    and st.get_option("server.address") in {"127.0.0.1", "localhost", "::1"}
+)
 
 saved_key = st.session_state.get("saved_api_key", "")
 if not saved_key:

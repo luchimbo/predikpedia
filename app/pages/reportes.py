@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_stat_card
-from app.services.analysis_service import build_executive_report
+from app.services.analysis_service import build_executive_report, primary_responses
 from app.state import get, go_to_page
 from app.storage.repository import list_studies, load_study_results
 
@@ -89,8 +89,9 @@ def render_reportes_tab():
             res_b = load_study_results(est_b.id)
 
             if res_a and res_b:
-                df_a = pd.DataFrame([r.to_dict() for r in res_a])
-                df_b = pd.DataFrame([r.to_dict() for r in res_b])
+                df_a = primary_responses(est_a, pd.DataFrame([r.to_dict() for r in res_a]))
+                df_b = primary_responses(est_b, pd.DataFrame([r.to_dict() for r in res_b]))
+                st.caption("Se compara la ronda inicial de interacción o la primera pregunta de entrevista. Los CSV conservan todas las rondas.")
 
                 report_a = build_executive_report(est_a, df_a)
                 report_b = build_executive_report(est_b, df_b)

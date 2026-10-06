@@ -14,10 +14,12 @@ import pandas as pd
 import streamlit as st
 
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stepper, render_stat_card
+from app.components.evidence import render_evidence_panel, session_store
 from app.domain.models import PerfilCliente, Universo
 from app.services.audience_design_service import AudienceDesignError, design_segments
 from app.services.llm_service import LLMService
 from app.services.universe_service import build_expansion_snapshot, expand_universe
+from app.services.evidence_service import build_source_population
 from app.state import get, go_to_page, set
 from app.storage.repository import find_latest_expansion, list_universes, save_expansion, save_universe
 
@@ -46,6 +48,27 @@ def _validate_universe(nombre: str, descripcion: str, cantidad: int) -> List[str
 def _render_step_1_define():
     """Paso 1: Definir audiencia."""
     render_section_title("1. Definí tu audiencia")
+    store = session_store()
+    if store:
+        render_evidence_panel(store)
+    sources = [s for s in store.list_sources() if s["kind"] == "support_csv"] if store else []
+    origins = ["Descripción", "Chats de soporte"] if sources else ["Descripción"]
+    saved_origin = st.session_state.get("aud_origin_saved", "Descripción")
+    origin = st.selectbox("Origen de los antecedentes", origins, index=origins.index(saved_origin) if saved_origin in origins else 0,
+                          key="aud_origin")
+    source_id, additional_sources, maximum = "", [], 100000
+    if origin == "Chats de soporte":
+        source_id = st.selectbox("Fuente de soporte", [s["id"] for s in sources], key="aud_source",
+                                 format_func=lambda sid: next(s["label"] for s in sources if s["id"] == sid))
+        maximum = len(store.eligible_chats(source_id))
+        st.caption(f"{maximum} chats con menciones disponibles. Cada agente usa un escenario de origen distinto; no reproduce a la persona real.")
+        if maximum < 1:
+            st.warning("La fuente no tiene texto entrante con temas reconocibles. Importá otra fuente o elegí Descripción.")
+            return
+        public = [s for s in store.list_sources() if s["kind"] == "public_reviews" and s["stats"].get("privacy_reviewed")]
+        if public:
+            additional_sources = st.multiselect("Reseñas como contexto general (opcional)", [s["id"] for s in public],
+                                                key="aud_public_sources", format_func=lambda sid: next(s["label"] for s in public if s["id"] == sid))
     render_soft_panel(
         "Brief de audiencia",
         "Escribí una descripción suficientemente concreta para que el motor pueda generar respuestas coherentes. "
@@ -80,8 +103,8 @@ def _render_step_1_define():
     cantidad = st.number_input(
         "¿Cuántas personas querés simular?",
         min_value=1,
-        max_value=100000,
-        value=int(st.session_state.get("aud_cantidad_saved", 100)),
+        max_value=maximum,
+        value=min(int(st.session_state.get("aud_cantidad_saved", 100)), maximum),
         step=10,
         key="aud_cantidad",
     )
@@ -102,6 +125,9 @@ def _render_step_1_define():
             st.session_state["aud_nombre_saved"] = nombre
             st.session_state["aud_descripcion_saved"] = descripcion
             st.session_state["aud_cantidad_saved"] = int(cantidad)
+            st.session_state["aud_origin_saved"] = origin
+            st.session_state["aud_source_saved"] = source_id
+            st.session_state["aud_additional_sources_saved"] = additional_sources
             set("wiz_audience_step", 2)
             st.rerun()
 
@@ -109,23 +135,26 @@ def _render_step_1_define():
 def _render_step_2_expand():
     """Paso 2: Expandir en personas sintéticas."""
     render_section_title("2. Expandí en personas")
+    source_id = st.session_state.get("aud_source_saved", "")
     render_soft_panel(
         "Generación de personas",
-        "A partir del brief, la IA diseña los segmentos de la audiencia y los valores posibles de cada "
-        "atributo (edad, rol, rubro, dolores, motivadores, objeciones, canales). Después se sortean las "
-        "personas dentro de esos valores: es una sola llamada al modelo, sin importar la cantidad.",
+        "Se seleccionan escenarios de soporte sin repetir el chat de origen. Los antecedentes conservan referencias; los datos desconocidos no se completan." if source_id else
+        "A partir del brief, la IA diseña segmentos y combinaciones coherentes de edad, rol, "
+        "objetivos, dolores y motivaciones. Cada persona conserva una de esas combinaciones. "
+        "Se usa una sola llamada al modelo, sin importar la cantidad de personas.",
     )
 
     nombre = st.session_state.get("aud_nombre_saved", "")
     descripcion = st.session_state.get("aud_descripcion_saved", "")
     cantidad = int(st.session_state.get("aud_cantidad_saved", 100))
+    source_id = st.session_state.get("aud_source_saved", "")
 
     # Mostrar resumen antes de expandir
     st.markdown(f"**Audiencia:** {nombre}")
     st.markdown(f"**Personas:** {cantidad}")
     st.markdown(f"**Descripción:** {descripcion[:200]}...")
 
-    llm_ready = LLMService().is_ready()
+    llm_ready = LLMService().is_ready() and not source_id
     usar_ia = st.checkbox(
         "Diseñar segmentos con IA a partir de la descripción",
         value=llm_ready,
@@ -133,7 +162,9 @@ def _render_step_2_expand():
         key="aud_use_ai_design",
         help="Sin IA, todas las personas usan atributos genéricos y la descripción solo se pasa como contexto.",
     )
-    if not llm_ready:
+    if source_id:
+        st.info("Los antecedentes se asignarán desde la fuente. Los datos biográficos desconocidos quedarán sin especificar; esta generación no consulta a la IA.")
+    elif not llm_ready:
         st.caption("No hay un modelo configurado: se usarán atributos genéricos.")
 
     if st.button("Generar personas sintéticas", key="aud_expand_btn", use_container_width=True, type="primary"):
@@ -156,9 +187,16 @@ def _render_step_2_expand():
                 cantidad_personas=cantidad,
                 prompt_perfil=descripcion.strip(),
                 perfiles=perfiles,  # Vacío = perfil "General" con atributos genéricos
+                evidence_source_ids=[source_id, *st.session_state.get("aud_additional_sources_saved", [])] if source_id else [],
             )
 
-            personas = expand_universe(universo)
+            if source_id:
+                store = session_store()
+                if store is None:
+                    raise ValueError("Abrí la app local para usar la fuente privada de soporte.")
+                personas = build_source_population(store, universo, source_id)
+            else:
+                personas = expand_universe(universo)
             snapshot = build_expansion_snapshot(universo, personas)
 
             # Guardar temporalmente
@@ -230,6 +268,7 @@ def _render_step_3_review():
             "Perfil": p.perfil,
             "Edad": p.edad_rango,
             "Rol": p.rol,
+            "Arquetipo": p.arquetipo,
             "Industria": p.industria,
             "Objetivo": p.objetivo,
             "Pain": p.principal_pain,
@@ -237,10 +276,13 @@ def _render_step_3_review():
             "Objeción": p.objecion_base,
             "Precio": p.sensibilidad_precio,
             "Canal": p.canal_preferido,
+            "Antecedentes": len(p.evidence_refs),
         }
         for p in personas[:25]
     ])
     st.dataframe(df_personas, use_container_width=True, hide_index=True)
+    if universo.evidence_source_ids:
+        st.caption("Panel sintético sustentado en menciones de soporte. La composición describe esta selección; no estima la proporción de toda la clientela.")
 
     # Guardar
     c1, c2 = st.columns(2)
@@ -251,6 +293,12 @@ def _render_step_3_review():
     with c2:
         if st.button("💾 Guardar audiencia", key="aud_save", use_container_width=True, type="primary"):
             try:
+                store = session_store()
+                if universo.evidence_source_ids and store is None:
+                    raise ValueError("Abrí la app local para guardar esta audiencia con evidencia privada.")
+                if store:
+                    for persona in personas:
+                        store.register_agent(universo.id, persona.to_dict())
                 path_universe = save_universe(universo)
                 path_snapshot = save_expansion(universo.id, snapshot)
                 st.success(f"Audiencia guardada: {universo.nombre}")

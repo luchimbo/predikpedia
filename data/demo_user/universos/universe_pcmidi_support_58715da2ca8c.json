@@ -1,0 +1,56 @@
+{
+  "id": "universe_pcmidi_support_58715da2ca8c",
+  "nombre": "PC MIDI Center · escenarios de soporte",
+  "descripcion": "Agentes sintéticos inspirados en escenarios del soporte técnico de PC MIDI Center. No son los clientes originales. Datos biográficos desconocidos quedan sin especificar.",
+  "cantidad_personas": 100,
+  "prompt_perfil": "",
+  "perfiles": [
+    {
+      "nombre": "Audio, señal y latencia",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 30.0,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Conexión USB/MIDI/Bluetooth",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 21.0,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Fuentes, cables y repuestos",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 6.0,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Garantía y reparación",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 6.0,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Referencias a compra, precio o envío",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 36.0,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Soporte sin tema especificado",
+      "descripcion": "Composición del panel seleccionado; no proporción de la clientela.",
+      "porcentaje": 1.0,
+      "atributos": {},
+      "arquetipos": []
+    }
+  ],
+  "created_at": "2026-10-06T14:06:46+00:00",
+  "evidence_source_ids": [
+    "source_c3e47857c3cc0e62213958715da2ca8c",
+    "source_276fc41be031ad8bd2028b08d29d6c01"
+  ]
+}

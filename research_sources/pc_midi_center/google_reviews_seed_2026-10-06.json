@@ -1,0 +1,177 @@
+{
+  "schema_version": "predikpedia.evidence_seed/v1",
+  "business": "PC MIDI Center",
+  "source_url": "https://www.google.com/search?q=PC+MIDI+Center#lrd=0x95bccabe8581d31d:0xce941d259ec2142e,1,,,,",
+  "captured_on": "2026-10-06",
+  "source_type": "google_business_reviews",
+  "extraction_method": "manual_review_of_visible_browser_content",
+  "sort_order": "Más relevantes",
+  "displayed_review_count": 624,
+  "displayed_average_rating": 4.4,
+  "captured_review_count": 10,
+  "coverage": "Muestra inicial de las diez reseñas visibles; no es una exportación completa ni una muestra aleatoria.",
+  "evidence_status": "Declaraciones públicas de clientes; las experiencias relatadas no se verificaron independientemente.",
+  "content_format": "Resúmenes, sin nombres de autores. Fechas relativas conservadas tal como aparecen; estrellas individuales desconocidas.",
+  "limitations": [
+    "No permite estimar proporciones de toda la clientela ni del mercado.",
+    "No permite inferir edad, ingresos, personalidad o profesión si la reseña no los declara.",
+    "Las respuestas del negocio se mantienen separadas del relato del cliente.",
+    "No está conectado todavía al generador de audiencias; es material de origen para la próxima etapa."
+  ],
+  "reviews": [
+    {
+      "id": "pcmidi_google_seed_001",
+      "visible_position": 1,
+      "date_label": "Hace 5 meses",
+      "rating": null,
+      "customer_report_summary": "Valora la atención y las instrucciones recibidas.",
+      "themes": [
+        "asesoramiento"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_002",
+      "visible_position": 2,
+      "date_label": "Hace un mes",
+      "rating": null,
+      "customer_report_summary": "Valora iniciarse en producción de covers; menciona gestión de samples.",
+      "themes": [
+        "aprendizaje",
+        "producción musical"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_003",
+      "visible_position": 3,
+      "date_label": "Hace 8 meses",
+      "rating": null,
+      "customer_report_summary": "Relata fuente faltante de MiniFuse 4 y envío rápido del accesorio.",
+      "themes": [
+        "posventa",
+        "resolución de problemas"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_004",
+      "visible_position": 4,
+      "date_label": "Hace 3 meses",
+      "rating": null,
+      "customer_report_summary": "Cuestiona atención posterior a garantía y disponibilidad de repuestos para Medeli ED9 Pro.",
+      "themes": [
+        "posventa",
+        "repuestos"
+      ],
+      "business_response_summary": "El negocio afirma haber intentado contactarlo y esperar respuesta.",
+      "interpretation_note": "Relatos contrapuestos; no se determina cuál versión es correcta."
+    },
+    {
+      "id": "pcmidi_google_seed_005",
+      "visible_position": 5,
+      "date_label": "Hace un mes",
+      "rating": null,
+      "customer_report_summary": "Valora probar una batería, resolver consultas y recibir soporte en entrega.",
+      "themes": [
+        "prueba de producto",
+        "asesoramiento"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_006",
+      "visible_position": 6,
+      "date_label": "Hace 4 meses",
+      "rating": null,
+      "customer_report_summary": "Relata aumento respecto del precio comunicado y expresa disconformidad.",
+      "themes": [
+        "precio",
+        "confianza"
+      ],
+      "business_response_summary": "El negocio argumenta variación comercial y ausencia de reserva confirmada.",
+      "interpretation_note": "Relatos contrapuestos; no se determina cuál versión es correcta."
+    },
+    {
+      "id": "pcmidi_google_seed_007",
+      "visible_position": 7,
+      "date_label": "Hace 3 meses",
+      "rating": null,
+      "customer_report_summary": "Relata compra de AstroLab y monitores con valoración inicialmente favorable.",
+      "themes": [
+        "equipamiento",
+        "experiencia de compra"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_008",
+      "visible_position": 8,
+      "date_label": "Hace 2 meses",
+      "rating": null,
+      "customer_report_summary": "Valora atención, precios y resolución rápida de un inconveniente.",
+      "themes": [
+        "precio",
+        "resolución de problemas"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_009",
+      "visible_position": 9,
+      "date_label": "Hace 4 meses",
+      "rating": null,
+      "customer_report_summary": "Valora ventas, soporte y una compra web satisfactoria.",
+      "themes": [
+        "compra online",
+        "posventa"
+      ],
+      "business_response_summary": null
+    },
+    {
+      "id": "pcmidi_google_seed_010",
+      "visible_position": 10,
+      "date_label": "Hace 4 meses",
+      "rating": null,
+      "customer_report_summary": "Relata diferencia de precio y resolución inmediata tras consultar.",
+      "themes": [
+        "precio",
+        "resolución de problemas"
+      ],
+      "business_response_summary": null
+    }
+  ],
+  "candidate_profile_hypotheses": [
+    {
+      "label": "Busca orientación y prueba antes de decidir",
+      "evidence_ids": [
+        "pcmidi_google_seed_001",
+        "pcmidi_google_seed_005"
+      ],
+      "status": "Hipótesis para revisar; no segmento medido."
+    },
+    {
+      "label": "Prioriza soporte y continuidad del equipo",
+      "evidence_ids": [
+        "pcmidi_google_seed_003",
+        "pcmidi_google_seed_004"
+      ],
+      "status": "Hipótesis para revisar; no segmento medido."
+    },
+    {
+      "label": "Necesita claridad y cumplimiento del precio",
+      "evidence_ids": [
+        "pcmidi_google_seed_006",
+        "pcmidi_google_seed_010"
+      ],
+      "status": "Hipótesis para revisar; no segmento medido."
+    },
+    {
+      "label": "Valora una compra online sencilla",
+      "evidence_ids": [
+        "pcmidi_google_seed_009"
+      ],
+      "status": "Hipótesis para revisar; no segmento medido."
+    }
+  ]
+}

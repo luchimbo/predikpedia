@@ -35,8 +35,42 @@ def top_keywords(texts: List[str], top_n: int = 6) -> List[str]:
     return [word for word, _ in counter.most_common(top_n)]
 
 
+def valid_responses(resultados_df: pd.DataFrame) -> pd.DataFrame:
+    """Excluye errores operativos y textos vacíos, conservando dudas e indiferencia."""
+    if resultados_df.empty or "respuesta" not in resultados_df:
+        return resultados_df.iloc[:0].copy()
+    texts = resultados_df["respuesta"].fillna("").astype(str).str.strip()
+    return resultados_df.loc[texts.ne("") & ~texts.str.startswith("[ERROR:")].copy()
+
+
+def primary_responses(estudio: Estudio, resultados_df: pd.DataFrame) -> pd.DataFrame:
+    """Default report grain: baseline or first interview question, never mixed rounds."""
+    frame = valid_responses(resultados_df)
+    if estudio.mode == "social" and "phase" in frame:
+        frame = frame.loc[frame["phase"] == "individual"].copy()
+    if estudio.mode == "interview" and "question_index" in frame:
+        frame = frame.loc[frame["question_index"] == 1].copy()
+    return frame
+
+
+def social_comparison(resultados_df: pd.DataFrame) -> pd.DataFrame:
+    """Only complete valid pairs, reporting changed classifications, not real persuasion."""
+    frame = valid_responses(resultados_df)
+    required = {"phase", "persona_id", "intent", "respuesta"}
+    if frame.empty or not required.issubset(frame):
+        return pd.DataFrame()
+    first = frame.loc[frame["phase"] == "individual"].drop_duplicates("persona_id")
+    last = frame.loc[frame["phase"] == "after_interaction"].drop_duplicates("persona_id")
+    joined = first.merge(last, on="persona_id", suffixes=("_initial", "_after"))
+    return pd.DataFrame({"Persona": joined["persona_id"], "Intención inicial": joined["intent_initial"],
+                         "Intención tras interacción": joined["intent_after"],
+                         "Cambió intención": joined["intent_initial"] != joined["intent_after"],
+                         "Respuesta inicial": joined["respuesta_initial"], "Respuesta tras interacción": joined["respuesta_after"]})
+
+
 def insights_by_profile(resultados_df: pd.DataFrame) -> pd.DataFrame:
     """Genera un DataFrame con insights agregados por perfil."""
+    resultados_df = valid_responses(resultados_df)
     if resultados_df.empty:
         return pd.DataFrame(columns=["Perfil", "Personas", "Respuestas", "Largo promedio", "Temas clave"])
 
@@ -59,6 +93,7 @@ def insights_by_profile(resultados_df: pd.DataFrame) -> pd.DataFrame:
 
 def profile_summary(resultados_df: pd.DataFrame) -> Dict[str, str]:
     """Genera un resumen textual por perfil."""
+    resultados_df = valid_responses(resultados_df)
     sintesis: Dict[str, str] = {}
     if resultados_df.empty:
         return sintesis
@@ -80,6 +115,7 @@ def profile_summary(resultados_df: pd.DataFrame) -> Dict[str, str]:
 
 def representative_responses(resultados_df: pd.DataFrame, limit_per_profile: int = 2) -> pd.DataFrame:
     """Extrae respuestas representativas (más largas) por perfil."""
+    resultados_df = valid_responses(resultados_df)
     if resultados_df.empty:
         return pd.DataFrame(columns=["Perfil", "Persona", "Respuesta"])
 
@@ -100,6 +136,7 @@ def representative_responses(resultados_df: pd.DataFrame, limit_per_profile: int
 
 def filter_by_patterns(resultados_df: pd.DataFrame, patterns: List[str], limit: int = 6) -> List[Dict[str, str]]:
     """Filtra respuestas que coinciden con patrones regex."""
+    resultados_df = valid_responses(resultados_df)
     if resultados_df.empty:
         return []
 
@@ -118,8 +155,9 @@ def filter_by_patterns(resultados_df: pd.DataFrame, patterns: List[str], limit: 
     return rows
 
 
-def build_executive_report(estudio: Estudio, resultados_df: pd.DataFrame) -> Dict[str, Any]:
+def build_executive_report(estudio: Estudio, resultados_df: pd.DataFrame, *, selection_explicit: bool = False) -> Dict[str, Any]:
     """Construye un informe ejecutivo completo de un estudio."""
+    resultados_df = valid_responses(resultados_df) if selection_explicit else primary_responses(estudio, resultados_df)
     if resultados_df.empty:
         return {
             "conclusion": "No hay respuestas suficientes para construir un informe ejecutivo.",
@@ -145,6 +183,11 @@ def build_executive_report(estudio: Estudio, resultados_df: pd.DataFrame) -> Dic
         f"La pregunta concentra {len(resultados_df)} respuesta(s) de "
         f"{personas} persona(s). Los temas más visibles son {tema_txt}."
     )
+    if estudio.mode == "social":
+        phase = resultados_df["phase"].iloc[0] if "phase" in resultados_df else "individual"
+        conclusion += " Se analiza la ronda tras interacción." if phase == "after_interaction" else " Se analiza la respuesta individual inicial."
+    elif estudio.mode == "interview":
+        conclusion += " Se analiza una sola pregunta de la entrevista."
     if perfil_principal:
         conclusion += f" El perfil con mayor volumen de evidencia es {perfil_principal}."
 

@@ -1199,3 +1199,11 @@ La mejor estrategia es:
 5. Reordenar el sistema tecnico para sostener esa nueva interfaz.
 
 Si se hace bien, Predikpedia puede pasar de una app dificil de entender a una plataforma que realmente pueda mostrarse, venderse y operarse con confianza.
+
+---
+
+## 26. Continuidad de realismo — 6 de octubre de 2026
+
+Primera etapa funcional alineada con las secciones 13 y 15: arquetipos con atributos vinculados, política de respuesta que permite incertidumbre, validación JSON, exclusión de errores del análisis y versión del motor por estudio.
+
+La referencia es MiroFish. La evolución continúa con evidencia de origen, individualidad persistente, entrevistas con memoria, simulación social opcional y calibración contra datos reales. Alcance y límites: `docs/REALISMO.md`. La implementación actual no integra OASIS ni valida precisión predictiva.

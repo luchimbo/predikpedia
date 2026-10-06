@@ -15,6 +15,10 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Private support evidence and simulated memory, even if a custom directory is used
+**/evidence.sqlite3*
+.private/
+
 # OS
 .DS_Store
 Thumbs.db

@@ -3,18 +3,20 @@ app/services/audience_design_service.py — Diseño de segmentos a partir del br
 
 Una sola llamada al LLM convierte la descripción libre de la audiencia en
 segmentos (PerfilCliente) con porcentajes y valores plausibles por atributo.
-La expansión después sortea personas dentro de esos valores, así que el costo
-no depende de la cantidad de personas.
+La expansión elige combinaciones conjuntas de atributos (arquetipos) para
+preservar su coherencia. El costo no depende de la cantidad de personas.
 """
 
+import math
 from typing import Any, Dict, List, Optional
 
-from app.domain.models import PerfilCliente
+from app.domain.models import ArquetipoPersona, PerfilCliente
 from app.services.llm_service import LLMError, LLMService
 from app.services.universe_service import OPTIONAL_FIELDS, SAMPLED_FIELDS
 
 MAX_SEGMENTS = 6
 MAX_VALUES_PER_FIELD = 8
+MAX_ARCHETYPES = 4
 
 FIELD_GUIDE = {
     "edad_rango": "rangos de edad, ej. \"30-40\"",
@@ -24,9 +26,10 @@ FIELD_GUIDE = {
     "principal_pain": "principal dolor o problema",
     "motivador": "qué lo mueve a actuar o comprar",
     "objecion_base": "objeción típica antes de comprar o adoptar",
-    "sensibilidad_precio": "solo \"Alta\", \"Media\" o \"Baja\" (repetí valores para ponderar)",
+    "sensibilidad_precio": "\"Alta\", \"Media\", \"Baja\" o \"No especificado\"; no inferir ingresos desde la edad o el rol",
     "comportamiento": "estilo de decisión, ej. \"Conservador\", \"Analítico\"",
     "canal_preferido": "canales por los que se informa o compra",
+    "notas": "restricciones y supuestos del arquetipo; distinguir lo explícito del brief de lo hipotético",
 }
 
 SYSTEM_PROMPT = (
@@ -42,15 +45,23 @@ class AudienceDesignError(Exception):
 
 
 def _build_user_prompt(descripcion: str) -> str:
-    todos = SAMPLED_FIELDS + OPTIONAL_FIELDS
+    todos = SAMPLED_FIELDS + OPTIONAL_FIELDS + ["notas"]
     guia = "\n".join(f"- {campo}: {FIELD_GUIDE[campo]}" for campo in todos)
-    campos = ",\n".join(f'        "{campo}": ["...", "...", "..."]' for campo in todos)
+    campos = ",\n".join(f'            "{campo}": "..."' for campo in todos)
     return (
         f"Brief de la audiencia:\n\"\"\"\n{descripcion.strip()}\n\"\"\"\n\n"
         f"Definí entre 2 y {MAX_SEGMENTS - 2} segmentos (o 1 si el brief es claramente homogéneo). "
         "Si el brief menciona segmentos o proporciones, respetalos. Los porcentajes deben sumar 100.\n"
-        f"Para cada atributo dá entre 3 y {MAX_VALUES_PER_FIELD} valores posibles, coherentes con ese segmento. "
-        "Podés repetir un valor para que salga más seguido.\n\n"
+        f"Dentro de cada segmento diseñá de 2 a {MAX_ARCHETYPES} arquetipos (1 si no hay base para más). "
+        "Cada arquetipo contiene UNA combinación completa y coherente: rol, objetivo, dolor, "
+        "motivador, objeción y comportamiento deben poder coexistir. La expansión mantiene esa "
+        "combinación junta; no mezcla atributos entre arquetipos.\n"
+        "Incluí variedad interna solo si el brief la permite. No fuerces todos los perfiles a "
+        "comprar, ni todos a rechazar. No deduzcas personalidad desde edad o nivel económico. "
+        "No inventes ingresos, presupuestos exactos, experiencias pasadas ni estadísticas. "
+        "Para datos sin sustento usá 'No especificado'. El peso es relativo dentro del segmento "
+        "y debe ser positivo: respetá proporciones explícitas o usá pesos iguales. "
+        "Las proporciones no aportadas son hipótesis, no frecuencias de mercado medidas.\n\n"
         f"Atributos:\n{guia}\n\n"
         "Respondé solo JSON válido (sin comentarios ni texto extra) con esta forma:\n"
         "{\n"
@@ -59,9 +70,13 @@ def _build_user_prompt(descripcion: str) -> str:
         '      "nombre": "Nombre corto del segmento",\n'
         '      "descripcion": "1-2 oraciones sobre quiénes son y su contexto",\n'
         '      "porcentaje": 50,\n'
-        '      "atributos": {\n'
+        '      "arquetipos": [{\n'
+        '        "nombre": "Nombre corto de la combinación",\n'
+        '        "peso": 1,\n'
+        '        "atributos": {\n'
         f"{campos}\n"
-        "      }\n"
+        "        }\n"
+        "      }]\n"
         "    }\n"
         "  ]\n"
         "}"
@@ -73,8 +88,36 @@ def _clean_values(values: Any) -> List[str]:
         values = [values]
     if not isinstance(values, list):
         return []
-    cleaned = [str(v).strip() for v in values if str(v).strip()]
+    cleaned = [v.strip() for v in values if isinstance(v, str) and v.strip()]
     return cleaned[:MAX_VALUES_PER_FIELD]
+
+
+def _parse_archetypes(raw: Any) -> List[ArquetipoPersona]:
+    """Rechaza diseños parciales para no completarlos con atributos genéricos ajenos."""
+    if not isinstance(raw, list) or not raw or len(raw) > MAX_ARCHETYPES:
+        raise AudienceDesignError("La lista de arquetipos está vacía o es inválida.")
+    required = SAMPLED_FIELDS + OPTIONAL_FIELDS
+    result = []
+    for item in raw:
+        if not isinstance(item, dict) or not isinstance(item.get("atributos"), dict):
+            raise AudienceDesignError("El arquetipo no contiene atributos válidos.")
+        attrs = {k: v.strip() for k, v in item["atributos"].items()
+                 if k in required + ["notas"] and isinstance(v, str) and v.strip()}
+        if any(field not in attrs for field in required):
+            raise AudienceDesignError("El arquetipo está incompleto; faltan atributos vinculados.")
+        if attrs["sensibilidad_precio"] not in ("Alta", "Media", "Baja", "No especificado"):
+            raise AudienceDesignError("La sensibilidad al precio del arquetipo es inválida.")
+        try:
+            peso = float(item.get("peso", 1))
+        except (TypeError, ValueError):
+            raise AudienceDesignError("El peso del arquetipo es inválido.") from None
+        nombre = item.get("nombre")
+        if not isinstance(nombre, str) or not nombre.strip() or not math.isfinite(peso) or peso <= 0:
+            raise AudienceDesignError("El arquetipo requiere nombre y peso positivo finito.")
+        if any(a.nombre.casefold() == nombre.strip().casefold() for a in result):
+            raise AudienceDesignError("Los nombres de arquetipos deben ser únicos por segmento.")
+        result.append(ArquetipoPersona(nombre.strip(), peso, attrs))
+    return result
 
 
 def parse_segments(payload: Any) -> List[PerfilCliente]:
@@ -105,6 +148,8 @@ def parse_segments(payload: Any) -> List[PerfilCliente]:
             porcentaje = float(str(raw.get("porcentaje", 0)).replace("%", "").strip() or 0)
         except ValueError:
             porcentaje = 0.0
+        if not math.isfinite(porcentaje):
+            raise AudienceDesignError("El porcentaje del segmento debe ser finito.")
 
         raw_atributos = raw.get("atributos") if isinstance(raw.get("atributos"), dict) else {}
         atributos: Dict[str, List[str]] = {}
@@ -118,11 +163,12 @@ def parse_segments(payload: Any) -> List[PerfilCliente]:
             descripcion=str(raw.get("descripcion", "")).strip(),
             porcentaje=max(porcentaje, 0.0),
             atributos=atributos,
+            arquetipos=_parse_archetypes(raw["arquetipos"]) if "arquetipos" in raw else [],
         ))
 
     if not perfiles:
         raise AudienceDesignError("El modelo no devolvió segmentos válidos.")
-    if not any(p.atributos for p in perfiles):
+    if not all(p.atributos or p.arquetipos for p in perfiles):
         raise AudienceDesignError("El modelo no devolvió atributos para los segmentos.")
 
     # Normalizar porcentajes a 100 (reparto parejo si vinieron todos en 0).

@@ -12,6 +12,24 @@ def _now_iso() -> str:
 
 
 @dataclass
+class ArquetipoPersona:
+    """Combinación conjunta de atributos; peso relativo dentro del segmento."""
+
+    nombre: str
+    peso: float
+    atributos: Dict[str, str]
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "ArquetipoPersona":
+        return cls(
+            nombre=str(data.get("nombre", "")).strip(),
+            peso=float(data.get("peso", 1)),
+            atributos={str(k): v.strip() for k, v in (data.get("atributos") or {}).items()
+                       if isinstance(v, str) and v.strip()},
+        )
+
+
+@dataclass
 class PerfilCliente:
     nombre: str
     descripcion: str
@@ -19,6 +37,7 @@ class PerfilCliente:
     # Valores posibles por campo de PersonaSintetica (edad_rango, rol, ...).
     # Vacío = la expansión usa los valores genéricos.
     atributos: Dict[str, List[str]] = field(default_factory=dict)
+    arquetipos: List[ArquetipoPersona] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -36,6 +55,7 @@ class PerfilCliente:
             descripcion=str(data.get("descripcion", "")).strip(),
             porcentaje=float(data.get("porcentaje", 0)),
             atributos={k: v for k, v in atributos.items() if v},
+            arquetipos=[ArquetipoPersona.from_dict(item) for item in data.get("arquetipos", [])],
         )
 
 
@@ -67,6 +87,12 @@ class PersonaSintetica:
 
     created_at: str = field(default_factory=_now_iso)
 
+    # Identifica la combinación conjunta usada, sin alterar los campos anteriores.
+    arquetipo: str = ""
+    identity_id: str = ""
+    evidence_refs: List[str] = field(default_factory=list)
+    evidence_source_ids: List[str] = field(default_factory=list)
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
@@ -93,6 +119,10 @@ class PersonaSintetica:
             contexto_operativo=str(data.get("contexto_operativo", "")).strip(),
             notas=str(data.get("notas", "")).strip(),
             created_at=str(data.get("created_at", _now_iso())),
+            arquetipo=str(data.get("arquetipo", "")).strip(),
+            identity_id=str(data.get("identity_id", "")),
+            evidence_refs=list(data.get("evidence_refs") or []),
+            evidence_source_ids=list(data.get("evidence_source_ids") or []),
         )
 
 
@@ -105,6 +135,7 @@ class Universo:
     prompt_perfil: str = ""
     perfiles: List[PerfilCliente] = field(default_factory=list)
     created_at: str = field(default_factory=_now_iso)
+    evidence_source_ids: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -115,6 +146,7 @@ class Universo:
             "prompt_perfil": self.prompt_perfil,
             "perfiles": [p.to_dict() for p in self.perfiles],
             "created_at": self.created_at,
+            "evidence_source_ids": self.evidence_source_ids,
         }
 
     @classmethod
@@ -128,6 +160,7 @@ class Universo:
             prompt_perfil=str(data.get("prompt_perfil", "")).strip(),
             perfiles=perfiles,
             created_at=str(data.get("created_at", _now_iso())),
+            evidence_source_ids=list(data.get("evidence_source_ids") or []),
         )
 
 
@@ -142,6 +175,12 @@ class Estudio:
     template: str = "exploratory"  # Tipo de estudio
     respuestas_por_persona: int = 1
     created_at: str = field(default_factory=_now_iso)
+    simulation_version: str = "legacy"
+    mode: str = "survey"
+    memory_enabled: bool = False
+    follow_up_questions: List[str] = field(default_factory=list)
+    social_seed: int = 42
+    interaction_graph: Dict[str, List[str]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -158,6 +197,12 @@ class Estudio:
             template=str(data.get("template", "exploratory")).strip(),
             respuestas_por_persona=int(data.get("respuestas_por_persona", 1)),
             created_at=str(data.get("created_at", _now_iso())),
+            simulation_version=str(data.get("simulation_version", "legacy")),
+            mode=str(data.get("mode", "survey")),
+            memory_enabled=data.get("memory_enabled") is True,
+            follow_up_questions=list(data.get("follow_up_questions") or []),
+            social_seed=int(data.get("social_seed", 42)),
+            interaction_graph=dict(data.get("interaction_graph") or {}),
         )
 
 
@@ -180,6 +225,15 @@ class RespuestaEstudio:
     confidence: str = ""  # high, medium, low
     price_sensitivity: str = ""  # high, medium, low, none
     quote: str = ""  # Cita destacada de la respuesta
+    response_id: str = ""
+    identity_id: str = ""
+    phase: str = "individual"
+    round_number: int = 1
+    question_index: int = 1
+    evidence_refs: List[str] = field(default_factory=list)
+    memory_refs: List[str] = field(default_factory=list)
+    exposure_ids: List[str] = field(default_factory=list)
+    llm_metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -202,6 +256,15 @@ class RespuestaEstudio:
             confidence=str(data.get("confidence", "")).strip(),
             price_sensitivity=str(data.get("price_sensitivity", "")).strip(),
             quote=str(data.get("quote", "")).strip(),
+            response_id=str(data.get("response_id", "")),
+            identity_id=str(data.get("identity_id", "")),
+            phase=str(data.get("phase", "individual")),
+            round_number=int(data.get("round_number", 1)),
+            question_index=int(data.get("question_index", 1)),
+            evidence_refs=list(data.get("evidence_refs") or []),
+            memory_refs=list(data.get("memory_refs") or []),
+            exposure_ids=list(data.get("exposure_ids") or []),
+            llm_metadata=dict(data.get("llm_metadata") or {}),
         )
 
 
