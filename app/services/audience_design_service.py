@@ -16,7 +16,8 @@ from app.services.universe_service import OPTIONAL_FIELDS, SAMPLED_FIELDS
 
 MAX_SEGMENTS = 6
 MAX_VALUES_PER_FIELD = 8
-MAX_ARCHETYPES = 4
+MIN_ARCHETYPES = 4
+MAX_ARCHETYPES = 10
 
 FIELD_GUIDE = {
     "edad_rango": "rangos de edad, ej. \"30-40\"",
@@ -52,12 +53,13 @@ def _build_user_prompt(descripcion: str) -> str:
         f"Brief de la audiencia:\n\"\"\"\n{descripcion.strip()}\n\"\"\"\n\n"
         f"Definí entre 2 y {MAX_SEGMENTS - 2} segmentos (o 1 si el brief es claramente homogéneo). "
         "Si el brief menciona segmentos o proporciones, respetalos. Los porcentajes deben sumar 100.\n"
-        f"Dentro de cada segmento diseñá de 2 a {MAX_ARCHETYPES} arquetipos (1 si no hay base para más). "
+        f"Dentro de cada segmento diseñá de {MIN_ARCHETYPES} a 8 arquetipos (menos si el brief no da base para más). "
         "Cada arquetipo contiene UNA combinación completa y coherente: rol, objetivo, dolor, "
         "motivador, objeción y comportamiento deben poder coexistir. La expansión mantiene esa "
         "combinación junta; no mezcla atributos entre arquetipos.\n"
-        "Incluí variedad interna solo si el brief la permite. No fuerces todos los perfiles a "
-        "comprar, ni todos a rechazar. No deduzcas personalidad desde edad o nivel económico. "
+        "Los arquetipos de un segmento deben ser distintos entre sí: variá edades, situaciones y "
+        "posturas, e incluí escépticos y gente poco interesada si el brief lo permite. No fuerces "
+        "todos los perfiles a comprar, ni todos a rechazar. No deduzcas personalidad desde edad o nivel económico. "
         "No inventes ingresos, presupuestos exactos, experiencias pasadas ni estadísticas. "
         "Para datos sin sustento usá 'No especificado'. El peso es relativo dentro del segmento "
         "y debe ser positivo: respetá proporciones explícitas o usá pesos iguales. "
@@ -90,6 +92,19 @@ def _clean_values(values: Any) -> List[str]:
         return []
     cleaned = [v.strip() for v in values if isinstance(v, str) and v.strip()]
     return cleaned[:MAX_VALUES_PER_FIELD]
+
+
+def _attributes_from_archetypes(arquetipos: List[ArquetipoPersona]) -> Dict[str, List[str]]:
+    """Valores por campo (en orden de aparición) para vistas y código que usan `atributos`."""
+    atributos: Dict[str, List[str]] = {}
+    for arquetipo in arquetipos:
+        for campo, valor in arquetipo.atributos.items():
+            if campo == "notas":
+                continue
+            valores = atributos.setdefault(campo, [])
+            if valor not in valores:
+                valores.append(valor)
+    return atributos
 
 
 def _parse_archetypes(raw: Any) -> List[ArquetipoPersona]:
@@ -158,12 +173,13 @@ def parse_segments(payload: Any) -> List[PerfilCliente]:
             if valores:
                 atributos[campo] = valores
 
+        arquetipos = _parse_archetypes(raw["arquetipos"]) if "arquetipos" in raw else []
         perfiles.append(PerfilCliente(
             nombre=nombre,
             descripcion=str(raw.get("descripcion", "")).strip(),
             porcentaje=max(porcentaje, 0.0),
-            atributos=atributos,
-            arquetipos=_parse_archetypes(raw["arquetipos"]) if "arquetipos" in raw else [],
+            atributos=atributos or _attributes_from_archetypes(arquetipos),
+            arquetipos=arquetipos,
         ))
 
     if not perfiles:

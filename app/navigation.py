@@ -16,7 +16,7 @@ NAV_OPTIONS = [
 ]
 
 
-def render_sidebar(*, balance_now: float, saved_api_key: str):
+def render_sidebar(*, balance_now: float, llm_ready: bool, provider_label: str):
     """Renderiza el sidebar con navegación estilizada como producto."""
     with st.sidebar:
         # Header del sidebar en HTML para control total
@@ -47,12 +47,12 @@ def render_sidebar(*, balance_now: float, saved_api_key: str):
             unsafe_allow_html=True,
         )
 
-        api_status = "OK" if saved_api_key else "Falta"
+        ia_status = f"Lista · {provider_label}" if llm_ready else "Sin configurar"
         st.markdown(
             f"""
             <div class="nav-footer-item">
-                <span class="nav-footer-label">API</span>
-                <span class="nav-footer-value">{api_status}</span>
+                <span class="nav-footer-label">IA</span>
+                <span class="nav-footer-value">{ia_status}</span>
             </div>
             """,
             unsafe_allow_html=True,

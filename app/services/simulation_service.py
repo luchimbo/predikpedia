@@ -105,7 +105,8 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
             answer = RespuestaEstudio(**attributes, respuesta=text, sintesis=text[:180], llm_metadata=metadata, **result)
         except LLMError:
             # Exception strings can contain request data; persist a generic failure.
-            answer = RespuestaEstudio(**attributes, respuesta="[ERROR: El participante no devolvió una respuesta válida]", sintesis="Error de LLM")
+            answer = RespuestaEstudio(**attributes, respuesta="[ERROR: El participante no devolvió una respuesta válida]", sintesis="Error de LLM",
+                                      error="El participante no devolvió una respuesta válida")
         if store:
             store.checkpoint(answer.to_dict(), remember=study.memory_enabled and study.mode != "survey")
         answers.append(answer)

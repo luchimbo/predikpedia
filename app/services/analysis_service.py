@@ -21,6 +21,20 @@ STOPWORDS_ES = {
 }
 
 
+def error_mask(resultados_df: pd.DataFrame) -> pd.Series:
+    """Marca las filas que son fallas del proveedor y no respuestas del modelo.
+
+    Incluye el formato viejo, donde el error se guardaba como texto "[ERROR: ...]".
+    """
+    if resultados_df.empty:
+        return pd.Series([], dtype=bool)
+    respuesta = resultados_df["respuesta"].fillna("").astype(str)
+    mask = respuesta.str.startswith("[ERROR")
+    if "error" in resultados_df.columns:
+        mask |= resultados_df["error"].fillna("").astype(str).str.strip() != ""
+    return mask
+
+
 def _tokenize(text: str) -> List[str]:
     """Tokeniza un texto en palabras clave."""
     tokens = re.findall(r"[a-zA-ZáéíóúÁÉÍÓÚñÑ]{3,}", str(text).lower())
@@ -40,7 +54,7 @@ def valid_responses(resultados_df: pd.DataFrame) -> pd.DataFrame:
     if resultados_df.empty or "respuesta" not in resultados_df:
         return resultados_df.iloc[:0].copy()
     texts = resultados_df["respuesta"].fillna("").astype(str).str.strip()
-    return resultados_df.loc[texts.ne("") & ~texts.str.startswith("[ERROR:")].copy()
+    return resultados_df.loc[texts.ne("") & ~error_mask(resultados_df)].copy()
 
 
 def primary_responses(estudio: Estudio, resultados_df: pd.DataFrame) -> pd.DataFrame:

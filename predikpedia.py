@@ -10,7 +10,7 @@ import streamlit as st
 load_dotenv()
 
 from app.config import config
-from app.navigation import render_sidebar, resolve_provider_label
+from app.navigation import render_sidebar
 from app.state import init_state
 from app.storage.repository import (
     list_studies,
@@ -81,17 +81,19 @@ st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
 
 # ── Sidebar ─────────────────────────────────────────────────────────────────
 
+llm_engine = LLMService(api_key=saved_key or None)
+provider_label = llm_engine.get_provider_label()
+llm_ready = llm_engine.is_ready()
+
 render_sidebar(
     balance_now=credits_engine.get_balance(),
-    saved_api_key=saved_key,
+    llm_ready=llm_ready,
+    provider_label=provider_label,
 )
 
 # ── Routing ─────────────────────────────────────────────────────────────────
 
 current_page = st.session_state.get("current_page", "Inicio")
-llm_engine = LLMService(api_key=saved_key or None)
-provider_label = llm_engine.get_provider_label()
-llm_ready = llm_engine.is_ready()
 
 if current_page == "Inicio":
     render_home_page(

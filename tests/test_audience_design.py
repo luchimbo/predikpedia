@@ -170,3 +170,25 @@ class CoherentAudienceTests(TestCase):
         payload = expand_universe(Universo("old", "Test", "brief", 1))[0].to_dict()
         payload.pop("arquetipo")
         self.assertEqual("", PersonaSintetica.from_dict(payload).arquetipo)
+
+    def test_equal_weights_spread_every_archetype_evenly(self):
+        # Pesos iguales: con 24 personas y 10 arquetipos todos aparecen 2 o 3 veces.
+        profiles = parse_segments([{"nombre": "A", "porcentaje": 100, "arquetipos": [
+            archetype(f"Arquetipo {i}", rol=f"Rol {i}") for i in range(10)]}])
+        people = expand_universe(Universo("parejo", "Test", "brief", 24, perfiles=profiles))
+        counts = [sum(p.rol == f"Rol {i}" for p in people) for i in range(10)]
+        self.assertTrue(all(2 <= c <= 3 for c in counts), counts)
+
+    def test_archetypes_fill_attributes_for_views(self):
+        perfil = self.profiles()[0]
+        self.assertEqual(["Decisor", "Usuario final"], perfil.atributos["rol"])
+        self.assertNotIn("notas", perfil.atributos)
+
+    def test_flat_archetypes_saved_by_previous_version_still_load(self):
+        # Formato plano {campo: valor} que guardaba la versión anterior.
+        perfil = PerfilCliente.from_dict({"nombre": "A", "descripcion": "", "porcentaje": 100,
+                                          "arquetipos": [{"edad_rango": "25-35", "rol": "Emprendedor"}, {}]})
+        self.assertEqual(1, len(perfil.arquetipos))
+        self.assertEqual({"edad_rango": "25-35", "rol": "Emprendedor"}, perfil.arquetipos[0].atributos)
+        person = expand_universe(Universo("plano", "Test", "brief", 1, perfiles=[perfil]))[0]
+        self.assertEqual(("25-35", "Emprendedor"), (person.edad_rango, person.rol))

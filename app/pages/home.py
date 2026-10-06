@@ -7,7 +7,6 @@ from typing import Sequence
 import streamlit as st
 
 from app.components.shell import render_page_intro, render_stat_card
-from app.navigation import resolve_provider_label
 
 
 def render_home_page(
@@ -24,23 +23,23 @@ def render_home_page(
 
     # Determinar siguiente paso recomendado
     if not has_api_key:
-        next_action = "Configurar API key"
-        next_copy = "Cargá OpenRouter o Gemini para poder ejecutar respuestas sintéticas."
+        next_action = "Configurar la IA"
+        next_copy = "Falta conectar un modelo de IA (OpenRouter u Ollama local) para que las personas puedan responder."
         next_page = "Configuración"
     elif total_universes == 0:
         next_action = "Crear audiencia"
         next_copy = "Empezá definiendo a quién querés investigar."
         next_page = "Audiencias"
     else:
-        next_action = "Nuevo estudio"
-        next_copy = "Usá una audiencia guardada, escribí una pregunta y ejecutá el estudio."
+        next_action = "Hacer una pregunta"
+        next_copy = "Elegí una de tus audiencias, escribí la pregunta y ejecutá el estudio."
         next_page = "Estudios"
 
     # Header
     render_page_intro(
-        "Workspace de research sintético",
-        "Investigá audiencias, corré estudios y leé decisiones sin ruido técnico.",
-        "Predikpedia organiza el flujo en tres momentos: crear audiencia, ejecutar un estudio y convertir respuestas en lectura accionable.",
+        "Predikpedia",
+        "Preguntale a tu público antes de salir al mercado",
+        "Funciona en tres pasos: 1) describís a quién querés preguntarle, 2) hacés tu pregunta, 3) leés qué respondieron.",
     )
 
     # Stats
@@ -50,7 +49,7 @@ def render_home_page(
     with c2:
         render_stat_card("Estudios", str(total_studies))
     with c3:
-        render_stat_card("Proveedor", provider_label)
+        render_stat_card("Modelo de IA", provider_label)
 
     # Siguiente paso
     st.divider()
@@ -65,9 +64,9 @@ def render_home_page(
             st.rerun()
 
     with context_col:
-        st.subheader("Estado operativo")
-        status_text = "Lista" if has_api_key else "Falta configurar API key"
-        st.write(f"**API:** {status_text}")
+        st.subheader("Estado")
+        status_text = f"Lista ({provider_label})" if has_api_key else "Falta configurar"
+        st.write(f"**IA:** {status_text}")
 
     # Accesos rápidos
     st.divider()
@@ -126,7 +125,7 @@ def recent_studies_df(studies):
         rows.append({
             "Audiencia": getattr(study, "universo_nombre", "-"),
             "Pregunta": str(getattr(study, "pregunta", ""))[:70],
-            "RPP": getattr(study, "respuestas_por_persona", 0),
+            "Respuestas por persona": getattr(study, "respuestas_por_persona", 0),
             "Creado": getattr(study, "created_at", "-"),
         })
     return pd.DataFrame(rows)

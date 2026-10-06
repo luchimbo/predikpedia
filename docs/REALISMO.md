@@ -21,6 +21,15 @@ Predikpedia consulta participantes individuales. Sus atributos antes se sorteaba
 - Informes, análisis opcional con IA y KPIs de la pestaña principal excluyen errores y textos vacíos. Descargas y tabla completa mantienen los registros originales.
 - Los estudios nuevos guardan `simulation_version="realism_v1"`; anteriores cargan como `legacy`. Ningún campo JSON anterior cambia de nombre.
 
+## Unión con la versión de GitHub (6 de octubre de 2026)
+
+En paralelo se había mergeado en `main` otra implementación de arquetipos (PR #1, ver `ROADMAP_FIABILIDAD.md`). Se unieron así:
+
+- **Arquetipos:** se conserva el formato con nombre, peso y atributos. Dentro de cada segmento las personas se reparten entre arquetipos por mayores restos según el peso y en orden mezclado, así ningún arquetipo con peso queda afuera por azar. Se piden de 4 a 8 por segmento (se aceptan hasta 10). Los arquetipos planos `{campo: valor}` guardados por la otra versión se siguen leyendo.
+- **De GitHub:** audiencias desde datos reales (CSV/Excel, una persona por fila; sus columnas llegan al prompt), porcentajes editables en Revisar, segmentos en 0% sin personas, pantallas simplificadas de Audiencias, Estudios y Resultados, y el campo `error` en las respuestas.
+- **De esta etapa:** motor de simulación, validación, modalidades (encuesta, entrevista, social), memoria y evidencia de origen. "Chats de soporte" aparece como tercer modo de Audiencias solo si hay una fuente privada importada; modalidad y opciones quedan en "Opciones avanzadas" de Estudios.
+- Los errores se marcan de las dos formas (texto `[ERROR: ...]` y campo `error`), y el análisis excluye ambas.
+
 ## Límites y evaluación
 
 Los tests verifican conservación de atributos conjuntos, ponderación, determinismo, muestras pequeñas, lectura de JSON anterior, validación e integración con ejecución. No prueban que la salida del LLM coincida con personas reales: falta evaluación conductual con el proveedor y una referencia empírica.

@@ -10,9 +10,9 @@ Cambios clave:
 
 import random
 from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from app.domain.models import ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
+from app.domain.models import ArquetipoPersona, ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
 from app.storage.evidence_repository import identity_for
 
 
@@ -37,22 +37,19 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
     personas: List[PersonaSintetica] = []
     rng = random.Random(universo.id)  # Seed determinista
 
-    # En los diseños nuevos, mayores restos conserva el total exacto sin
+    # En los diseños con arquetipos, mayores restos conserva el total exacto sin
     # sobreasignar segmentos pequeños ni dar personas a segmentos con peso 0.
     counts = None
     if any(p.arquetipos for p in perfiles):
-        cuotas = [universo.cantidad_personas * p.porcentaje / total_pct for p in perfiles]
-        counts = [int(cuota) for cuota in cuotas]
-        orden = sorted(range(len(perfiles)), key=lambda i: cuotas[i] - counts[i], reverse=True)
-        for i in orden[:universo.cantidad_personas - sum(counts)]:
-            counts[i] += 1
+        counts = _largest_remainder(universo.cantidad_personas, [p.porcentaje for p in perfiles])
 
     # Distribuir personas por perfil (camino anterior sin cambios para legacy).
     for index, perfil in enumerate(perfiles):
+        if perfil.porcentaje <= 0:
+            continue  # Un grupo puesto en 0% a mano no aporta personas.
         count = counts[index] if counts is not None else max(1, round(universo.cantidad_personas * (perfil.porcentaje / total_pct)))
-        for _ in range(count):
-            persona = _build_persona(universo, perfil, rng)
-            personas.append(persona)
+        for arquetipo in _archetype_sequence(perfil, count, rng):
+            personas.append(_build_persona(universo, perfil, rng, arquetipo))
 
     # Ajustar al total exacto (puede haber diferencia por redondeo)
     while len(personas) > universo.cantidad_personas:
@@ -113,12 +110,47 @@ SAMPLED_FIELDS = list(GENERIC_ATTRIBUTES.keys())
 OPTIONAL_FIELDS = ["objetivo"]
 
 
-def _build_persona(universo: Universo, perfil: PerfilCliente, rng: random.Random) -> PersonaSintetica:
-    """Construye una persona sintética sorteando atributos del perfil (o genéricos)."""
-    if perfil.arquetipos:
-        # Un solo sorteo conserva los vínculos entre atributos. El camino legacy
-        # mantiene su secuencia de RNG para reproducir las audiencias anteriores.
-        arquetipo = rng.choices(perfil.arquetipos, weights=[a.peso for a in perfil.arquetipos], k=1)[0]
+def _largest_remainder(total: int, weights: List[float]) -> List[int]:
+    """Reparte `total` según `weights` sumando exactamente `total`."""
+    suma = sum(w for w in weights if w > 0)
+    if suma <= 0:
+        return [0] * len(weights)
+    cuotas = [total * max(w, 0) / suma for w in weights]
+    counts = [int(cuota) for cuota in cuotas]
+    orden = sorted(range(len(weights)), key=lambda i: cuotas[i] - counts[i], reverse=True)
+    for i in orden[:total - sum(counts)]:
+        counts[i] += 1
+    return counts
+
+
+def _archetype_sequence(perfil: PerfilCliente, count: int, rng: random.Random) -> List[Optional[ArquetipoPersona]]:
+    """Arquetipos para las `count` personas de un perfil.
+
+    Cada arquetipo recibe personas en proporción a su peso (mayores restos),
+    así ninguno con peso queda afuera por azar; el orden se mezcla. Sin
+    arquetipos no usa el rng, para reproducir las audiencias legacy.
+    """
+    if not perfil.arquetipos:
+        return [None] * count
+    cantidades = _largest_remainder(count, [a.peso for a in perfil.arquetipos])
+    secuencia = [a for a, n in zip(perfil.arquetipos, cantidades) for _ in range(n)]
+    rng.shuffle(secuencia)
+    return secuencia
+
+
+def _build_persona(
+    universo: Universo,
+    perfil: PerfilCliente,
+    rng: random.Random,
+    arquetipo: Optional[ArquetipoPersona] = None,
+) -> PersonaSintetica:
+    """Construye una persona sintética.
+
+    Con arquetipo, copia la combinación completa; los campos que el arquetipo
+    no trae quedan vacíos en vez de sortearse, para no inventar datos. Sin
+    arquetipo, sortea cada atributo del perfil (o los genéricos) por separado.
+    """
+    if arquetipo is not None:
         return PersonaSintetica(
             persona_id="", persona_numero=0,
             universo_id=universo.id, universo_nombre=universo.nombre,

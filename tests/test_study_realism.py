@@ -45,42 +45,35 @@ class StudyResponseTests(TestCase):
         for value in ("Usuario final", "No decide compras", "Panadería en Rosario", "Empleado", "Nuevo software"):
             self.assertIn(value, prompt)
 
-    def test_execution_uses_policy_and_saves_structured_uncertainty(self):
+    def _execute(self, personas, engine, pregunta="Q", contexto=""):
         from app.pages import estudios
-        ui = mock.MagicMock()
-        ui.session_state = {"est_stop_flag": False}
-        ui.empty.return_value.button.return_value = False
-        ui.button.return_value = False
+        estudio = Estudio(id="s", universo_id="u", universo_nombre="U", titulo="T",
+                          pregunta=pregunta, contexto=contexto, simulation_version="realism_v2")
+        with mock.patch.object(estudios, "st", mock.MagicMock()), mock.patch.object(estudios, "session_store", return_value=None), \
+             mock.patch.object(estudios, "save_study"), mock.patch.object(estudios, "save_study_results") as save:
+            estudios._execute_study(estudio, personas, engine)
+        return save.call_args.args[1][0]
+
+    def test_execution_uses_policy_and_saves_structured_uncertainty(self):
         engine = mock.MagicMock()
-        engine.is_ready.return_value = True
         engine.generate.return_value = response()
-        with mock.patch.object(estudios, "st", ui), mock.patch.object(estudios, "LLMService", return_value=engine), \
-             mock.patch.object(estudios, "save_study"), mock.patch.object(estudios, "save_study_results") as save, \
-             mock.patch.object(estudios, "set"):
-            estudios._execute_study(Universo("u", "U", "brief", 1),
-                                     [{"persona_id": "P_1", "perfil": "A", "notas": "Sin presupuesto"}],
-                                     "T", "¿Comprarías?", "Oferta", 1, None)
-        ui.error.assert_not_called()
-        saved = save.call_args.args[1][0]
+        saved = self._execute([{"persona_id": "P_1", "perfil": "A", "notas": "Sin presupuesto"}], engine,
+                              pregunta="¿Comprarías?", contexto="Oferta")
         self.assertEqual("no_se", saved.intent)
         self.assertIn("Sin presupuesto", engine.generate.call_args.kwargs["system_prompt"])
 
     def test_execution_records_malformed_json_as_error(self):
-        from app.pages import estudios
-        ui = mock.MagicMock()
-        ui.session_state = {"est_stop_flag": False}
-        ui.empty.return_value.button.return_value = False
-        ui.button.return_value = False
         engine = mock.MagicMock()
         engine.generate.return_value = {"_raw": "No es JSON", "_error": "bad json"}
-        with mock.patch.object(estudios, "st", ui), mock.patch.object(estudios, "LLMService", return_value=engine), \
-             mock.patch.object(estudios, "save_study"), mock.patch.object(estudios, "save_study_results") as save, \
-             mock.patch.object(estudios, "set"):
-            estudios._execute_study(Universo("u", "U", "brief", 1), [{"persona_id": "P_1"}], "T", "Q", "", 1, None)
-        ui.error.assert_not_called()
-        saved = save.call_args.args[1][0]
+        saved = self._execute([{"persona_id": "P_1"}], engine)
         self.assertTrue(saved.respuesta.startswith("[ERROR:"))
+        self.assertTrue(saved.error)
         self.assertEqual("", saved.intent)
+
+    def test_real_data_columns_reach_prompt(self):
+        prompt = build_system_prompt({"perfil": "A", "datos_reales": {"Barrio": "Palermo", "Vacía": " "}})
+        self.assertIn("Palermo", prompt)
+        self.assertNotIn("Vacía", prompt)
 
 
 class AnalysisValidityTests(TestCase):
