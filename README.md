@@ -45,13 +45,13 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
 ### 2. Estudio (una pregunta a cada persona)
 
 1. Elegís una audiencia ya expandida, escribís título, **pregunta** y **contexto** (qué se les muestra o en qué situación están).
-2. Configurás la muestra: cuántas personas usar (por defecto hasta 120) y cuántas respuestas por persona (1 a 5).
-3. Al ejecutar, `estudios.py` recorre las personas **de a una, en secuencia**. Para cada una:
+2. La muestra usa hasta 50 personas por defecto. La modalidad **Automática** activa dos rondas: cada participante responde por separado y luego vuelve a responder tras leer las opiniones iniciales de hasta dos vecinos. Con una sola persona, responde de forma independiente. En Opciones avanzadas podés cambiar la muestra o elegir encuesta independiente (1 a 5 respuestas por persona) o entrevista con seguimiento.
+3. Al ejecutar, `simulation_service` recorre las personas **de a una, en secuencia**, en cada ronda. Para cada una:
    - `study_response_service` arma un *system prompt* con perfil, notas y contexto operativo. Integra una política de coherencia que permite dudas o desinterés, pide no inventar presupuestos ni experiencias y distingue el estímulo de hechos demostrados.
    - Pide un **JSON** con `response_text`, `sentiment`, `intent`, `main_objection`, `main_driver`, `confidence`, `price_sensitivity` y `quote`. Intención admite `no_se`, `no_aplica` e `indiferente`; driver y objeción pueden quedar vacíos.
    - Valida campos y categorías antes de guardar `RespuestaEstudio`. Si el modelo falla o el contrato es inválido, registra `[ERROR: ...]` y sigue. Las citas ajenas a la respuesta se sustituyen por un fragmento del texto.
-4. Hay un botón para **detener** el estudio a mitad de camino; las respuestas obtenidas hasta ese momento se guardan igual.
-5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`). Nuevas corridas registran `simulation_version="realism_v1"`; anteriores cargan como `legacy`. Las repeticiones siguen siendo respuestas independientes, sin memoria conversacional.
+4. Se guardan checkpoints cada diez respuestas y al terminar.
+5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`). Nuevas corridas registran `simulation_version="realism_v2"`; anteriores cargan como `legacy`. Resultados muestra primero la ronda tras interacción y permite comparar con la respuesta inicial; si todavía no hay respuestas finales válidas, muestra la inicial. Las encuestas independientes y las herramientas de validación mantienen respuestas sin intercambio entre participantes.
 
 ### 3. Resultados (reglas y análisis opcional con IA)
 
@@ -71,7 +71,7 @@ El botón **Analizar respuestas con IA** agrega un análisis opcional por chunks
 
 Todas pasan por `LLMService.generate()`:
 
-- En cada request, `llm_routing.resolve_provider()` decide si usar **Ollama local** u **OpenRouter** según `LLM_PROVIDER` y el horario.
+- En cada request se intenta **Ollama local** a toda hora. Si no completa la respuesta en 60 segundos o falla, se usa **OpenRouter** como respaldo.
 - Cada proveedor se reintenta hasta 3 veces con espera exponencial (1 s, 2 s).
 - Si estaba en horario local y Ollama falla, hace **fallback automático a OpenRouter**.
 - La respuesta se parsea como JSON (también si viene envuelta en un bloque ` ```json `); si no se puede parsear, se usa el texto crudo.
@@ -87,7 +87,7 @@ Todas pasan por `LLMService.generate()`:
 
 ## Realismo y relación con MiroFish
 
-La dirección de desarrollo toma como referencia perfiles, memoria, evidencia de origen e interacción de agentes de [MiroFish](https://github.com/666ghj/MiroFish). Predikpedia hoy ejecuta estudios de respuestas individuales; no ejecuta OASIS ni una red social de agentes.
+La dirección de desarrollo toma como referencia perfiles, memoria, evidencia de origen e interacción de agentes de [MiroFish](https://github.com/666ghj/MiroFish). Predikpedia ejecuta dos rondas de interacción entre participantes por defecto en los estudios nuevos de la interfaz. Cada participante puede mantener o cambiar su opinión; no se exige consenso. No ejecuta OASIS.
 
 Esta primera etapa conserva atributos vinculados y permite incertidumbre. No demuestra precisión predictiva: una población grande reutiliza un número limitado de arquetipos y requiere contraste con datos reales. Alcance, pruebas y siguientes etapas: [docs/REALISMO.md](docs/REALISMO.md).
 
@@ -139,10 +139,10 @@ Necesita `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `NEXT_PUB
 
 | Variable | Uso |
 |---|---|
-| `LLM_PROVIDER` | `schedule` (por defecto), `local` u `openrouter`. |
-| `LLM_SCHEDULE_TIMEZONE`, `LLM_LOCAL_START`, `LLM_LOCAL_END` | Franja horaria en la que se usa el modelo local (por defecto 09:30–17:30, Buenos Aires). |
+| `LLM_PROVIDER` | `local` (por defecto, 24/7 con respaldo OpenRouter), `openrouter` o `schedule`. |
+| `LLM_SCHEDULE_TIMEZONE`, `LLM_LOCAL_START`, `LLM_LOCAL_END` | Solo para el modo opcional `schedule` (por defecto 09:30–17:30, Buenos Aires). |
 | `LLM_LOCAL_BASE_URL`, `LLM_LOCAL_MODEL`, `LLM_LOCAL_API_KEY` | Endpoint compatible con OpenAI de Ollama (directo en la LAN o vía relay/túnel). |
-| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Proveedor fuera de la franja local (por defecto `google/gemini-2.5-flash-lite`). |
+| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Respaldo si Ollama tarda más de 60 segundos o falla (por defecto `google/gemini-2.5-flash-lite`). |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | Persistencia remota. Sin ellas, se usa almacenamiento local. |
 | `PREDIKPEDIA_DATA_DIR` | Carpeta de datos local (sobrescribe `settings.json`). |
 | `PREDIKPEDIA_DEFAULT_USER` | Usuario local al abrir Streamlit sin `uid` (por defecto `demo_user`). |
@@ -151,13 +151,19 @@ Ver `.env.example` y `.env.relay.example`.
 
 ## Rotación de LLM (Ollama local ↔ OpenRouter)
 
-Con `LLM_PROVIDER=schedule`, el proveedor se decide en cada request: dentro de la franja horaria se usa Ollama (`qwen2.5:32b`) y fuera de ella, OpenRouter. Para que Render llegue al Ollama local, se levanta un relay autenticado y un Cloudflare Quick Tunnel con:
+Con `LLM_PROVIDER=local`, cada respuesta se intenta con Ollama (`qwen2.5:32b`) sin restricción horaria. Se hace un único intento local con un límite total de 60 segundos, incluso si el llamador pide un timeout mayor. Al vencer ese plazo o ante un error local, se cancela la solicitud y se envían los mismos prompts a OpenRouter. La próxima respuesta vuelve a intentar Ollama. OpenRouter conserva el timeout y los intentos solicitados por el llamador; su tiempo se suma al intento local. Para que Render llegue al Ollama local, se levanta un relay autenticado y un Cloudflare Quick Tunnel con:
 
 ```powershell
 .\scripts\start_llm_relay_and_tunnel.ps1
 ```
 
 El supervisor actualiza `LLM_LOCAL_BASE_URL` en Render cuando cambia la URL del túnel. El detalle está en [docs/LLM_ROTATION.md](docs/LLM_ROTATION.md).
+
+## Audiencias con evidencia pública (local)
+
+Desde **Inicio → Preparar con evidencia pública** o **Estudios**, podés empezar por una pregunta y público. La app busca fuentes sin API paga, revisa cobertura y citas, muestra los vacíos y permite crear una audiencia solo cuando los aspectos centrales tienen respaldo. Los documentos y diagnósticos quedan en almacenamiento privado local; Resultados permite exportar el expediente utilizado.
+
+Iniciá con `scripts/start_private_app.ps1` y configurá un modelo de texto instalado en Ollama. Este recorrido usa únicamente Ollama, sin fallback a OpenRouter, e inicia con encuesta independiente y 50 participantes. Las 1000 respuestas quedan para una evaluación posterior. Configuración, reglas y límites: [docs/EVIDENCIA_PUBLICA.md](docs/EVIDENCIA_PUBLICA.md).
 
 ## Tests
 

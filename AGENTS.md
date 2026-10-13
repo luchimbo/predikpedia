@@ -13,10 +13,10 @@
 - `config.py`: rutas de datos. Prioridad: `PREDIKPEDIA_DATA_DIR` > `settings.json` en la raiz > `./data/`. `set_user()` cambia a `data/<user_id>/`.
 - `state.py`: claves y defaults de `st.session_state`.
 - `navigation.py`: sidebar y `NAV_OPTIONS` (Inicio, Audiencias, Estudios, Resultados, Configuracion).
-- `pages/`: una pagina por pantalla. `audiencias.py` (wizard 2 pasos: describir o subir datos reales, y revisar con % por grupo editable), `estudios.py` (una sola pantalla; guarda respuestas incrementalmente y navega a Resultados), `resultados.py` (resumen del estudio arriba; preguntas, comparacion y descargas como vistas secundarias). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
+- `pages/`: una pagina por pantalla. `audiencias.py` (wizard 2 pasos: describir o subir datos reales, y revisar con % por grupo editable), `estudios.py` (una sola pantalla; guarda respuestas incrementalmente y navega a Resultados), `resultados.py` (resumen del estudio arriba; validacion, preguntas, comparacion y descargas como vistas secundarias). `validacion.py` compara un estudio con pregunta cerrada (`Estudio.opciones`) contra un resultado real (`Benchmark`). `biblioteca.py`, `preguntas.py` y `reportes.py` son vistas auxiliares.
 - `domain/`: `models.py` (`Universo`, `PerfilCliente`, etc.), `templates.py` (templates de estudio), `coherence_engine.py`.
-- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `audience_design_service.py` (la IA escribe grupos con arquetipos: personas completas y coherentes), `universe_service.py` (expansion: copia arquetipos enteros; audiencias viejas sin arquetipos sortean cada atributo por separado), `population_import_service.py` (audiencias desde un CSV/Excel real: una persona por fila, con mapeo de columnas y descarte de datos personales), `analysis_service.py`, `credits_service.py`.
-- `storage/repository.py`: CRUD de universos, estudios y resultados. Usa Supabase si hay `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL`; si no, filesystem local.
+- `services/`: `llm_routing.py` (eleccion de proveedor), `llm_service.py` (cliente LLM), `audience_design_service.py` (la IA escribe grupos con arquetipos: personas completas y coherentes), `universe_service.py` (expansion: copia arquetipos enteros; audiencias viejas sin arquetipos sortean cada atributo por separado), `population_import_service.py` (audiencias desde un CSV/Excel real: una persona por fila, con mapeo de columnas y descarte de datos personales), `analysis_service.py`, `calibration_service.py` (error simulado vs. real en pp: MAE, TVD y margen por azar, total y por grupo), `credits_service.py`.
+- `storage/repository.py`: CRUD de universos, estudios, resultados y benchmarks. Usa Supabase si hay `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL`; si no, filesystem local.
 
 ## Comandos verificados
 
@@ -33,8 +33,8 @@
 - El repo trae `.venv/` y `node_modules/` locales; excluilos de busquedas y ediciones porque contaminan `glob`/`grep`.
 - `requirements.txt` incluye `pandas` y `openpyxl` (lectura de Excel en Audiencias).
 - El proveedor LLM ya no se elige por prefijo de clave. Lo decide `app/services/llm_routing.py` en cada request:
-  - `LLM_PROVIDER=schedule` (default): Ollama local entre `LLM_LOCAL_START` (inclusive) y `LLM_LOCAL_END` (exclusiva) en `LLM_SCHEDULE_TIMEZONE`; OpenRouter fuera de esa franja.
-  - `LLM_PROVIDER=local` u `openrouter` fuerzan el proveedor.
+  - `LLM_PROVIDER=local` (default): Ollama a toda hora, un intento de hasta 60 segundos por respuesta; si supera el plazo o falla, respaldo OpenRouter. La siguiente respuesta vuelve a intentar Ollama.
+  - `LLM_PROVIDER=openrouter` fuerza OpenRouter. `schedule` sigue disponible como modo opcional entre `LLM_LOCAL_START` (inclusive) y `LLM_LOCAL_END` (exclusiva) en `LLM_SCHEDULE_TIMEZONE`.
   - Local: `LLM_LOCAL_BASE_URL`, `LLM_LOCAL_MODEL`, `LLM_LOCAL_API_KEY`. OpenRouter: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`.
 - Render llega al Ollama local con `tools/ollama_relay.py` + Cloudflare Quick Tunnel (`scripts/start_llm_relay_and_tunnel.ps1`, `tools/supervise_quick_tunnel.py`). Ver `docs/LLM_ROTATION.md`.
 - Secretos locales: `.env` y `.env.relay.local`, ambos ignorados. Nunca commitear claves reales.
@@ -42,7 +42,7 @@
 ## Persistencia y rutas
 
 - Al abrir Streamlit directo (sin `?uid=`), la app fuerza storage local con el usuario `PREDIKPEDIA_DEFAULT_USER` (default `demo_user`) y datos en `data/demo_user/`.
-- Con `?uid=` desde el portal, usa Supabase Storage en `predikpedia-data/{user_id}/{universos,universos/expansiones,estudios,resultados}/*.json`.
+- Con `?uid=` desde el portal, usa Supabase Storage en `predikpedia-data/{user_id}/{universos,universos/expansiones,estudios,resultados,benchmarks}/*.json`.
 - `data/<user_id>/` esta versionado en el repo.
 - `app/domain/models.py` serializa directo a JSON; cambiar nombres de campos rompe compatibilidad con datos ya guardados (locales y en Supabase).
 

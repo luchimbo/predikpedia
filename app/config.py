@@ -54,6 +54,7 @@ class PredikpediaConfig:
         self.expansions_dir = self.universes_dir / "expansiones"
         self.studies_dir = self.data_dir / "estudios"
         self.results_dir = self.data_dir / "resultados"
+        self.benchmarks_dir = self.data_dir / "benchmarks"
         self.ledger_file = self.data_dir / "credits_ledger.json"
 
     def set_user(self, user_id: str):
@@ -63,6 +64,7 @@ class PredikpediaConfig:
         self.expansions_dir = self.universes_dir / "expansiones"
         self.studies_dir = self.data_dir / "estudios"
         self.results_dir = self.data_dir / "resultados"
+        self.benchmarks_dir = self.data_dir / "benchmarks"
         self.ledger_file = self.data_dir / "credits_ledger.json"
         self.ensure_directories()
 
@@ -74,6 +76,7 @@ class PredikpediaConfig:
             self.expansions_dir,
             self.studies_dir,
             self.results_dir,
+            self.benchmarks_dir,
         ):
             path.mkdir(parents=True, exist_ok=True)
 

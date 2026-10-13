@@ -25,6 +25,10 @@ STATE_KEYS = {
     "tmp_expansion_personas": [],
     "tmp_study_results": [],
     "tmp_last_study": None,
+    "public_research_mode": False,
+    "research_project_id": "",
+    "est_public_snapshot": "",
+    "est_public_universe_id": "",
 }
 
 

@@ -19,6 +19,7 @@ from app.components.shell import render_empty_state, render_page_intro, render_s
 from app.domain.models import Estudio, RespuestaEstudio, Universo
 from app.services.llm_service import LLMService
 from app.services.simulation_service import planned_tasks, run_simulation
+from app.services.study_response_service import normalize_option
 from app.services.universe_service import build_expansion_snapshot, expand_universe
 from app.state import go_to_page
 from app.storage.repository import (
@@ -31,6 +32,10 @@ from app.storage.repository import (
 
 DEFAULT_SAMPLE = 50
 SAVE_EVERY = 10
+# Con temperature 1 el muestreo respeta las probabilidades del modelo: bajarla homogeneiza
+# las respuestas y achata la distribución que después se compara con una encuesta real.
+STUDY_TEMPERATURE = 1.0
+MAX_OPTIONS = 12
 MODES = {
     "survey": "Encuesta independiente",
     "interview": "Entrevista con seguimiento",
@@ -64,11 +69,16 @@ def _personas_for(universo: Universo) -> List[Dict[str, Any]]:
     return list(snapshot.personas)
 
 
-def _render_mode_options() -> Dict[str, Any]:
+def _render_mode_options(sample_size: int) -> Dict[str, Any]:
     """Modalidad del estudio y sus opciones. Devuelve la configuración elegida."""
-    mode = st.selectbox("Modalidad", list(MODES), format_func=MODES.get, key="est_mode")
-    config: Dict[str, Any] = {"mode": mode, "memory_enabled": False, "follow_up": [], "social_seed": 42}
+    choices = {"auto": "Automática", **MODES}
+    selected = st.selectbox("Modalidad", list(choices), format_func=choices.get, key="est_mode")
+    automatic = selected == "auto"
+    mode = ("social" if sample_size >= 2 else "survey") if automatic else selected
+    config: Dict[str, Any] = {"mode": mode, "automatic": automatic, "memory_enabled": False, "follow_up": [], "social_seed": 42}
     if mode == "survey":
+        if automatic:
+            st.caption("Con una sola persona, la respuesta es independiente. Con dos o más, se activa la interacción automáticamente.")
         st.caption("Cada repetición responde sin ver respuestas anteriores ni opiniones de otros agentes.")
         return config
 
@@ -113,11 +123,20 @@ def _execute_study(estudio: Estudio, personas: List[Dict[str, Any]], engine: LLM
 
 def render_estudios_page():
     """Renderiza la página de estudios en una sola pantalla."""
+    if st.session_state.get("public_research_mode", False):
+        from app.components.public_research import render_public_research
+        render_public_research()
+        return
     render_page_intro(
         "Estudios",
         "Hacé una pregunta a tu audiencia",
         "Elegí a quién preguntarle, escribí la pregunta y ejecutá. Al terminar vas directo a los resultados.",
     )
+
+    if st.session_state.get("private_storage_available", False):
+        if st.button("Preparar con evidencia pública", key="est_prepare_public"):
+            st.session_state["public_research_mode"] = True
+            st.rerun()
 
     universos = list_universes()
     if not universos:
@@ -149,6 +168,30 @@ def render_estudios_page():
         format_func=lambda uid: f"{by_id[uid].nombre} · {by_id[uid].cantidad_personas} personas",
     )
     universo = by_id[universe_id]
+    research_snapshot_id = universo.research_snapshot_id
+    if research_snapshot_id:
+        store = session_store()
+        if not store:
+            st.warning("Esta audiencia requiere su expediente local. Iniciá scripts/start_private_app.ps1 en el equipo de origen.")
+            return
+        from app.storage.research_repository import ResearchRepository
+        repo = ResearchRepository(store)
+        if st.session_state.get("est_public_universe_id") == universo.id:
+            research_snapshot_id = st.session_state.get("est_public_snapshot") or research_snapshot_id
+        snapshot = repo.get_snapshot(research_snapshot_id)
+        if not snapshot:
+            st.error("Falta el expediente de evidencia de esta audiencia en este equipo.")
+            return
+        if st.session_state.get("est_public_previous_audience") != universo.id:
+            from app.domain.research_models import ResearchBrief
+            brief = ResearchBrief(**snapshot["project"]["brief"])
+            st.session_state.update(est_pregunta=brief.question, est_contexto=brief.participant_stimulus,
+                                    est_mode="survey", est_rpp=1, est_memory=False,
+                                    est_tipo="cerrada" if brief.options else "abierta", est_opciones="\n".join(brief.options))
+        engine = LLMService(local_only=True)
+        llm_ready = engine.is_ready()
+        st.caption("Esta audiencia usa evidencia pública guardada y responde exclusivamente con Ollama.")
+    st.session_state["est_public_previous_audience"] = universo.id if research_snapshot_id else ""
     if universo.descripcion:
         st.caption(universo.descripcion[:240] + ("..." if len(universo.descripcion) > 240 else ""))
     if universo.evidence_source_ids and not st.session_state.get("private_storage_available", False):
@@ -163,6 +206,30 @@ def render_estudios_page():
         height=100,
         placeholder="Ej: ¿Qué te haría cambiar de proveedor de harina? ¿Qué te frena hoy?",
     )
+    tipo = st.radio(
+        "Tipo de respuesta",
+        ["abierta", "cerrada"],
+        format_func={"abierta": "Abierta (cada uno responde con sus palabras)",
+                     "cerrada": "Cerrada (eligen una opción)"}.get,
+        key="est_tipo",
+        horizontal=True,
+        help="Con opciones, el resultado es un % por opción y se puede comparar contra una encuesta real en Resultados → Validación.",
+    )
+    opciones: List[str] = []
+    if tipo == "cerrada":
+        raw_opciones = st.text_area(
+            "Opciones (una por línea)",
+            key="est_opciones",
+            height=110,
+            placeholder="Milei\nKicillof\nOtro\nNo sabe",
+            help="Si vas a comparar con una encuesta real, usá las mismas opciones que tuvo, incluido 'No sabe' si estaba.",
+        )
+        # "No sabe" y "no sabé" son la misma opción para el modelo: se queda la primera.
+        unicas: Dict[str, str] = {}
+        for line in raw_opciones.splitlines():
+            if normalize_option(line):
+                unicas.setdefault(normalize_option(line), line.strip())
+        opciones = list(unicas.values())
     contexto = st.text_area(
         "Contexto (opcional)",
         key="est_contexto",
@@ -177,7 +244,6 @@ def render_estudios_page():
     )
 
     with st.expander("Opciones avanzadas"):
-        config = _render_mode_options()
         max_personas = max(1, universo.cantidad_personas)
         limite = st.number_input(
             "Cantidad de personas que responden",
@@ -187,13 +253,14 @@ def render_estudios_page():
             key=f"est_limite_{universo.id}",
             help="Más personas = resultados más estables, pero tarda más.",
         )
+        config = _render_mode_options(int(limite))
         rpp = 1
         if config["mode"] == "survey":
             rpp = int(st.number_input(
                 "Respuestas por persona",
                 min_value=1,
                 max_value=5,
-                value=1,
+                value=None if "est_rpp" in st.session_state else 1,
                 key="est_rpp",
                 help="Pedirle más de una respuesta a cada persona sirve para ver cuánto varía.",
             ))
@@ -210,12 +277,20 @@ def render_estudios_page():
         f"Le vas a preguntar a **{int(limite)} personas** de **{universo.nombre}** "
         f"({total} respuestas en total · {MODES[mode].lower()}).",
     )
+    if mode == "social":
+        st.caption("Cada participante responde, lee las opiniones iniciales de hasta dos vecinos y vuelve a responder. El resultado muestra la ronda final.")
     if not llm_ready:
         st.warning("No hay un modelo de IA disponible. Revisá la configuración antes de ejecutar.")
 
     if st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary", disabled=not llm_ready):
         if not pregunta.strip():
             st.error("Escribí la pregunta del estudio.")
+            return
+        if tipo == "cerrada" and not 2 <= len(opciones) <= MAX_OPTIONS:
+            st.error(f"Escribí entre 2 y {MAX_OPTIONS} opciones distintas, una por línea.")
+            return
+        if tipo == "cerrada" and mode == "interview":
+            st.error("Las preguntas cerradas funcionan en encuesta o interacción. Cambiá la modalidad en Opciones avanzadas.")
             return
         if len(config["follow_up"]) > 4:
             st.error("La entrevista admite hasta cuatro preguntas de seguimiento. Reducí la lista para continuar.")
@@ -229,6 +304,10 @@ def render_estudios_page():
             st.error(f"No se pudieron preparar las personas de la audiencia: {exc}")
             return
 
+        # El snapshot puede tener menos personas que la cantidad declarada.
+        if config["automatic"] and len(personas) < 2:
+            mode = plan.mode = "survey"
+
         estudio = Estudio(
             id=_new_study_id(universo.id),
             universo_id=universo.id,
@@ -241,9 +320,13 @@ def render_estudios_page():
             respuestas_planeadas=planned_tasks(plan, len(personas)),
             simulation_version="realism_v2",
             mode=mode,
-            memory_enabled=config["memory_enabled"],
+            memory_enabled=config["memory_enabled"] if mode != "survey" else False,
             follow_up_questions=config["follow_up"],
             social_seed=config["social_seed"],
+            opciones=opciones,
+            temperature=STUDY_TEMPERATURE,
+            research_snapshot_id=research_snapshot_id,
+            local_only=bool(research_snapshot_id),
         )
         try:
             respuestas = _execute_study(estudio, personas, engine)

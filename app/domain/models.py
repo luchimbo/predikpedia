@@ -4,7 +4,7 @@ app/domain/models.py — Entidades del dominio Predikpedia.
 
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 def _now_iso() -> str:
@@ -148,6 +148,7 @@ class Universo:
     fuente: str = ""
     created_at: str = field(default_factory=_now_iso)
     evidence_source_ids: List[str] = field(default_factory=list)
+    research_snapshot_id: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -161,6 +162,7 @@ class Universo:
             "fuente": self.fuente,
             "created_at": self.created_at,
             "evidence_source_ids": self.evidence_source_ids,
+            "research_snapshot_id": self.research_snapshot_id,
         }
 
     @classmethod
@@ -177,6 +179,7 @@ class Universo:
             fuente=str(data.get("fuente", "")).strip(),
             created_at=str(data.get("created_at", _now_iso())),
             evidence_source_ids=list(data.get("evidence_source_ids") or []),
+            research_snapshot_id=str(data.get("research_snapshot_id") or ""),
         )
 
 
@@ -199,6 +202,15 @@ class Estudio:
     follow_up_questions: List[str] = field(default_factory=list)
     social_seed: int = 42
     interaction_graph: Dict[str, List[str]] = field(default_factory=dict)
+    # Pregunta cerrada: cada persona elige una de estas opciones. Vacío = pregunta abierta.
+    opciones: List[str] = field(default_factory=list)
+    # Temperature pedida al modelo; None = la del proveedor (estudios viejos).
+    temperature: Optional[float] = None
+    # "eleccion": cada persona elige una opción. "probabilidades": el modelo da el % de cada
+    # opción para alguien con ese perfil y la opción se sortea (conserva la dispersión del grupo).
+    modo_cerrada: str = "eleccion"
+    research_snapshot_id: str = ""
+    local_only: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -222,6 +234,11 @@ class Estudio:
             follow_up_questions=list(data.get("follow_up_questions") or []),
             social_seed=int(data.get("social_seed", 42)),
             interaction_graph=dict(data.get("interaction_graph") or {}),
+            opciones=[str(o).strip() for o in data.get("opciones") or [] if str(o).strip()],
+            temperature=float(data["temperature"]) if data.get("temperature") is not None else None,
+            modo_cerrada=str(data.get("modo_cerrada") or "eleccion"),
+            research_snapshot_id=str(data.get("research_snapshot_id") or ""),
+            local_only=data.get("local_only") is True,
         )
 
 
@@ -254,6 +271,8 @@ class RespuestaEstudio:
     exposure_ids: List[str] = field(default_factory=list)
     llm_metadata: Dict[str, Any] = field(default_factory=dict)
     error: str = ""  # Mensaje del proveedor si la llamada falló; la respuesta no es válida
+    opcion_elegida: str = ""  # Opción elegida en preguntas cerradas (texto exacto de Estudio.opciones)
+    probabilidades: Dict[str, float] = field(default_factory=dict)  # % por opción (modo "probabilidades")
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -286,6 +305,56 @@ class RespuestaEstudio:
             exposure_ids=list(data.get("exposure_ids") or []),
             llm_metadata=dict(data.get("llm_metadata") or {}),
             error=str(data.get("error", "")).strip(),
+            opcion_elegida=str(data.get("opcion_elegida", "")).strip(),
+            probabilidades={str(k): float(v) for k, v in (data.get("probabilidades") or {}).items()},
+        )
+
+
+@dataclass
+class Benchmark:
+    """Resultado real de una pregunta cerrada, para medir el error de la simulación.
+
+    Las distribuciones van en porcentaje (0-100) por opción.
+    """
+
+    id: str
+    nombre: str
+    pregunta: str
+    opciones: List[str]
+    distribucion: Dict[str, float]
+    n: int
+    # Segmento -> distribución, con el mismo nombre que el grupo de la audiencia.
+    por_segmento: Dict[str, Dict[str, float]] = field(default_factory=dict)
+    n_por_segmento: Dict[str, int] = field(default_factory=dict)
+    segmento_columna: str = ""
+    fuente: str = ""
+    fecha: str = ""  # Fecha de campo de la encuesta real, texto libre
+    estudio_id: str = ""  # Estudio con el que se cargó; vacío = sirve para cualquiera
+    created_at: str = field(default_factory=_now_iso)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Benchmark":
+        def dist(raw: Any) -> Dict[str, float]:
+            return {str(k): float(v) for k, v in raw.items()} if isinstance(raw, dict) else {}
+
+        por_segmento = data.get("por_segmento") or {}
+        return cls(
+            id=str(data.get("id", "")).strip(),
+            nombre=str(data.get("nombre", "")).strip(),
+            pregunta=str(data.get("pregunta", "")).strip(),
+            opciones=[str(o) for o in data.get("opciones") or []],
+            distribucion=dist(data.get("distribucion")),
+            n=int(data.get("n", 0) or 0),
+            por_segmento={str(k): dist(v) for k, v in por_segmento.items()} if isinstance(por_segmento, dict) else {},
+            n_por_segmento={str(k): int(v) for k, v in (data.get("n_por_segmento") or {}).items()},
+            segmento_columna=str(data.get("segmento_columna", "")),
+            fuente=str(data.get("fuente", "")),
+            fecha=str(data.get("fecha", "")),
+            estudio_id=str(data.get("estudio_id", "")),
+            created_at=str(data.get("created_at", _now_iso())),
         )
 
 

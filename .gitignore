@@ -34,3 +34,6 @@ Thumbs.db
 # Salidas sueltas de depuración
 last_prompt.txt
 token_usage_log.json
+
+# Datos con licencia que prohíbe redistribuir (Latinobarómetro): solo locales
+data/privado/

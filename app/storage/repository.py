@@ -10,7 +10,7 @@ import os
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from app.domain.models import Estudio, ExpansionSnapshot, RespuestaEstudio, Universo
+from app.domain.models import Benchmark, Estudio, ExpansionSnapshot, RespuestaEstudio, Universo
 
 _USE_SUPABASE = bool(
     os.getenv("SUPABASE_URL") or os.getenv("NEXT_PUBLIC_SUPABASE_URL")
@@ -244,3 +244,39 @@ def list_results() -> List[str]:
         paths = sorted(paths, reverse=True)
         return [f"supabase://{_uid()}/{p}" for p in paths]
     return _sorted_json_files_local(str(config.results_dir))
+
+
+# ── Benchmarks (resultados reales para validar) ──────────────────────────────
+
+
+def save_benchmark(benchmark: Benchmark) -> str:
+    payload = benchmark.to_dict()
+    if _USE_SUPABASE:
+        _sb.upload_json(_uid(), f"benchmarks/{benchmark.id}.json", payload)
+        return f"supabase://{_uid()}/benchmarks/{benchmark.id}.json"
+    path = os.path.join(str(config.benchmarks_dir), f"{benchmark.id}.json")
+    _write_json_local(path, payload)
+    return path
+
+
+def list_benchmarks() -> List[Benchmark]:
+    if _USE_SUPABASE:
+        results = []
+        for rel in sorted(_sb.list_files(_uid(), "benchmarks"), reverse=True):
+            data = _sb.download_json(_uid(), rel)
+            if data:
+                results.append(Benchmark.from_dict(data))
+        return results
+    return [
+        Benchmark.from_dict(_read_json_local(p))
+        for p in _sorted_json_files_local(str(config.benchmarks_dir))
+    ]
+
+
+def delete_benchmark(benchmark_id: str) -> None:
+    if _USE_SUPABASE:
+        _sb.delete_file(_uid(), f"benchmarks/{benchmark_id}.json")
+        return
+    path = os.path.join(str(config.benchmarks_dir), f"{benchmark_id}.json")
+    if os.path.exists(path):
+        os.remove(path)

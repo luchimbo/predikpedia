@@ -24,6 +24,7 @@ from app.services.analysis_service import (
     social_comparison,
     valid_responses,
 )
+from app.services.calibration_service import simulated_distributions
 from app.services.llm_service import LLMError, LLMService
 from app.state import go_to_page
 from app.storage.repository import list_studies, load_study_results
@@ -49,6 +50,14 @@ def _calcular_stats_cuantitativas(resultados_df: pd.DataFrame) -> str:
     lineas = []
     lineas.append(f"Total de respuestas: {total}")
     
+    # Distribución de opciones (preguntas cerradas)
+    if "opcion_elegida" in resultados_df.columns:
+        option_counts = resultados_df["opcion_elegida"].replace("", pd.NA).dropna().value_counts()
+        if not option_counts.empty:
+            lineas.append("\nOpción elegida:")
+            for option, count in option_counts.items():
+                lineas.append(f"  - {option}: {count} ({count / total * 100:.1f}%)")
+
     # Distribución de intenciones
     if "intent" in resultados_df.columns:
         intent_counts = resultados_df["intent"].value_counts()
@@ -180,9 +189,9 @@ Respondé en español.
 def _run_ai_analysis(estudio, resultados_df: pd.DataFrame) -> str:
     """Ejecuta el análisis con IA usando todas las respuestas, dividiendo en chunks si es necesario."""
     try:
-        engine = LLMService()
+        engine = LLMService(local_only=bool(estudio.research_snapshot_id or estudio.local_only))
         if not engine.is_ready():
-            return "Error: No hay API key configurada. Configurala en Configuración."
+            return "Error: Configurá Ollama para analizar este estudio." if engine.local_only else "Error: No hay API key configurada. Configurala en Configuración."
         
         resultados_df = valid_responses(resultados_df)
         if resultados_df.empty:
@@ -340,13 +349,35 @@ def render_resultados_page():
     )
     _render_study_summary(by_id[study_id])
 
+    if by_id[study_id].research_snapshot_id:
+        from app.components.evidence import session_store
+        from app.storage.research_repository import ResearchRepository
+        from app.domain.research_models import ResearchDocument, ResearchProject
+        from app.components.public_research import render_diagnosis
+        store = session_store()
+        snapshot = ResearchRepository(store).get_snapshot(by_id[study_id].research_snapshot_id) if store else None
+        with st.expander("Fundamento de la audiencia", expanded=True):
+            if snapshot:
+                for assumption in snapshot.get("assumptions", []):
+                    st.caption(assumption)
+                render_diagnosis(ResearchProject.from_dict(snapshot["project"]),
+                                 [ResearchDocument(**d) for d in snapshot["documents"]], key=f"res_evidence_{study_id}")
+                st.download_button("Descargar expediente congelado", json.dumps(snapshot, ensure_ascii=False, indent=2),
+                                   file_name=f"expediente_{study_id}.json", mime="application/json", key=f"res_snapshot_{study_id}")
+            else:
+                st.info("El expediente de evidencia se conserva en el equipo donde se preparó este estudio.")
+
     st.divider()
     render_section_title("Más vistas")
-    tab_questions, tab_compare, tab_library = st.tabs([
+    tab_validation, tab_questions, tab_compare, tab_library = st.tabs([
+        "Validación contra datos reales",
         "Respuestas por pregunta",
         "Comparar estudios",
         "Todos los estudios y descargas",
     ])
+    with tab_validation:
+        from app.pages.validacion import render_validacion_tab
+        render_validacion_tab(by_id[study_id])
     with tab_questions:
         from app.pages.preguntas import render_preguntas_tab
         render_preguntas_tab()
@@ -400,7 +431,9 @@ def _render_study_summary(estudio):
         if not pairs.empty:
             st.dataframe(pairs, use_container_width=True, hide_index=True)
         phase_labels = {"individual": "Respuesta individual inicial", "after_interaction": "Respuesta tras interacción"}
-        selection_key = st.selectbox("Ronda a analizar", list(phase_labels), format_func=phase_labels.get, key=f"res_phase_{estudio.id}")
+        selection_key = st.selectbox("Ronda a analizar", list(phase_labels), format_func=phase_labels.get,
+                                     index=1 if "after_interaction" in resultados_df["phase"].values else 0,
+                                     key=f"res_phase_{estudio.id}")
         resultados_df = resultados_df.loc[resultados_df["phase"] == selection_key].copy()
     elif estudio.mode == "interview":
         questions = [estudio.pregunta, *estudio.follow_up_questions]
@@ -424,6 +457,22 @@ def _render_study_summary(estudio):
 
     report = build_executive_report(analysis_estudio, resultados_df, selection_explicit=True)
     render_soft_panel("En pocas palabras", report["conclusion"])
+
+    # ── Opciones (pregunta cerrada) ──────────────────────────────
+    if estudio.opciones:
+        dist = simulated_distributions(resultados_df, estudio.opciones)
+        if dist["n"]:
+            render_section_title("¿Qué eligieron?")
+            st.bar_chart(pd.Series(dist["total"], name="%").round(1).to_frame(), horizontal=True,
+                         x_label="% de respuestas", y_label="")
+            if len(dist["por_segmento"]) > 1:
+                st.dataframe(
+                    pd.DataFrame(dist["por_segmento"]).T.round(1).reindex(columns=estudio.opciones)
+                    .assign(Respuestas=pd.Series(dist["n_por_segmento"])).rename_axis("Grupo").reset_index(),
+                    use_container_width=True, hide_index=True,
+                )
+            st.caption(f"{dist['n']} respuestas con opción. Para saber si se parece a la realidad, "
+                       "cargá una encuesta real en «Validación contra datos reales» (más abajo).")
 
     # ── Reacciones ───────────────────────────────────────────────
     sentiment_df = _distribution(resultados_df.get("sentiment", pd.Series(dtype=str)), SENTIMENT_LABELS)
@@ -492,8 +541,10 @@ def _render_study_summary(estudio):
     # ── Detalle y descargas ──────────────────────────────────────
     safe_titulo = re.sub(r'[<>\:"/\\|?*]', "_", estudio.titulo or estudio.id)
     with st.expander("Ver todas las respuestas y descargar"):
-        display_df = all_df[["perfil", "sentiment", "intent", "respuesta", "error"]].rename(columns={
-            "perfil": "Grupo", "sentiment": "Reacción", "intent": "Qué haría",
+        detail_cols = ["perfil", *(["opcion_elegida"] if estudio.opciones and "opcion_elegida" in all_df else []),
+                       "sentiment", "intent", "respuesta", "error"]
+        display_df = all_df[detail_cols].rename(columns={
+            "perfil": "Grupo", "opcion_elegida": "Opción", "sentiment": "Reacción", "intent": "Qué haría",
             "respuesta": "Respuesta", "error": "Error",
         })
         st.dataframe(display_df, use_container_width=True, hide_index=True)

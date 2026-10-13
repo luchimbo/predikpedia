@@ -36,7 +36,9 @@ Los tests verifican conservación de atributos conjuntos, ponderación, determin
 
 Cada segmento usa hasta cuatro arquetipos. Muchas personas pueden compartir el mismo perfil: aumentar la población no aumenta automáticamente su diversidad ni reduce sesgos del modelo. Pesos sin datos reales son hipótesis. Los prompts y la validación de campos tampoco detectan todas las contradicciones semánticas.
 
-Las repeticiones de una pregunta siguen siendo independientes. No usan respuestas anteriores ni opiniones de otros agentes: hacerlo cambiaría la modalidad de estudio y podría introducir anclaje o contagio artificial.
+En la modalidad encuesta, las repeticiones de una pregunta siguen siendo independientes. No usan respuestas anteriores ni opiniones de otros agentes.
+
+Desde el 7 de octubre de 2026, los estudios nuevos de la interfaz usan modalidad automática: con dos o más participantes, se genera una respuesta individual inicial y una segunda tras leer las respuestas iniciales de hasta dos vecinos. Con uno solo, se ejecuta una encuesta independiente. Resultados abre la ronda final cuando hay respuestas válidas y conserva la inicial para comparar. La modalidad puede cambiarse en Opciones avanzadas. Los benchmarks mantienen encuesta independiente; la interacción no se considera una mejora de precisión validada y puede introducir anclaje o contagio artificial.
 
 ## Siguientes etapas alineadas con MiroFish
 

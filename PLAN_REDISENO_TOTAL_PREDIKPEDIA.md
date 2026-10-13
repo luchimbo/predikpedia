@@ -1207,3 +1207,7 @@ Si se hace bien, Predikpedia puede pasar de una app dificil de entender a una pl
 Primera etapa funcional alineada con las secciones 13 y 15: arquetipos con atributos vinculados, política de respuesta que permite incertidumbre, validación JSON, exclusión de errores del análisis y versión del motor por estudio.
 
 La referencia es MiroFish. La evolución continúa con evidencia de origen, individualidad persistente, entrevistas con memoria, simulación social opcional y calibración contra datos reales. Alcance y límites: `docs/REALISMO.md`. La implementación actual no integra OASIS ni valida precisión predictiva.
+
+## 27. Audiencias con evidencia pública — 9 de octubre de 2026
+
+Nuevo recorrido local integrado en Inicio, Estudios y Resultados: pregunta y público → investigación → diagnóstico de suficiencia → audiencia → estudio. Mantiene una acción principal por etapa y usa el shell existente. Solo Ollama, búsquedas gratuitas, fuentes trazables, bloqueo por vacíos centrales y snapshots inmutables. La suficiencia documental se distingue de la precisión predictiva; Render y las 1000 respuestas quedan fuera de esta entrega. Detalles: `docs/EVIDENCIA_PUBLICA.md`.

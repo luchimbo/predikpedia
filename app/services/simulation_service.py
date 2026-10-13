@@ -7,7 +7,9 @@ from uuid import NAMESPACE_URL, uuid5
 from app.domain.models import Estudio, RespuestaEstudio
 from app.services.evidence_service import evidence_for_persona, redact_contacts
 from app.services.llm_service import LLMError
-from app.services.study_response_service import build_system_prompt, build_user_prompt, parse_study_response
+from app.services.study_response_service import (
+    CLOSED_MODES, build_system_prompt, build_user_prompt, normalize_option, parse_study_response,
+)
 from app.storage.evidence_repository import EvidenceRepository, identity_for
 
 
@@ -33,6 +35,13 @@ def planned_tasks(study: Estudio, count: int) -> int:
 
 def run_simulation(study: Estudio, personas: list[dict], engine, *, store: EvidenceRepository | None = None,
                    on_response: Callable | None = None, should_stop: Callable | None = None) -> list[RespuestaEstudio]:
+    research_snapshot = None
+    if study.research_snapshot_id:
+        from app.services.public_research_service import validate_research_run
+        research_snapshot = validate_research_run(study, store)
+        from app.services.llm_service import LLMService
+        if isinstance(engine, LLMService) and not engine.local_only:
+            raise ValueError("Este flujo solo puede ejecutar Ollama sin respaldo remoto.")
     if study.mode not in {"survey", "interview", "social"}:
         raise ValueError("La modalidad de estudio no es válida.")
     if not personas or len({p.get("persona_id") for p in personas}) != len(personas) or any(not p.get("persona_id") for p in personas):
@@ -47,6 +56,13 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
         raise ValueError("Las preguntas de seguimiento se usan solo en entrevistas.")
     if len(study.follow_up_questions) > 4 or any(not isinstance(q, str) or not q.strip() for q in study.follow_up_questions):
         raise ValueError("Escribí hasta cuatro preguntas de seguimiento, sin líneas vacías.")
+    if study.opciones and study.mode == "interview":
+        raise ValueError("Las preguntas cerradas se usan en encuestas o interacción, no en entrevistas.")
+    if study.opciones and (len(study.opciones) < 2 or len({normalize_option(o) for o in study.opciones}) != len(study.opciones)
+                           or any(not normalize_option(o) for o in study.opciones)):
+        raise ValueError("Una pregunta cerrada necesita al menos dos opciones distintas.")
+    if study.modo_cerrada not in CLOSED_MODES:
+        raise ValueError("El modo de pregunta cerrada no es válido.")
     if not 1 <= study.respuestas_por_persona <= 5:
         raise ValueError("Elegí entre una y cinco repeticiones.")
     if store is None and (study.memory_enabled or any(p.get("evidence_refs") or p.get("evidence_source_ids") for p in personas)):
@@ -55,6 +71,10 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
     identities = {p["persona_id"]: (store.register_agent(study.universo_id, p) if store else identity_for(study.universo_id, p)) for p in personas}
     # Freeze BEFORE generation: no within-round or order-dependent memory leak.
     evidence = {p["persona_id"]: evidence_for_persona(store, p) if store else [] for p in personas}
+    if research_snapshot:
+        from app.services.public_research_service import evidence_for_research_persona
+        for persona in personas:
+            evidence[persona["persona_id"]].extend(evidence_for_research_persona(research_snapshot, persona))
     for p in personas:
         if store and any(store.source(sid) is None for sid in p.get("evidence_source_ids", [])):
             raise ValueError("Falta una fuente de origen de la audiencia. Recuperá el almacenamiento privado antes de ejecutar.")
@@ -65,7 +85,9 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
     history = {pid: (store.history(identity, exclude_study=study.id) if store and study.memory_enabled else []) for pid, identity in identities.items()}
     if store:
         store.start_run(study.id, {"study": study.to_dict(), "identities": identities,
-                                   "evidence": evidence, "history": history})
+                                   "evidence": evidence, "history": history,
+                                   **({"personas": personas, "research_snapshot_id": study.research_snapshot_id}
+                                      if research_snapshot else {})})
         if store.run_responses(study.id):
             raise ValueError("Esta corrida ya tiene respuestas guardadas. Creá un estudio nuevo para no volver a consultar agentes.")
     answers, baseline = [], {}
@@ -90,8 +112,10 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
                 raise LLMError("No hay respuesta inicial y opiniones válidas de vecinos para esta ronda.")
             system = build_system_prompt(persona, study.contexto, evidence=evidence[pid], memory=local_history,
                                          exposure=peers, mode=study.mode)
-            raw = engine.generate(system_prompt=system, user_prompt=build_user_prompt(question), agent_id=pid, expect_json=True)
-            result = parse_study_response(raw)
+            raw = engine.generate(system_prompt=system,
+                                  user_prompt=build_user_prompt(question, study.opciones, study.modo_cerrada),
+                                  agent_id=pid, expect_json=True, temperature=study.temperature)
+            result = parse_study_response(raw, study.opciones, study.modo_cerrada, seed=response_id)
             text = redact_contacts(result.pop("response_text"))
             # Contacts generated by a model never become portable results or future memory.
             for key in ("quote", "main_objection", "main_driver"):

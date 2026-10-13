@@ -68,6 +68,11 @@ def render_home_page(
         status_text = f"Lista ({provider_label})" if has_api_key else "Falta configurar"
         st.write(f"**IA:** {status_text}")
 
+    if st.session_state.get("private_storage_available", False):
+        if st.button("Preparar con evidencia pública", key="home_public_research", use_container_width=True):
+            st.session_state.update(current_page="Estudios", public_research_mode=True)
+            st.rerun()
+
     # Accesos rápidos
     st.divider()
     st.subheader("Accesos rápidos")
