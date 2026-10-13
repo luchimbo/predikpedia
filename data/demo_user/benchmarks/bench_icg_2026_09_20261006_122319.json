@@ -1,0 +1,58 @@
+{
+  "id": "bench_icg_2026_09_20261006_122319",
+  "nombre": "ICG UTDT · septiembre 2026",
+  "pregunta": "En términos generales, ¿cómo evalúa la gestión del gobierno nacional?",
+  "opciones": [
+    "Muy bien",
+    "Bien",
+    "Regular",
+    "Mal",
+    "Muy mal",
+    "No sabe / no contesta"
+  ],
+  "distribucion": {
+    "Muy bien": 9.047736790927537,
+    "Bien": 22.862060176105306,
+    "Regular": 22.361189581788995,
+    "Mal": 10.945755290445634,
+    "Muy mal": 34.72826277233656,
+    "No sabe / no contesta": 0.05499538839597305
+  },
+  "n": 1000,
+  "por_segmento": {
+    "CABA": {
+      "Muy bien": 8.045977011494253,
+      "Bien": 18.39080459770115,
+      "Regular": 22.41379310344828,
+      "Mal": 14.367816091954023,
+      "Muy mal": 36.20689655172414,
+      "No sabe / no contesta": 0.5747126436781609
+    },
+    "Conurbano bonaerense": {
+      "Muy bien": 8.58085808580858,
+      "Bien": 20.792079207920793,
+      "Regular": 16.171617161716174,
+      "Mal": 11.221122112211221,
+      "Muy mal": 43.23432343234323,
+      "No sabe / no contesta": 0.0
+    },
+    "Interior": {
+      "Muy bien": 9.437216203059311,
+      "Bien": 24.593591909144102,
+      "Regular": 25.415608364393194,
+      "Mal": 10.268199528090005,
+      "Muy mal": 30.285383995313385,
+      "No sabe / no contesta": 0.0
+    }
+  },
+  "n_por_segmento": {
+    "CABA": 174,
+    "Conurbano bonaerense": 303,
+    "Interior": 523
+  },
+  "segmento_columna": "zona",
+  "fuente": "Índice de Confianza en el Gobierno, UTDT (ponderado)",
+  "fecha": "2026-09",
+  "estudio_id": "study_icg_eval_gob_20261006_122319",
+  "created_at": "2026-10-06T15:28:45+00:00"
+}

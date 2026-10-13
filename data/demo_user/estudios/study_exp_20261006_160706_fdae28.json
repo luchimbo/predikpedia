@@ -1,0 +1,28 @@
+{
+  "id": "study_exp_20261006_160706_fdae28",
+  "universo_id": "universe_icg_2026_09_20261006_122319",
+  "universo_nombre": "ICG sep-2026 (UTDT) · adultos Argentina",
+  "titulo": "Experimento · LOCAL prueba ICG sep2026 B2+B3 qwen2.5:32b ctx8192 n=200 k congelado=3",
+  "pregunta": "En términos generales, ¿cómo evalúa la gestión del gobierno nacional?",
+  "contexto": "Encuesta de opinión pública en Argentina, septiembre de 2026.\nSituación del país (datos públicos, no opiniones):\n- Presidente: Javier Milei (La Libertad Avanza), en el cargo desde diciembre de 2023. Las próximas elecciones presidenciales son en 2027.\n- Inflación: 1,7% en agosto de 2026, la más baja en 14 meses; 33,5% en los últimos doce meses (INDEC). En 2023, antes de este gobierno, la inflación anual había sido de alrededor de 211%.\n- Actividad: la economía se contrajo en el segundo trimestre de 2026, la primera caída trimestral en dos años.\n- Desempleo: 7,9%, con una leve suba.\n- Salarios: los salarios formales privados están cerca de su nivel de noviembre de 2023 en poder de compra; el salario mínimo perdió alrededor de 40% en ese período.\n- Industria, comercio y construcción vienen perdiendo empleo; hay cierre de empresas.",
+  "template": "experiment",
+  "respuestas_por_persona": 1,
+  "respuestas_planeadas": 200,
+  "created_at": "2026-10-06T19:07:06+00:00",
+  "simulation_version": "realism_v2",
+  "mode": "survey",
+  "memory_enabled": false,
+  "follow_up_questions": [],
+  "social_seed": 42,
+  "interaction_graph": {},
+  "opciones": [
+    "Muy bien",
+    "Bien",
+    "Regular",
+    "Mal",
+    "Muy mal",
+    "No sabe / no contesta"
+  ],
+  "temperature": 1.0,
+  "modo_cerrada": "probabilidades"
+}

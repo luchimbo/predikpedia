@@ -1,0 +1,1001 @@
+zona,ciudad,sexo,edad,nivel_educativo,situacion_economica_vs_hace_un_anio,evaluacion_gobierno,peso
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Río Grande,Hombre,30 a 49,Terciario o universitario,Peor,Regular,1.290275
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.549954
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Interior,Formosa,Hombre,50 o más,Terciario o universitario,Peor,Bien,1.020144
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Bien,0.987947
+Interior,Concepción,Mujer,30 a 49,Terciario o universitario,Peor,Regular,4.086109
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,Mar del Plata,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Olavarría,Hombre,30 a 49,Terciario o universitario,Peor,Regular,3.871036
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Mal,0.549954
+Interior,Santa Fe,Hombre,50 o más,Primario,Igual,Regular,0.867745
+Interior,Mar del Plata,Mujer,50 o más,Primario,Igual,Bien,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Córdoba,Hombre,50 o más,Terciario o universitario,Igual,Mal,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.987947
+Interior,Río Gallegos,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,1.290275
+Interior,Formosa,Mujer,50 o más,Terciario o universitario,Mejor,Muy bien,1.020144
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Secundario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Mejor,Muy mal,0.663462
+Interior,Termas de Río Hondo,Hombre,30 a 49,Primario,Igual,Regular,4.086109
+Interior,Mar del Plata,Mujer,30 a 49,Secundario,Peor,Muy mal,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Mejor,Bien,0.987947
+Interior,Paraná,Hombre,50 o más,Terciario o universitario,Mejor,Regular,0.867745
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Mejor,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Mejor,Bien,0.987947
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.663462
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Igual,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Muy bien,0.549954
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,No sabe,Muy bien,0.987947
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Mal,0.549954
+Interior,Formosa,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,1.020144
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,Paraná,Mujer,50 o más,Secundario,Igual,Bien,0.867745
+CABA,CABA,Mujer,30 a 49,Secundario,Peor,Mal,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Interior,Salta,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.904193
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Interior,La Plata,Mujer,18 a 29,Terciario o universitario,Mejor,Bien,0.856213
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Muy bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Interior,Paraná,Hombre,30 a 49,Secundario,Mejor,Bien,0.867745
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Regular,0.987947
+Interior,Termas de Río Hondo,Mujer,30 a 49,Secundario,Igual,Regular,4.086109
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Mejor,Regular,0.987947
+Interior,Olavarría,Mujer,30 a 49,Secundario,Peor,Mal,3.871036
+Interior,Mendoza,Hombre,50 o más,Secundario,Peor,Mal,0.663462
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+Interior,Tucumán,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.939635
+Interior,Neuquén,Hombre,18 a 29,Terciario o universitario,Mejor,Regular,0.654009
+Interior,San Nicolás,Mujer,50 o más,Secundario,Peor,Mal,0.867745
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Salta,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.904193
+Interior,Mar del Plata,Mujer,30 a 49,Secundario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Muy mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.987947
+Interior,Santa Fe,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.867745
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Mejor,Regular,0.987947
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.904193
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Bien,0.987947
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.856213
+Interior,Neuquén,Hombre,50 o más,Terciario o universitario,Mejor,Muy bien,0.654009
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Regular,0.549954
+Interior,Tucumán,Mujer,50 o más,Secundario,Mejor,Muy bien,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+CABA,CABA,Hombre,50 o más,Primario,Peor,Regular,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.549954
+CABA,CABA,Hombre,18 a 29,Secundario,Igual,Muy mal,0.549954
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mar del Plata,Hombre,50 o más,Primario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.867745
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Primario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.987947
+Interior,La Plata,Hombre,50 o más,Secundario,Peor,Regular,0.856213
+Interior,Clorinda,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.25011
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.663462
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.904193
+CABA,CABA,Mujer,30 a 49,Secundario,Mejor,Muy bien,0.549954
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.663462
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,50 o más,Secundario,Peor,Muy mal,0.549954
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.020144
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Mejor,Regular,0.987947
+Interior,Resistencia,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,1.020144
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Mejor,Muy mal,0.856213
+Interior,Rosario,Hombre,18 a 29,Secundario,Mejor,Bien,0.856213
+Interior,Tucumán,Hombre,18 a 29,Terciario o universitario,Peor,Mal,0.939635
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Regular,0.987947
+Interior,Salta,Hombre,18 a 29,Secundario,Igual,Regular,0.904193
+Interior,Córdoba,Hombre,18 a 29,Secundario,Mejor,Muy bien,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Río Gallegos,Mujer,30 a 49,Secundario,Peor,Bien,1.290275
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,3.871036
+Interior,La Rioja,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+CABA,CABA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Mal,0.549954
+Interior,Mar del Plata,Hombre,18 a 29,Terciario o universitario,Peor,Mal,0.856213
+Interior,Paraná,Hombre,30 a 49,Secundario,No sabe,Regular,0.867745
+Interior,La Rioja,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.904193
+CABA,CABA,Hombre,18 a 29,Secundario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Mejor,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Regular,0.987947
+Interior,La Plata,Mujer,50 o más,Secundario,Peor,Mal,0.856213
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Igual,Mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Salta,Hombre,18 a 29,Terciario o universitario,Igual,Muy bien,0.904193
+Interior,Jujuy,Hombre,18 a 29,Terciario o universitario,Mejor,Regular,0.904193
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Regular,0.987947
+Interior,Río Gallegos,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,1.290275
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Regular,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Mal,0.549954
+Interior,Rosario,Hombre,50 o más,Secundario,Peor,Mal,0.856213
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Primario,Mejor,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Peor,Muy mal,0.987947
+Interior,Paraná,Hombre,30 a 49,Secundario,Igual,Regular,0.867745
+Interior,Jujuy,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Mejor,Muy bien,0.549954
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Conurbano bonaerense,GBA,Hombre,30 a 49,Primario,Mejor,Muy bien,0.987947
+Interior,Rosario,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Mejor,Muy bien,0.987947
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Interior,Tucumán,Mujer,50 o más,Primario,Peor,Regular,0.939635
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Mar del Plata,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Mal,0.549954
+Interior,Tucumán,Hombre,18 a 29,Terciario o universitario,Igual,Bien,0.939635
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Jujuy,Hombre,30 a 49,Terciario o universitario,Mejor,Mal,0.904193
+CABA,CABA,Mujer,30 a 49,Secundario,Peor,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.939635
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Mal,0.549954
+Interior,Resistencia,Hombre,30 a 49,Secundario,Peor,Muy mal,1.020144
+CABA,CABA,Mujer,18 a 29,Terciario o universitario,Igual,Mal,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Catriel,Hombre,50 o más,Terciario o universitario,Igual,Regular,1.290275
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Regular,0.987947
+Interior,Salta,Hombre,18 a 29,Terciario o universitario,Igual,Regular,0.904193
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,Concepción,Mujer,50 o más,Terciario o universitario,Igual,Mal,4.086109
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,La Rioja,Mujer,50 o más,Secundario,Igual,Bien,0.904193
+Interior,Rosario,Mujer,18 a 29,Terciario o universitario,Mejor,Muy bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,Tucumán,Mujer,50 o más,Terciario o universitario,Igual,Muy bien,0.939635
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.987947
+Interior,El Dorado,Hombre,30 a 49,Secundario,Peor,Muy mal,1.25011
+Interior,Rosario,Mujer,18 a 29,Terciario o universitario,Mejor,Bien,0.856213
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+CABA,CABA,Hombre,18 a 29,Secundario,Peor,Regular,0.549954
+Interior,Resistencia,Mujer,18 a 29,Terciario o universitario,Mejor,Bien,1.020144
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Mejor,Regular,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Mal,0.987947
+Interior,Mar del Plata,Mujer,30 a 49,Secundario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Mejor,Bien,0.987947
+Interior,Paraná,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.904193
+Interior,Mendoza,Hombre,30 a 49,Secundario,Mejor,Bien,0.663462
+Interior,Santa Fe,Mujer,30 a 49,Terciario o universitario,Igual,Mal,0.867745
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mar del Plata,Hombre,18 a 29,Secundario,Igual,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Bien,0.987947
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,1.020144
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,Pehuajó,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.904193
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.549954
+Interior,Olavarría,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,La Plata,Mujer,50 o más,Secundario,Peor,Muy mal,0.856213
+CABA,CABA,Mujer,18 a 29,Secundario,Peor,Muy mal,0.549954
+Interior,Termas de Río Hondo,Hombre,30 a 49,Terciario o universitario,Igual,Regular,4.086109
+Conurbano bonaerense,GBA,Hombre,30 a 49,Primario,Igual,Muy mal,0.987947
+Interior,Resistencia,Hombre,18 a 29,Terciario o universitario,Igual,Regular,1.020144
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,3.871036
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Igual,Bien,1.020144
+Interior,Pehuajó,Hombre,30 a 49,Terciario o universitario,Igual,Regular,3.871036
+Interior,Corrientes,Hombre,18 a 29,Terciario o universitario,Mejor,Regular,1.020144
+Interior,Río Tercero,Mujer,30 a 49,Terciario o universitario,Peor,Bien,3.871036
+Interior,San Rafael,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.764602
+CABA,CABA,Hombre,18 a 29,Secundario,Mejor,Regular,0.549954
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Bien,0.987947
+Interior,Resistencia,Mujer,30 a 49,Terciario o universitario,Igual,Mal,1.020144
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Salta,Mujer,50 o más,Secundario,Mejor,Muy bien,0.904193
+Interior,Montecarlo,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,1.25011
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.663462
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Mejor,Muy bien,0.549954
+Interior,Pehuajó,Hombre,30 a 49,Secundario,Igual,Bien,3.871036
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Interior,Tucumán,Mujer,30 a 49,Secundario,Mejor,Muy bien,0.939635
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Santa Fe,Hombre,18 a 29,Secundario,Mejor,Mal,0.867745
+Interior,Santa Fe,Hombre,30 a 49,Secundario,Peor,Muy mal,0.867745
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Igual,Bien,1.020144
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Interior,Formosa,Mujer,50 o más,Secundario,Peor,Mal,1.020144
+Interior,Tucumán,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.939635
+Interior,San Nicolás,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.867745
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,La Plata,Hombre,18 a 29,Secundario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Regular,0.987947
+Interior,Formosa,Hombre,50 o más,Terciario o universitario,Igual,Regular,1.020144
+Interior,Neuquén,Hombre,18 a 29,Secundario,Peor,Mal,0.654009
+CABA,CABA,Hombre,18 a 29,Secundario,Igual,Muy bien,0.549954
+Interior,Termas de Río Hondo,Hombre,30 a 49,Terciario o universitario,Igual,Mal,4.086109
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,San Juan,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.764602
+Interior,Rosario,Mujer,50 o más,Terciario o universitario,Mejor,Mal,0.856213
+Interior,La Plata,Hombre,50 o más,Secundario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+Interior,Rosario,Mujer,18 a 29,Terciario o universitario,Igual,Regular,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy bien,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Jujuy,Hombre,30 a 49,Secundario,Peor,Mal,0.904193
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Regular,0.987947
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.663462
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.904193
+CABA,CABA,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,Rosario,Mujer,30 a 49,Secundario,Peor,Muy mal,0.856213
+Interior,Mar del Plata,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.856213
+CABA,CABA,Mujer,50 o más,Secundario,Igual,No sabe / no contesta,0.549954
+Interior,Córdoba,Mujer,30 a 49,Secundario,Peor,Muy mal,0.856213
+Interior,Villa Aberastain,Hombre,30 a 49,Terciario o universitario,Igual,Bien,6.145542
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Mejor,Muy bien,0.987947
+Interior,Córdoba,Hombre,18 a 29,Terciario o universitario,Igual,Muy bien,0.856213
+Interior,Resistencia,Mujer,18 a 29,Terciario o universitario,Igual,Bien,1.020144
+Interior,Paraná,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.867745
+Interior,Corrientes,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,1.020144
+Interior,Neuquén,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.654009
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.987947
+Interior,La Plata,Hombre,18 a 29,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Peor,Mal,0.987947
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Mal,0.987947
+Interior,Santa Fe,Hombre,18 a 29,Terciario o universitario,Igual,Mal,0.867745
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,Rosario,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.856213
+CABA,CABA,Mujer,18 a 29,Terciario o universitario,Peor,Mal,0.549954
+Interior,Rosario,Hombre,18 a 29,Secundario,Igual,Bien,0.856213
+Interior,Jujuy,Hombre,18 a 29,Terciario o universitario,Igual,Mal,0.904193
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,No sabe,Muy mal,0.904193
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,Río Gallegos,Mujer,30 a 49,Secundario,Peor,Mal,1.290275
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,San Luis,Hombre,30 a 49,Terciario o universitario,Peor,Bien,0.764602
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.987947
+Interior,Viedma,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,1.290275
+Interior,Santa Fe,Hombre,30 a 49,Secundario,Igual,Regular,0.867745
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Peor,Mal,0.987947
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Bien,0.549954
+Interior,Mar del Plata,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Mejor,Regular,0.987947
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Igual,Regular,1.020144
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Mejor,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Bien,0.987947
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,Corrientes,Mujer,50 o más,Terciario o universitario,Peor,Bien,1.020144
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.856213
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.856213
+Interior,Río Tercero,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Muy mal,0.987947
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Río Gallegos,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,1.290275
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+Interior,Mar del Plata,Hombre,50 o más,Terciario o universitario,Peor,Mal,0.856213
+Interior,Salta,Hombre,30 a 49,Secundario,Peor,Bien,0.904193
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Regular,0.987947
+Interior,Salta,Hombre,30 a 49,Secundario,Igual,Muy mal,0.904193
+Interior,Corrientes,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,1.020144
+CABA,CABA,Hombre,50 o más,Secundario,Peor,Mal,0.549954
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+Interior,Pehuajó,Hombre,18 a 29,Secundario,Igual,Bien,3.871036
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Mar del Plata,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Mal,0.987947
+Interior,Resistencia,Mujer,30 a 49,Terciario o universitario,Peor,Bien,1.020144
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Santa Fe,Hombre,30 a 49,Secundario,Igual,Regular,0.867745
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.987947
+Interior,Córdoba,Mujer,18 a 29,Secundario,Mejor,Bien,0.856213
+Interior,San Nicolás,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Córdoba,Mujer,30 a 49,Secundario,Peor,Mal,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Regular,0.987947
+Interior,El Dorado,Hombre,30 a 49,Secundario,Peor,Muy mal,1.25011
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.987947
+Interior,El Dorado,Mujer,30 a 49,Terciario o universitario,Peor,Mal,1.25011
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Igual,Muy bien,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Tucumán,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Muy bien,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Bien,0.987947
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.663462
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Peor,Bien,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.549954
+Interior,Río Gallegos,Hombre,30 a 49,Terciario o universitario,Igual,Regular,1.290275
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.654009
+Conurbano bonaerense,GBA,Mujer,30 a 49,Primario,Mejor,Regular,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.549954
+Interior,Tucumán,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.939635
+Interior,El Dorado,Hombre,50 o más,Primario,Peor,Muy mal,1.25011
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Peor,Mal,1.020144
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Regular,0.987947
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.856213
+Interior,Pehuajó,Mujer,50 o más,Primario,Mejor,Regular,3.871036
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.549954
+Interior,Rosario,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Mar del Plata,Mujer,30 a 49,Secundario,Igual,Bien,0.856213
+Interior,San Juan,Mujer,30 a 49,Terciario o universitario,Mejor,Muy bien,0.764602
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Peor,Bien,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.867745
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.867745
+Interior,Córdoba,Hombre,18 a 29,Terciario o universitario,Peor,Regular,0.856213
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Regular,0.549954
+Interior,Tucumán,Mujer,30 a 49,Secundario,Peor,Mal,0.939635
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.856213
+Interior,La Plata,Hombre,18 a 29,Secundario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Mal,0.987947
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Paraná,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.867745
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Mal,0.987947
+Interior,Formosa,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,1.020144
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,San Luis,Mujer,50 o más,Terciario o universitario,Peor,Bien,0.764602
+Interior,Corrientes,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,1.020144
+Interior,San Rafael,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.764602
+Interior,Salta,Mujer,30 a 49,Secundario,Peor,Regular,0.904193
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.867745
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Interior,La Plata,Hombre,30 a 49,Secundario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Regular,0.549954
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Igual,Mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Mejor,Bien,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,Mar del Plata,Hombre,18 a 29,Secundario,Mejor,Muy bien,0.856213
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.663462
+Interior,La Plata,Mujer,50 o más,Secundario,Igual,Mal,0.856213
+Interior,La Plata,Hombre,30 a 49,Secundario,Peor,Regular,0.856213
+Interior,Paraná,Hombre,18 a 29,Terciario o universitario,Igual,Bien,0.867745
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,San Luis,Hombre,30 a 49,Secundario,Igual,Mal,0.764602
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Mejor,Muy bien,0.987947
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Regular,0.549954
+Interior,Olavarría,Hombre,30 a 49,Terciario o universitario,Igual,Bien,3.871036
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Bien,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.549954
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Mal,0.549954
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Bien,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.549954
+CABA,CABA,Hombre,50 o más,Secundario,Igual,Bien,0.549954
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,Formosa,Mujer,30 a 49,Secundario,Peor,Muy mal,1.020144
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.939635
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.663462
+Interior,Mendoza,Hombre,30 a 49,Primario,Peor,Muy mal,0.663462
+Interior,Mar del Plata,Hombre,30 a 49,Secundario,Mejor,Mal,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.856213
+Interior,Olavarría,Mujer,30 a 49,Secundario,Peor,Regular,3.871036
+Interior,Córdoba,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Bien,0.987947
+Interior,Montecarlo,Hombre,30 a 49,Terciario o universitario,Peor,Regular,1.25011
+Interior,Salta,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.904193
+CABA,CABA,Mujer,30 a 49,Secundario,Igual,Muy mal,0.549954
+Interior,Rosario,Hombre,30 a 49,Secundario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.987947
+Interior,Corrientes,Hombre,18 a 29,Terciario o universitario,Igual,Bien,1.020144
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,Termas de Río Hondo,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,4.086109
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Primario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mendoza,Hombre,30 a 49,Primario,Peor,Regular,0.663462
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,San Juan,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.764602
+Interior,Mendoza,Hombre,18 a 29,Primario,Igual,Bien,0.663462
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.987947
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Bien,0.987947
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Igual,Muy bien,0.663462
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,San Nicolás,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.549954
+Interior,Córdoba,Hombre,18 a 29,Terciario o universitario,Mejor,Regular,0.856213
+Interior,Montecarlo,Hombre,30 a 49,Terciario o universitario,Igual,Regular,1.25011
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,3.871036
+Interior,El Dorado,Mujer,50 o más,Secundario,Igual,Mal,1.25011
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,Rivadavia (Mendoza),Mujer,50 o más,Terciario o universitario,Igual,Bien,6.145542
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.867745
+Interior,San Luis,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.764602
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.654009
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Regular,0.987947
+Interior,Paraná,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.867745
+Interior,Río Gallegos,Hombre,50 o más,Secundario,Igual,Muy mal,1.290275
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+Interior,Resistencia,Hombre,30 a 49,Secundario,Igual,Regular,1.020144
+Interior,Paraná,Hombre,30 a 49,Secundario,Igual,Regular,0.867745
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Peor,Muy mal,0.987947
+Interior,Córdoba,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Interior,San Rafael,Hombre,50 o más,Secundario,Peor,Muy mal,0.764602
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,Mar del Plata,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.856213
+Interior,Córdoba,Mujer,30 a 49,Primario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Hombre,18 a 29,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.663462
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,El Dorado,Hombre,30 a 49,Secundario,Peor,Mal,1.25011
+Interior,Jujuy,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+Interior,San Juan,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.764602
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Río Gallegos,Hombre,30 a 49,Secundario,Igual,Bien,1.290275
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,Comodoro,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.654009
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,El Dorado,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,1.25011
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Mejor,Mal,0.549954
+Interior,Montecarlo,Hombre,50 o más,Secundario,Igual,Bien,1.25011
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Mejor,Muy bien,0.987947
+Interior,San Juan,Hombre,30 a 49,Primario,Peor,Muy mal,0.764602
+Interior,El Dorado,Hombre,50 o más,Terciario o universitario,Peor,Mal,1.25011
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.549954
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+CABA,CABA,Mujer,30 a 49,Secundario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Santa Fe,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.867745
+Interior,Tucumán,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.987947
+Interior,Mar del Plata,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Peor,Muy mal,0.987947
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.867745
+Interior,Paraná,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.867745
+Interior,Salta,Hombre,30 a 49,Primario,Peor,Mal,0.904193
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.654009
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Interior,San Luis,Mujer,30 a 49,Secundario,Peor,Regular,0.764602
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,18 a 29,Secundario,Igual,Muy mal,0.549954
+Interior,San Juan,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.764602
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Paraná,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.867745
+Interior,Tucumán,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.663462
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.549954
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.654009
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,San Rafael,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.764602
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.987947
+Interior,Neuquén,Hombre,18 a 29,Secundario,Igual,Muy bien,0.654009
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Muy mal,0.987947
+Interior,La Plata,Hombre,30 a 49,Secundario,Mejor,Regular,0.856213
+Interior,Río Gallegos,Mujer,50 o más,Secundario,Igual,Bien,1.290275
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,San Juan,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.764602
+Interior,Montecarlo,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,1.25011
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+CABA,CABA,Hombre,18 a 29,Secundario,Igual,Bien,0.549954
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Peor,Muy bien,1.020144
+Interior,Termas de Río Hondo,Hombre,30 a 49,Secundario,Igual,Regular,4.086109
+Interior,El Dorado,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,1.25011
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.987947
+Interior,Tucumán,Hombre,18 a 29,Terciario o universitario,Mejor,Bien,0.939635
+Interior,Salta,Mujer,18 a 29,Terciario o universitario,Igual,Regular,0.904193
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Peor,Mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Regular,0.987947
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.867745
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Mal,0.987947
+Interior,Resistencia,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,1.020144
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.856213
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Igual,Muy bien,0.663462
+Interior,Olavarría,Mujer,30 a 49,Secundario,Igual,Bien,3.871036
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Mejor,Mal,0.549954
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,El Dorado,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.25011
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Igual,Muy mal,0.549954
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Mal,0.549954
+Interior,Comodoro,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.654009
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Interior,Tucumán,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.939635
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.904193
+Interior,San Juan,Mujer,30 a 49,Secundario,Peor,Regular,0.764602
+Interior,Mar del Plata,Hombre,30 a 49,Secundario,Igual,Muy bien,0.856213
+Interior,Río Tercero,Mujer,18 a 29,Secundario,Igual,Bien,3.871036
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.987947
+Interior,Salta,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.904193
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,San Juan,Hombre,50 o más,Primario,Peor,Muy mal,0.764602
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.939635
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.663462
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Interior,San Juan,Mujer,30 a 49,Secundario,Peor,Muy mal,0.764602
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,San Luis,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.764602
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Mejor,Mal,0.549954
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Neuquén,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.654009
+Interior,Río Tercero,Mujer,30 a 49,Terciario o universitario,Peor,Mal,3.871036
+Interior,San Nicolás,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.867745
+Interior,Mar del Plata,Hombre,30 a 49,Primario,Peor,Mal,0.856213
+Interior,Comodoro,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.654009
+Interior,Pehuajó,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,3.871036
+Interior,Córdoba,Hombre,30 a 49,Secundario,Igual,Muy bien,0.856213
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.904193
+Conurbano bonaerense,GBA,Mujer,18 a 29,Secundario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Regular,0.987947
+Interior,La Rioja,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Mal,0.987947
+Interior,La Plata,Hombre,30 a 49,Secundario,Peor,Muy mal,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy bien,0.987947
+Interior,Mar del Plata,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.856213
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.867745
+Interior,Resistencia,Mujer,30 a 49,Terciario o universitario,Igual,Regular,1.020144
+Interior,San Juan,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.764602
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,3.871036
+Interior,Santa Fe,Mujer,30 a 49,Secundario,Peor,Muy mal,0.867745
+Interior,San Nicolás,Mujer,50 o más,Secundario,Igual,Regular,0.867745
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,El Dorado,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,1.25011
+Interior,Córdoba,Hombre,30 a 49,Secundario,Peor,Regular,0.856213
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.663462
+Interior,Río Tercero,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,3.871036
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Igual,Bien,0.987947
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.856213
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Mujer,30 a 49,Secundario,Igual,Muy bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mendoza,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.663462
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Muy mal,0.549954
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Igual,Bien,1.020144
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Interior,San Juan,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.764602
+Interior,Comodoro,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.654009
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.939635
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Interior,Olavarría,Hombre,30 a 49,Terciario o universitario,Igual,Muy mal,3.871036
+Interior,Córdoba,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.856213
+Interior,Jujuy,Mujer,30 a 49,Secundario,Mejor,Muy bien,0.904193
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.939635
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Mejor,Bien,0.663462
+Interior,Tucumán,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Bien,0.987947
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,1.020144
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Peor,Bien,1.020144
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Mejor,Regular,0.654009
+Interior,San Nicolás,Hombre,30 a 49,Secundario,Peor,Muy mal,0.867745
+Interior,Santa Fe,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mar del Plata,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Santa Fe,Hombre,30 a 49,Terciario o universitario,Peor,Bien,0.867745
+Interior,Rosario,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Crespo,Mujer,30 a 49,Secundario,Igual,Regular,3.871036
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Peor,Muy mal,0.987947
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.020144
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.856213
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Mejor,Regular,0.856213
+Interior,Mar del Plata,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,50 o más,Secundario,Mejor,Bien,0.549954
+Interior,Río Tercero,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,Santa Fe,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.867745
+CABA,CABA,Hombre,50 o más,Secundario,Mejor,Bien,0.549954
+Interior,San Nicolás,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.867745
+Conurbano bonaerense,GBA,Hombre,50 o más,Primario,Igual,Muy bien,0.987947
+Interior,Jujuy,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+Interior,Neuquén,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.654009
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.663462
+Interior,Río Tercero,Hombre,30 a 49,Secundario,Peor,Regular,3.871036
+Interior,San Juan,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.764602
+Interior,Resistencia,Hombre,30 a 49,Secundario,Peor,Regular,1.020144
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.663462
+Interior,Río Gallegos,Mujer,50 o más,Secundario,Peor,Muy mal,1.290275
+Interior,Mendoza,Hombre,30 a 49,Secundario,Mejor,Bien,0.663462
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Igual,Bien,0.987947
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Mejor,Bien,0.856213
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Regular,0.549954
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Tucumán,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.939635
+Interior,Jujuy,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.904193
+Interior,Pehuajó,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mendoza,Hombre,30 a 49,Primario,Peor,Mal,0.663462
+CABA,CABA,Hombre,18 a 29,Terciario o universitario,Peor,Regular,0.549954
+CABA,CABA,Mujer,50 o más,Secundario,Peor,Muy mal,0.549954
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Mal,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,El Dorado,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,1.25011
+Interior,San Juan,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.764602
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,0.856213
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.987947
+Conurbano bonaerense,GBA,Hombre,50 o más,Terciario o universitario,Igual,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Igual,Regular,0.987947
+Interior,Catriel,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.290275
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.856213
+Interior,Tucumán,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.939635
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.987947
+Interior,Mar del Plata,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mar del Plata,Hombre,30 a 49,Secundario,Peor,Muy mal,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Mendoza,Hombre,30 a 49,Secundario,Igual,Muy mal,0.663462
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Peor,Mal,0.987947
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.663462
+Conurbano bonaerense,GBA,Mujer,18 a 29,Terciario o universitario,Peor,Mal,0.987947
+Interior,Clorinda,Mujer,30 a 49,Terciario o universitario,Igual,Bien,1.25011
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Igual,Bien,0.549954
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Terciario o universitario,Peor,Regular,0.987947
+Interior,El Dorado,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.25011
+Conurbano bonaerense,GBA,Hombre,50 o más,Secundario,Peor,Mal,0.987947
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.663462
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Mejor,Regular,0.663462
+Interior,Tucumán,Hombre,30 a 49,Secundario,Peor,Mal,0.939635
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Secundario,Mejor,Muy bien,0.987947
+Conurbano bonaerense,GBA,Mujer,50 o más,Primario,Mejor,Bien,0.987947
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.987947
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.856213
+Interior,San Rafael,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.764602
+Interior,Clorinda,Hombre,50 o más,Primario,Igual,Regular,1.25011
+Interior,Salta,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.904193
+Interior,Río Gallegos,Hombre,50 o más,Secundario,Peor,Mal,1.290275
+Interior,San Nicolás,Hombre,30 a 49,Secundario,Igual,Regular,0.867745
+Interior,Santa Fe,Hombre,50 o más,Terciario o universitario,Mejor,Regular,0.867745
+Interior,Río Grande,Mujer,50 o más,Secundario,Peor,Muy mal,1.290275
+Interior,La Plata,Hombre,50 o más,Terciario o universitario,Igual,Muy bien,0.856213
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Peor,Bien,0.663462
+Interior,Río Grande,Hombre,50 o más,Secundario,Igual,Regular,1.290275
+Interior,Tucumán,Hombre,30 a 49,Secundario,Igual,Regular,0.939635
+Interior,San Rafael,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.764602
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Igual,Regular,0.549954
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.856213
+Interior,Catriel,Mujer,50 o más,Terciario o universitario,Peor,Mal,1.290275
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Tucumán,Mujer,30 a 49,Terciario o universitario,Mejor,Muy mal,0.939635
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Mal,0.549954
+Interior,San Luis,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.764602
+Interior,La Plata,Hombre,30 a 49,Secundario,Peor,Muy mal,0.856213
+Interior,El Dorado,Hombre,50 o más,Secundario,Igual,Regular,1.25011
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Interior,Paraná,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.867745
+CABA,CABA,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mendoza,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.663462
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Mal,0.549954
+Interior,Paraná,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.867745
+Interior,Olavarría,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,3.871036
+Interior,Salta,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.904193
+Interior,Corrientes,Hombre,30 a 49,Terciario o universitario,Igual,Bien,1.020144
+Interior,Río Tercero,Hombre,30 a 49,Secundario,Mejor,Bien,3.871036
+Interior,Rosario,Hombre,30 a 49,Terciario o universitario,Igual,Mal,0.856213
+Interior,San Juan,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.764602
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.549954
+CABA,CABA,Hombre,30 a 49,Secundario,Mejor,Muy bien,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Peor,Mal,0.549954
+Interior,San Luis,Hombre,30 a 49,Terciario o universitario,Igual,Bien,0.764602
+Interior,Paraná,Mujer,50 o más,Secundario,Mejor,Bien,0.867745
+Interior,Salta,Mujer,30 a 49,Secundario,Peor,Muy mal,0.904193
+Interior,Resistencia,Hombre,30 a 49,Terciario o universitario,Igual,Bien,1.020144
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Interior,Mar del Plata,Hombre,30 a 49,Secundario,Peor,Bien,0.856213
+Interior,Jujuy,Mujer,50 o más,Terciario o universitario,Peor,Mal,0.904193
+CABA,CABA,Hombre,30 a 49,Secundario,Peor,Regular,0.549954
+Interior,Rosario,Mujer,30 a 49,Terciario o universitario,Peor,Regular,0.856213
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Peor,Muy mal,0.987947
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy bien,0.549954
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Interior,Neuquén,Hombre,50 o más,Terciario o universitario,Peor,Muy mal,0.654009
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Igual,Regular,3.871036
+Interior,Paraná,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Córdoba,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Mendoza,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Igual,Muy bien,3.871036
+CABA,CABA,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+CABA,CABA,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.549954
+Conurbano bonaerense,GBA,Hombre,30 a 49,Secundario,Igual,Regular,0.987947
+Interior,El Dorado,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,1.25011
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.663462
+Interior,Paraná,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.867745
+Interior,Córdoba,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.856213
+Interior,Catriel,Hombre,30 a 49,Secundario,Mejor,Bien,1.290275
+Interior,Salta,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.904193
+Interior,Goya,Mujer,50 o más,Secundario,Mejor,Bien,1.25011
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy bien,0.856213
+Interior,Mendoza,Hombre,30 a 49,Terciario o universitario,Mejor,Muy bien,0.663462
+Interior,Formosa,Hombre,30 a 49,Terciario o universitario,Igual,Regular,1.020144
+Interior,Río Tercero,Hombre,30 a 49,Terciario o universitario,Igual,Regular,3.871036
+Interior,Paraná,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,Jujuy,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.904193
+Interior,Santa Fe,Hombre,50 o más,Secundario,Peor,Muy mal,0.867745
+Interior,Río Grande,Hombre,50 o más,Secundario,Igual,Regular,1.290275
+Interior,Mar de Ajó,Mujer,50 o más,Secundario,Igual,Regular,3.871036
+Interior,Córdoba,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Corrientes,Hombre,50 o más,Secundario,Mejor,Muy bien,1.020144
+Interior,San Rafael,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.764602
+Interior,Salta,Mujer,30 a 49,Terciario o universitario,Igual,Regular,0.904193
+Interior,San Juan,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.764602
+Interior,Neuquén,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.654009
+Interior,Córdoba,Hombre,50 o más,Secundario,Peor,Mal,0.856213
+Interior,Mendoza,Hombre,30 a 49,Secundario,Igual,Bien,0.663462
+Interior,Río Grande,Mujer,50 o más,Secundario,Igual,Bien,1.290275
+Interior,Salta,Hombre,50 o más,Primario,Peor,Muy mal,0.904193
+Interior,Montecarlo,Mujer,50 o más,Terciario o universitario,Igual,Bien,1.25011
+Interior,La Plata,Hombre,50 o más,Secundario,Igual,Muy bien,0.856213
+Interior,Río Grande,Hombre,50 o más,Secundario,Igual,Muy mal,1.290275
+Interior,Jujuy,Hombre,50 o más,Terciario o universitario,Mejor,Bien,0.904193
+Interior,Mendoza,Mujer,50 o más,Terciario o universitario,Igual,Bien,0.663462
+Interior,La Plata,Hombre,50 o más,Terciario o universitario,Igual,Bien,0.856213
+Interior,Comodoro,Hombre,50 o más,Primario,Peor,Muy mal,0.654009
+Interior,Tucumán,Hombre,50 o más,Terciario o universitario,Peor,Regular,0.939635
+Interior,Salta,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.904193
+Interior,Santa Fe,Mujer,50 o más,Secundario,Igual,Bien,0.867745
+Interior,Paraná,Mujer,50 o más,Secundario,Igual,Bien,0.867745
+Interior,Clorinda,Hombre,50 o más,Secundario,Peor,Mal,1.25011
+Interior,La Plata,Hombre,30 a 49,Terciario o universitario,Peor,Muy mal,0.856213
+Interior,Salta,Hombre,50 o más,Terciario o universitario,Igual,Mal,0.904193
+Interior,Río Grande,Hombre,50 o más,Terciario o universitario,Peor,Regular,1.290275
+Interior,Salta,Mujer,50 o más,Terciario o universitario,Peor,Bien,0.904193
+Interior,Mar del Plata,Mujer,50 o más,Primario,Peor,Muy mal,0.856213
+Interior,Santa Fe,Mujer,50 o más,Terciario o universitario,Peor,Muy mal,0.867745
+Interior,La Plata,Mujer,30 a 49,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,Santa Fe,Hombre,50 o más,Terciario o universitario,Mejor,Muy bien,0.867745
+Interior,Santa Fe,Mujer,50 o más,Secundario,Peor,Muy mal,0.867745
+Interior,Córdoba,Mujer,50 o más,Terciario o universitario,Mejor,Bien,0.856213
+Interior,Mar del Plata,Mujer,50 o más,Primario,Peor,Mal,0.856213
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Igual,Regular,0.856213
+Interior,La Plata,Mujer,50 o más,Terciario o universitario,Igual,Muy mal,0.856213
+Interior,Santa Fe,Hombre,50 o más,Terciario o universitario,Igual,Muy mal,0.867745
+Interior,Río Grande,Hombre,50 o más,Secundario,Igual,Muy mal,1.290275
+Interior,Clorinda,Mujer,50 o más,Secundario,Igual,Muy mal,1.25011
+Interior,Río Gallegos,Hombre,50 o más,Terciario o universitario,Igual,Bien,1.290275
+Interior,Salta,Hombre,50 o más,Terciario o universitario,Igual,Regular,0.904193
+Interior,Jujuy,Hombre,50 o más,Secundario,Mejor,Regular,0.904193
+CABA,CABA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.549954
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Peor,Muy mal,0.987947
+Conurbano bonaerense,GBA,Hombre,18 a 29,Terciario o universitario,Mejor,Regular,0.987947
+Conurbano bonaerense,GBA,Mujer,30 a 49,Terciario o universitario,Igual,Mal,0.987947

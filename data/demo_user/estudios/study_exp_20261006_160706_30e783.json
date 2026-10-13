@@ -1,0 +1,28 @@
+{
+  "id": "study_exp_20261006_160706_30e783",
+  "universo_id": "universe_icg_2025_01_20261006_123909",
+  "universo_nombre": "ICG 2025-01 (UTDT) · adultos Argentina",
+  "titulo": "Experimento · LOCAL prueba ICG ene2025 B2+B3 qwen2.5:32b ctx8192 n=200 k congelado=3",
+  "pregunta": "En términos generales, ¿cómo evalúa la gestión del gobierno nacional?",
+  "contexto": "Encuesta de opinión pública en Argentina, enero de 2025.\nSituación del país (datos públicos, no opiniones):\n- Presidente: Javier Milei (La Libertad Avanza), en el cargo desde diciembre de 2023. En octubre de 2025 hay elecciones legislativas.\n- Inflación: 2,7% en diciembre de 2024; 117,8% en todo 2024 (INDEC). En 2023, antes de este gobierno, la inflación anual había sido de alrededor de 211%.\n- Actividad: después de una recesión en el primer semestre de 2024, la economía creció en el tercer trimestre (3,9% respecto del trimestre anterior).\n- Cuentas públicas: en 2024 el Estado nacional tuvo superávit fiscal por primera vez en más de una década, con un fuerte recorte del gasto (obra pública, transferencias a provincias, jubilaciones y salarios estatales).\n- Pobreza: 52,9% de las personas en el primer semestre de 2024 (INDEC).\n- Desempleo: 6,9% en el tercer trimestre de 2024.",
+  "template": "experiment",
+  "respuestas_por_persona": 1,
+  "respuestas_planeadas": 200,
+  "created_at": "2026-10-06T19:07:06+00:00",
+  "simulation_version": "realism_v2",
+  "mode": "survey",
+  "memory_enabled": false,
+  "follow_up_questions": [],
+  "social_seed": 42,
+  "interaction_graph": {},
+  "opciones": [
+    "Muy bien",
+    "Bien",
+    "Regular",
+    "Mal",
+    "Muy mal",
+    "No sabe / no contesta"
+  ],
+  "temperature": 1.0,
+  "modo_cerrada": "probabilidades"
+}

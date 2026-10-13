@@ -1,6 +1,8 @@
 # Predikpedia: fiabilidad, aprendizaje con datos reales y contexto (roadmap)
 
-> Etapa 0 (arreglar lo roto y simplificar el flujo) ya está implementada. De la Fase 2, la población desde datos reales también (Audiencias → "Subir datos reales"). En el modo "Describir con palabras", la IA ahora escribe arquetipos (personas completas y coherentes) por grupo en vez de listas sueltas de valores, y el % de cada grupo se puede corregir en Revisar. Fase 1 y el resto de las Fases 2 y 3 siguen pendientes.
+> Etapa 0 (arreglar lo roto y simplificar el flujo) ya está implementada. De la Fase 2, la población desde datos reales también (Audiencias → "Subir datos reales"). En el modo "Describir con palabras", la IA ahora escribe arquetipos (personas completas y coherentes) por grupo en vez de listas sueltas de valores, y el % de cada grupo se puede corregir en Revisar. De la Fase 1 ya están las preguntas cerradas (Estudios → Tipo de respuesta), la temperature fija, el modelo `Benchmark` y la pestaña Resultados → "Validación contra datos reales" (`app/services/calibration_service.py`). Falta el script de ablación de contexto (`tools/run_context_ablation.py`), que depende de los niveles L2 a L4 de la Fase 2. El resto de las Fases 2 y 3 sigue pendiente.
+
+> Ojo: `Results_Opinaia_1500.csv` tiene 20 filas, todas con voto "Milei", y columna `Agent_ID`: no sirve como benchmark. Hace falta el archivo real completo.
 
 ## Context
 
@@ -116,6 +118,20 @@ Supuesto: tus resultados reales son tipo encuesta (pregunta cerrada + % por opci
 
 ### Fase 3: Corrección aprendida
 - Con 3 o más benchmarks, estimar el sesgo por segmento y opción y ofrecer "resultado corregido" junto al bruto, siempre mostrando los dos.
+- Prototipo experimental offline implementado: `tools/calibrate_probabilities.py` estima un afilado `p^k` por persona
+  en una encuesta y exige otra encuesta/ola y el mismo modelo para evaluar. Guarda parámetros congelados y reporta
+  error por grupo y cambio entre olas, sin modificar las respuestas originales. El runner ahora permite proveedor
+  local explícito, checkpoints y reanudación con guardas de configuración.
+- Resultado del 6/10/2026: k=3 aprendido con Qwen en Latinobarómetro reduce error de entrenamiento por partido,
+  pero empeora ambas olas ICG y capta solo +1.32 pp del cambio real de +32.51 pp. **La corrección no está validada
+  para producción.** Ver `docs/EXPERIMENTOS_VALIDACION.md`; falta otra ola política comparable y una corrección
+  que se confirme fuera del entrenamiento antes de exponerla en la UI.
+- Resultado del 13/10/2026: en el control Latinobarómetro 2023 (otro gobierno, misma pregunta binaria) el mismo
+  k=3 congelado baja el error macro por partido de 13,41 a 4,82 pp; la corrección por grupo y opción no se
+  transfiere. El afilado queda como candidato solo para aprobación binaria con identidad política, sin habilitar
+  en la UI: falta un segundo control de ese tipo. Ver `docs/CONTROL_POLITICO_INDEPENDIENTE.md`.
+  En LAPOP 2026 (cinco niveles, con identidad política) k=3 empeora de 12,19 a 16,48 pp y el modelo sin corregir
+  no supera a repartir parejo: en escalas ordinales el problema pendiente es que evita las opciones extremas.
 
 ### Archivos clave
 - `app/domain/models.py`: campos nuevos opcionales y `Benchmark`.

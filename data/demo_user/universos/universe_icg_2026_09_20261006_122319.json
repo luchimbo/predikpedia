@@ -1,0 +1,34 @@
+{
+  "id": "universe_icg_2026_09_20261006_122319",
+  "nombre": "ICG sep-2026 (UTDT) · adultos Argentina",
+  "descripcion": "Adultos de Argentina encuestados por la UTDT (Índice de Confianza en el Gobierno), septiembre de 2026.",
+  "cantidad_personas": 200,
+  "prompt_perfil": "Adultos de Argentina encuestados por la UTDT (Índice de Confianza en el Gobierno), septiembre de 2026.",
+  "perfiles": [
+    {
+      "nombre": "Interior",
+      "descripcion": "Personas reales con zona = Interior",
+      "porcentaje": 60.5,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "Conurbano bonaerense",
+      "descripcion": "Personas reales con zona = Conurbano bonaerense",
+      "porcentaje": 29.9,
+      "atributos": {},
+      "arquetipos": []
+    },
+    {
+      "nombre": "CABA",
+      "descripcion": "Personas reales con zona = CABA",
+      "porcentaje": 9.6,
+      "atributos": {},
+      "arquetipos": []
+    }
+  ],
+  "origen": "datos_reales",
+  "fuente": "icg_2026_09_evaluacion_gobierno.csv",
+  "created_at": "2026-10-06T15:23:19+00:00",
+  "evidence_source_ids": []
+}

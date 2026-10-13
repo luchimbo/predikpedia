@@ -1,0 +1,27 @@
+{
+  "id": "study_exp_20261006_123828",
+  "universo_id": "universe_icg_2026_09_20261006_122319",
+  "universo_nombre": "ICG sep-2026 (UTDT) · adultos Argentina",
+  "titulo": "Experimento · B1 prompt anti-centro · flash-lite · sin contexto",
+  "pregunta": "En términos generales, ¿cómo evalúa la gestión del gobierno nacional?",
+  "contexto": "",
+  "template": "experiment",
+  "respuestas_por_persona": 1,
+  "respuestas_planeadas": 200,
+  "created_at": "2026-10-06T15:38:28+00:00",
+  "simulation_version": "realism_v2",
+  "mode": "survey",
+  "memory_enabled": false,
+  "follow_up_questions": [],
+  "social_seed": 42,
+  "interaction_graph": {},
+  "opciones": [
+    "Muy bien",
+    "Bien",
+    "Regular",
+    "Mal",
+    "Muy mal",
+    "No sabe / no contesta"
+  ],
+  "temperature": 1.0
+}
