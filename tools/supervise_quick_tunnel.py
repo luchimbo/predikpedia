@@ -66,10 +66,7 @@ def render_service_id() -> str:
 def sync_render(tunnel_url: str) -> bool:
     service_id = render_service_id()
     desired = {
-        "LLM_PROVIDER": "schedule",
-        "LLM_SCHEDULE_TIMEZONE": "America/Argentina/Buenos_Aires",
-        "LLM_LOCAL_START": "09:30",
-        "LLM_LOCAL_END": "17:30",
+        "LLM_PROVIDER": "local",
         "LLM_LOCAL_BASE_URL": f"{tunnel_url}/v1",
         "LLM_LOCAL_API_KEY": os.environ["LLM_RELAY_BEARER_TOKEN"],
         "LLM_LOCAL_MODEL": os.getenv("LLM_LOCAL_MODEL", "qwen2.5:32b"),

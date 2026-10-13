@@ -47,7 +47,7 @@ def _parse_time(value: str, key: str) -> time:
 def load_llm_settings(env: Mapping[str, str] | None = None) -> LLMSettings:
     """Read and validate routing configuration without checking provider secrets."""
     source = os.environ if env is None else env
-    mode = _required(source, "LLM_PROVIDER", "schedule").lower()
+    mode = _required(source, "LLM_PROVIDER", "local").lower()
     if mode not in {"schedule", "local", "openrouter"}:
         raise LLMConfigurationError("LLM_PROVIDER debe ser schedule, local u openrouter.")
 
