@@ -12,6 +12,28 @@ def _now_iso() -> str:
 
 
 @dataclass
+class DistribucionGeneral:
+    """Reparto de toda la audiencia en una característica que cruza los grupos (región, edad)."""
+
+    nombre: str
+    valores: Dict[str, float]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "DistribucionGeneral":
+        valores = {}
+        for k, v in (data.get("valores") or {}).items():
+            try:
+                valores[str(k).strip()] = float(str(v).replace("%", "").replace(",", ".").strip())
+            except ValueError:
+                continue
+        return cls(nombre=str(data.get("nombre", "")).strip(),
+                   valores={k: v for k, v in valores.items() if k and v > 0})
+
+
+@dataclass
 class ArquetipoPersona:
     """Combinación conjunta de atributos; peso relativo dentro del segmento."""
 
@@ -90,6 +112,8 @@ class PersonaSintetica:
     notas: str = ""
     # Columnas de la fila real de la que sale la persona (audiencias desde datos reales).
     datos_reales: Dict[str, str] = field(default_factory=dict)
+    # Valor asignado en cada distribución general salvo la edad, que va en edad_rango.
+    rasgos: Dict[str, str] = field(default_factory=dict)
 
     created_at: str = field(default_factory=_now_iso)
 
@@ -127,6 +151,9 @@ class PersonaSintetica:
             datos_reales={
                 str(k): str(v) for k, v in (data.get("datos_reales") or {}).items()
             } if isinstance(data.get("datos_reales"), dict) else {},
+            rasgos={
+                str(k): str(v) for k, v in (data.get("rasgos") or {}).items()
+            } if isinstance(data.get("rasgos"), dict) else {},
             created_at=str(data.get("created_at", _now_iso())),
             arquetipo=str(data.get("arquetipo", "")).strip(),
             identity_id=str(data.get("identity_id", "")),
@@ -149,6 +176,7 @@ class Universo:
     created_at: str = field(default_factory=_now_iso)
     evidence_source_ids: List[str] = field(default_factory=list)
     research_snapshot_id: str = ""
+    distribuciones: List[DistribucionGeneral] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -163,6 +191,7 @@ class Universo:
             "created_at": self.created_at,
             "evidence_source_ids": self.evidence_source_ids,
             "research_snapshot_id": self.research_snapshot_id,
+            "distribuciones": [d.to_dict() for d in self.distribuciones],
         }
 
     @classmethod
@@ -180,6 +209,8 @@ class Universo:
             created_at=str(data.get("created_at", _now_iso())),
             evidence_source_ids=list(data.get("evidence_source_ids") or []),
             research_snapshot_id=str(data.get("research_snapshot_id") or ""),
+            distribuciones=[d for d in (DistribucionGeneral.from_dict(item) for item in data.get("distribuciones") or []
+                                        if isinstance(item, dict)) if d.nombre and d.valores],
         )
 
 

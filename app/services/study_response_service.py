@@ -13,7 +13,7 @@ from app.services.llm_service import LLMError
 PERSONA_FIELDS = (
     "perfil", "perfil_descripcion", "arquetipo", "edad_rango", "rol", "industria",
     "objetivo", "principal_pain", "motivador", "objecion_base", "sensibilidad_precio",
-    "comportamiento", "canal_preferido", "contexto_operativo", "notas",
+    "comportamiento", "canal_preferido", "contexto_operativo", "notas", "rasgos",
 )
 
 

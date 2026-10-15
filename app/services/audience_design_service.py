@@ -8,13 +8,17 @@ preservar su coherencia. El costo no depende de la cantidad de personas.
 """
 
 import math
+import re
+from collections import Counter
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from app.domain.models import ArquetipoPersona, PerfilCliente
+from app.domain.models import ArquetipoPersona, DistribucionGeneral, PerfilCliente
 from app.services.llm_service import LLMError, LLMService
 from app.services.universe_service import OPTIONAL_FIELDS, SAMPLED_FIELDS
 
-MAX_SEGMENTS = 6
+MAX_SEGMENTS = 10
+MAX_DISTRIBUTIONS = 4
 MAX_VALUES_PER_FIELD = 8
 MIN_ARCHETYPES = 4
 MAX_ARCHETYPES = 10
@@ -30,7 +34,7 @@ FIELD_GUIDE = {
     "sensibilidad_precio": "\"Alta\", \"Media\", \"Baja\" o \"No especificado\"; no inferir ingresos desde la edad o el rol",
     "comportamiento": "estilo de decisión, ej. \"Conservador\", \"Analítico\"",
     "canal_preferido": "canales por los que se informa o compra",
-    "notas": "restricciones y supuestos del arquetipo; distinguir lo explícito del brief de lo hipotético",
+    "notas": "restricciones y supuestos del arquetipo; distinguir lo explícito del brief de lo hipotético; no repetir porcentajes",
 }
 
 SYSTEM_PROMPT = (
@@ -45,15 +49,30 @@ class AudienceDesignError(Exception):
     """El LLM no devolvió un diseño de segmentos utilizable."""
 
 
+@dataclass
+class DisenoAudiencia:
+    perfiles: List[PerfilCliente]
+    distribuciones: List[DistribucionGeneral] = field(default_factory=list)
+    avisos: List[str] = field(default_factory=list)
+
+
 def _build_user_prompt(descripcion: str) -> str:
     todos = SAMPLED_FIELDS + OPTIONAL_FIELDS + ["notas"]
     guia = "\n".join(f"- {campo}: {FIELD_GUIDE[campo]}" for campo in todos)
     campos = ",\n".join(f'            "{campo}": "..."' for campo in todos)
     return (
         f"Brief de la audiencia:\n\"\"\"\n{descripcion.strip()}\n\"\"\"\n\n"
-        f"Definí entre 2 y {MAX_SEGMENTS - 2} segmentos (o 1 si el brief es claramente homogéneo). "
-        "Si el brief menciona segmentos o proporciones, respetalos. Los porcentajes deben sumar 100.\n"
-        f"Dentro de cada segmento diseñá de {MIN_ARCHETYPES} a 8 arquetipos (menos si el brief no da base para más). "
+        "SEGMENTOS: son grupos con un perfil propio (quiénes son, qué buscan, qué compran). "
+        "Si el brief enumera segmentos con porcentajes, usá EXACTAMENTE esos segmentos, uno por cada "
+        "uno del brief, con su mismo porcentaje: no los fusiones, no los dividas y no agregues otros, "
+        f"aunque sean muchos (hasta {MAX_SEGMENTS}). Si el brief no los enumera, definí entre 2 y 4 "
+        "(o 1 si es claramente homogéneo). Los porcentajes de los segmentos deben sumar 100.\n"
+        "DISTRIBUCIONES GENERALES: si el brief reparte a TODA la audiencia según una característica que "
+        "cruza los segmentos (por ejemplo región, rango de edad, género), eso NO es un segmento. Ponelo en "
+        "\"distribuciones\", con cada valor y su porcentaje tal cual aparecen en el brief. Para la edad, "
+        "llamala \"Edad\" y escribí los valores como rangos (\"18-29\", \"50+\"). Si no hay, dejá la lista vacía.\n"
+        f"Dentro de cada segmento diseñá de {MIN_ARCHETYPES} a 8 arquetipos (menos si el brief no da base para más; "
+        "con más de 4 segmentos, de 1 a 3 por segmento). "
         "Cada arquetipo contiene UNA combinación completa y coherente: rol, objetivo, dolor, "
         "motivador, objeción y comportamiento deben poder coexistir. La expansión mantiene esa "
         "combinación junta; no mezcla atributos entre arquetipos.\n"
@@ -80,7 +99,8 @@ def _build_user_prompt(descripcion: str) -> str:
         "        }\n"
         "      }]\n"
         "    }\n"
-        "  ]\n"
+        "  ],\n"
+        '  "distribuciones": [{"nombre": "Región", "valores": {"Valor A": 60, "Valor B": 40}}]\n'
         "}"
     )
 
@@ -195,19 +215,87 @@ def parse_segments(payload: Any) -> List[PerfilCliente]:
     return perfiles
 
 
-def design_segments(descripcion: str, llm: Optional[LLMService] = None) -> List[PerfilCliente]:
-    """Diseña los segmentos de una audiencia a partir de su descripción."""
-    if not descripcion.strip():
-        raise AudienceDesignError("La descripción de la audiencia está vacía.")
-    llm = llm or LLMService()
+def parse_distributions(payload: Any) -> List[DistribucionGeneral]:
+    """Distribuciones generales válidas de la respuesta; las inválidas se descartan."""
+    raw = payload.get("distribuciones") if isinstance(payload, dict) else None
+    if not isinstance(raw, list):
+        return []
+    result: List[DistribucionGeneral] = []
+    for item in raw[:MAX_DISTRIBUTIONS]:
+        if not isinstance(item, dict) or not isinstance(item.get("valores"), dict):
+            continue
+        distribucion = DistribucionGeneral.from_dict(item)
+        nombres = {d.nombre.casefold() for d in result}
+        if distribucion.nombre and len(distribucion.valores) >= 2 and distribucion.nombre.casefold() not in nombres:
+            result.append(distribucion)
+    return result
+
+
+def explicit_percentages(descripcion: str) -> List[float]:
+    return [float(n.replace(",", ".")) for n in re.findall(r"(\d+(?:[.,]\d+)?)\s*%", descripcion)]
+
+
+def missing_percentages(descripcion: str, perfiles: List[PerfilCliente],
+                        distribuciones: List[DistribucionGeneral]) -> List[float]:
+    """Porcentajes del brief que no quedaron en ningún segmento ni distribución."""
+    usados = Counter(round(p.porcentaje, 1) for p in perfiles)
+    usados.update(round(v, 1) for d in distribuciones for v in d.valores.values())
+    faltan = Counter(round(v, 1) for v in explicit_percentages(descripcion)) - usados
+    return sorted(faltan.elements())
+
+
+def _request(llm: LLMService, user_prompt: str) -> Any:
     try:
-        result = llm.generate(
+        return llm.generate(
             system_prompt=SYSTEM_PROMPT,
-            user_prompt=_build_user_prompt(descripcion),
+            user_prompt=user_prompt,
             agent_id="audience_design",
-            timeout=120,
+            timeout=180,
             expect_json=True,
         )
     except LLMError as exc:
         raise AudienceDesignError(str(exc)) from exc
-    return parse_segments(result)
+
+
+def design_audience(descripcion: str, llm: Optional[LLMService] = None) -> DisenoAudiencia:
+    """Diseña segmentos y distribuciones generales a partir de la descripción.
+
+    Si quedan porcentajes explícitos del brief sin usar (por ejemplo, porque el
+    modelo fusionó segmentos), pide una corrección una vez y, si sigue
+    faltando, lo informa como aviso.
+    """
+    if not descripcion.strip():
+        raise AudienceDesignError("La descripción de la audiencia está vacía.")
+    llm = llm or LLMService()
+    prompt = _build_user_prompt(descripcion)
+    result = _request(llm, prompt)
+    perfiles, distribuciones = parse_segments(result), parse_distributions(result)
+    faltan = missing_percentages(descripcion, perfiles, distribuciones)
+    if faltan:
+        resumen = "; ".join(f"{p.nombre} {p.porcentaje:g}%" for p in perfiles)
+        correccion = (
+            f"{prompt}\n\nTu respuesta anterior tenía estos segmentos: {resumen}. "
+            f"Quedaron sin usar estos porcentajes del brief: {', '.join(f'{v:g}%' for v in faltan)}. "
+            "Corregila: un segmento por cada segmento del brief, con su porcentaje exacto, y las "
+            "características que cruzan a toda la audiencia en \"distribuciones\"."
+        )
+        try:
+            retry = _request(llm, correccion)
+            perfiles_2, distribuciones_2 = parse_segments(retry), parse_distributions(retry)
+            faltan_2 = missing_percentages(descripcion, perfiles_2, distribuciones_2)
+            if len(faltan_2) < len(faltan):
+                perfiles, distribuciones, faltan = perfiles_2, distribuciones_2, faltan_2
+        except AudienceDesignError:
+            pass  # Se conserva el primer diseño, con aviso.
+    avisos = []
+    if faltan:
+        avisos.append(
+            "La IA no respetó todos los porcentajes de tu descripción "
+            f"({', '.join(f'{v:g}%' for v in faltan)} sin usar). Revisá los grupos antes de guardar."
+        )
+    return DisenoAudiencia(perfiles, distribuciones, avisos)
+
+
+def design_segments(descripcion: str, llm: Optional[LLMService] = None) -> List[PerfilCliente]:
+    """Diseña los segmentos de una audiencia a partir de su descripción."""
+    return design_audience(descripcion, llm).perfiles

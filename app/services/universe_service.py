@@ -9,10 +9,12 @@ Cambios clave:
 """
 
 import random
+import re
+import unicodedata
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
-from app.domain.models import ArquetipoPersona, ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
+from app.domain.models import ArquetipoPersona, DistribucionGeneral, ExpansionSnapshot, PerfilCliente, PersonaSintetica, Universo
 from app.storage.evidence_repository import identity_for
 
 
@@ -58,6 +60,12 @@ def expand_universe(universo: Universo) -> List[PersonaSintetica]:
         # Agregar al perfil mayoritario
         main_perfil = max(perfiles, key=lambda p: p.porcentaje)
         personas.append(_build_persona(universo, main_perfil, rng))
+
+    if universo.distribuciones:
+        # Rng propio: no altera el sorteo de las audiencias sin distribuciones.
+        rng_dist = random.Random(f"{universo.id}:distribuciones")
+        for distribucion in universo.distribuciones:
+            _apply_distribution(personas, distribucion, rng_dist)
 
     # Shuffle y asignar IDs secuenciales
     rng.shuffle(personas)
@@ -181,6 +189,163 @@ def _build_persona(
         notas="",
         **valores,
     )
+
+
+AGE_OPEN_END = 120
+# Para ponderar rangos abiertos ("50+") como si terminaran acá.
+AGE_SPAN_CAP = 80
+
+
+def is_age_distribution(nombre: str) -> bool:
+    return normalize_label(nombre).startswith("edad")
+
+
+def normalize_label(text: str) -> str:
+    plain = unicodedata.normalize("NFKD", str(text)).encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"\s+", " ", plain.casefold()).strip()
+
+
+def parse_age_range(text: str) -> Optional[Tuple[int, int]]:
+    """"18-29", "18 a 29", "50+", "más de 50", "menos de 18" → (desde, hasta). None si no se entiende."""
+    t = normalize_label(text)
+    nums = [int(n) for n in re.findall(r"\d+", t)]
+    if not nums:
+        return None
+    if len(nums) >= 2 and nums[0] <= nums[1]:
+        return nums[0], nums[1]
+    n = nums[0]
+    if "+" in t or "mas de" in t or "mayor" in t:
+        return n, AGE_OPEN_END
+    if "menos de" in t or "menor" in t:
+        return 0, max(n - 1, 0)
+    return n, n
+
+
+def _format_age(desde: int, hasta: int) -> str:
+    if hasta >= AGE_OPEN_END:
+        return f"{desde}+"
+    return str(desde) if desde == hasta else f"{desde}-{hasta}"
+
+
+def _age_overlap(persona_age: str, categoria: str) -> Optional[Tuple[int, int]]:
+    a, b = parse_age_range(persona_age), parse_age_range(categoria)
+    if a is None or b is None:
+        return None
+    desde, hasta = max(a[0], b[0]), min(a[1], b[1])
+    return (desde, hasta) if desde <= hasta else None
+
+
+def _affinity(persona_age: str, categoria: str, es_edad: bool) -> float:
+    """Peso inicial del cruce: la parte del rango de la persona que cae en la categoría.
+
+    Así un rango 30-40 casi nunca termina en "40" por tocar apenas 40-49.
+    0 = incompatible; 1 = sin información de edad para comparar.
+    """
+    if not es_edad or parse_age_range(persona_age) is None or parse_age_range(categoria) is None:
+        return 1.0
+    rango = _age_overlap(persona_age, categoria)
+    if rango is None:
+        return 0.0
+    desde, hasta = parse_age_range(persona_age)
+    largo = min(hasta, AGE_SPAN_CAP) - desde + 1
+    return max(min(rango[1], AGE_SPAN_CAP) - rango[0] + 1, 1) / max(largo, 1)
+
+
+def _apply_distribution(personas: List[PersonaSintetica], distribucion: DistribucionGeneral,
+                        rng: random.Random) -> None:
+    """Asigna un valor de la distribución a cada persona.
+
+    El total respeta los porcentajes y cada valor es compatible con el grupo
+    de la persona: con la edad, un arquetipo de 15-20 años solo cae en
+    categorías que se superponen con ese rango. El reparto entre grupos sale
+    de un ajuste proporcional iterativo (grupos × categorías, con ceros
+    donde no hay compatibilidad).
+    """
+    categorias = list(distribucion.valores)
+    if not categorias or not personas:
+        return
+    es_edad = is_age_distribution(distribucion.nombre)
+    objetivos = _largest_remainder(len(personas), [distribucion.valores[c] for c in categorias])
+
+    grupos: Dict[Tuple[str, str, str], List[PersonaSintetica]] = {}
+    for persona in personas:
+        grupos.setdefault((persona.perfil, persona.arquetipo, persona.edad_rango), []).append(persona)
+    claves = list(grupos)
+    afinidad = []
+    for clave in claves:
+        fila = [_affinity(clave[2], c, es_edad) for c in categorias]
+        afinidad.append(fila if any(fila) else [1.0] * len(categorias))
+    compat = [[v > 0 for v in fila] for fila in afinidad]
+
+    # Ajuste proporcional iterativo: filas = tamaño de cada grupo, columnas = objetivo.
+    matriz = [[len(grupos[k]) * v for v in fila] for k, fila in zip(claves, afinidad)]
+    for _ in range(200):
+        for j, objetivo in enumerate(objetivos):
+            col = sum(fila[j] for fila in matriz)
+            if col > 0:
+                for fila in matriz:
+                    fila[j] *= objetivo / col
+        for i, clave in enumerate(claves):
+            suma = sum(matriz[i])
+            if suma > 0:
+                matriz[i] = [v * len(grupos[clave]) / suma for v in matriz[i]]
+
+    cuentas = [_largest_remainder(len(grupos[k]), fila) for k, fila in zip(claves, matriz)]
+    _fix_column_totals(cuentas, compat, objetivos)
+
+    for clave, fila in zip(claves, cuentas):
+        miembros = list(grupos[clave])
+        rng.shuffle(miembros)
+        valores = [c for c, n in zip(categorias, fila) for _ in range(n)]
+        for persona, valor in zip(miembros, valores):
+            if es_edad:
+                rango = _age_overlap(persona.edad_rango, valor)
+                persona.edad_rango = _format_age(*rango) if rango else valor
+            else:
+                persona.rasgos[distribucion.nombre] = valor
+
+
+def _fix_column_totals(cuentas: List[List[int]], compat: List[List[bool]], objetivos: List[int]) -> None:
+    """Mueve personas sueltas entre categorías para que cada total quede igual al objetivo."""
+    for _ in range(sum(objetivos)):
+        totales = [sum(fila[j] for fila in cuentas) for j in range(len(objetivos))]
+        sobra = [j for j in range(len(objetivos)) if totales[j] > objetivos[j]]
+        falta = [j for j in range(len(objetivos)) if totales[j] < objetivos[j]]
+        movido = False
+        for j_mas in sobra:
+            for j_menos in falta:
+                for fila, ok in zip(cuentas, compat):
+                    if fila[j_mas] > 0 and ok[j_menos]:
+                        fila[j_mas] -= 1
+                        fila[j_menos] += 1
+                        movido = True
+                        break
+                if movido:
+                    break
+            if movido:
+                break
+        if not movido:
+            return
+
+
+def distribution_summary(universo: Universo, personas: List[PersonaSintetica]) -> List[Dict[str, Any]]:
+    """Objetivo vs. logrado por cada valor de cada distribución general."""
+    filas = []
+    total = len(personas) or 1
+    for distribucion in universo.distribuciones:
+        es_edad = is_age_distribution(distribucion.nombre)
+        suma = sum(distribucion.valores.values()) or 1
+        for categoria, pct in distribucion.valores.items():
+            if es_edad:
+                # La persona cuenta si su rango entra completo en la categoría.
+                cuenta = sum(1 for p in personas
+                             if parse_age_range(p.edad_rango) is not None
+                             and _age_overlap(p.edad_rango, categoria) == parse_age_range(p.edad_rango))
+            else:
+                cuenta = sum(1 for p in personas if p.rasgos.get(distribucion.nombre) == categoria)
+            filas.append({"Característica": distribucion.nombre, "Valor": categoria,
+                          "Objetivo %": round(pct * 100 / suma, 1), "Logrado %": round(cuenta * 100 / total, 1)})
+    return filas
 
 
 def build_expansion_snapshot(universo: Universo, personas: List[PersonaSintetica]) -> ExpansionSnapshot:

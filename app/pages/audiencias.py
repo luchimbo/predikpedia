@@ -16,7 +16,7 @@ import streamlit as st
 from app.components.evidence import render_evidence_panel, session_store
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_stepper, render_stat_card
 from app.domain.models import PerfilCliente, Universo
-from app.services.audience_design_service import AudienceDesignError, design_segments
+from app.services.audience_design_service import AudienceDesignError, design_audience
 from app.services.evidence_service import build_source_population
 from app.services.llm_service import LLMService
 from app.services.population_import_service import (
@@ -29,7 +29,7 @@ from app.services.population_import_service import (
     read_table,
     suggest_mapping,
 )
-from app.services.universe_service import build_expansion_snapshot, expand_universe
+from app.services.universe_service import build_expansion_snapshot, distribution_summary, expand_universe
 from app.state import get, go_to_page, set
 from app.storage.repository import list_universes, save_expansion, save_universe
 
@@ -90,10 +90,14 @@ def _render_just_saved():
 def _generate(nombre: str, descripcion: str, cantidad: int, usar_ia: bool):
     """Diseña los segmentos (1 llamada al modelo) y genera las personas."""
     perfiles: List[PerfilCliente] = []
+    distribuciones = []
     if usar_ia:
         with st.spinner("Armando los segmentos de tu audiencia..."):
             try:
-                perfiles = design_segments(descripcion)
+                diseno = design_audience(descripcion)
+                perfiles, distribuciones = diseno.perfiles, diseno.distribuciones
+                if diseno.avisos:
+                    st.session_state["aud_design_warning"] = " ".join(diseno.avisos)
             except AudienceDesignError as exc:
                 st.session_state["aud_design_warning"] = (
                     f"No se pudieron diseñar los segmentos con IA ({exc}). "
@@ -107,6 +111,7 @@ def _generate(nombre: str, descripcion: str, cantidad: int, usar_ia: bool):
         cantidad_personas=cantidad,
         prompt_perfil=descripcion.strip(),
         perfiles=perfiles,  # Vacío = perfil "General" con atributos genéricos
+        distribuciones=distribuciones,
     )
     personas = expand_universe(universo)
     st.session_state["aud_temp_universo"] = universo
@@ -413,6 +418,11 @@ def _render_step_2_review():
     else:
         _render_editable_shares(universo, personas)
 
+    if universo.distribuciones:
+        st.markdown("**Distribuciones generales** (cruzan a todos los grupos)")
+        st.dataframe(pd.DataFrame(distribution_summary(universo, personas)), use_container_width=True, hide_index=True)
+        st.caption("Cada persona recibe un valor compatible con su grupo; por ejemplo, la edad respeta el rango de su arquetipo.")
+
     if universo.origen == "datos_reales":
         st.caption(f"Cada persona es una fila real de **{universo.fuente}**.")
         with st.expander("Ver algunas personas de ejemplo"):
@@ -507,6 +517,7 @@ def _render_generated_examples(personas):
                 "Grupo": p.perfil,
                 "Arquetipo": p.arquetipo,
                 "Edad": p.edad_rango,
+                **p.rasgos,
                 "Rol": p.rol,
                 "Rubro": p.industria,
                 "Le preocupa": p.principal_pain,

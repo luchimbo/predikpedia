@@ -1,9 +1,9 @@
 from unittest import TestCase
 
 from app.domain.models import PerfilCliente, PersonaSintetica, Universo
-from app.services.audience_design_service import AudienceDesignError, design_segments, parse_segments
+from app.services.audience_design_service import AudienceDesignError, design_audience, design_segments, parse_segments
 from app.services.llm_service import LLMError
-from app.services.universe_service import GENERIC_ATTRIBUTES, SAMPLED_FIELDS, expand_universe
+from app.services.universe_service import GENERIC_ATTRIBUTES, SAMPLED_FIELDS, distribution_summary, expand_universe
 
 
 def segment(nombre, porcentaje, **atributos):
@@ -192,3 +192,86 @@ class CoherentAudienceTests(TestCase):
         self.assertEqual({"edad_rango": "25-35", "rol": "Emprendedor"}, perfil.arquetipos[0].atributos)
         person = expand_universe(Universo("plano", "Test", "brief", 1, perfiles=[perfil]))[0]
         self.assertEqual(("25-35", "Emprendedor"), (person.edad_rango, person.rol))
+
+
+class GeneralDistributionTests(TestCase):
+    BRIEF = ("De CABA son un 20%\nDel interior son un 80%\n"
+             "el 50% tiene entre 18 y 29 años\nel 50% tiene más de 30 años\n"
+             "60% estudiantes (15 a 20 años)\n40% productores (30 a 50 años)")
+
+    def design(self, segmentos, distribuciones=None):
+        return {"segmentos": segmentos, "distribuciones": distribuciones or []}
+
+    def segments(self, *pairs):
+        return [{"nombre": n, "porcentaje": pct, "arquetipos": [archetype(n, edad_rango=edad)]} for n, pct, edad in pairs]
+
+    def good_design(self):
+        return self.design(
+            self.segments(("Estudiantes", 40, "15-20"), ("Productores", 60, "25-50")),
+            [{"nombre": "Región", "valores": {"CABA": 20, "Interior": 80}},
+             {"nombre": "Edad", "valores": {"18-29": 50, "30+": 50}}],
+        )
+
+    def test_keeps_distributions_with_a_single_call_when_every_percentage_is_used(self):
+        llm = FakeLLM(self.good_design())
+        diseno = design_audience(self.BRIEF, llm=llm)
+        self.assertEqual(1, len(llm.calls))
+        self.assertEqual(["Región", "Edad"], [d.nombre for d in diseno.distribuciones])
+        self.assertEqual([], diseno.avisos)
+
+    def test_merged_segments_trigger_one_correction(self):
+        merged = self.design(self.segments(("Todos", 100, "15-50")))
+
+        class Sequence(FakeLLM):
+            def generate(inner, **kwargs):
+                inner.calls.append(kwargs)
+                return merged if len(inner.calls) == 1 else self.good_design()
+
+        llm = Sequence()
+        diseno = design_audience(self.BRIEF, llm=llm)
+        self.assertEqual(2, len(llm.calls))
+        self.assertIn("Quedaron sin usar", llm.calls[1]["user_prompt"])
+        self.assertEqual([40.0, 60.0], [p.porcentaje for p in diseno.perfiles])
+        self.assertEqual([], diseno.avisos)
+
+    def test_warns_when_the_correction_still_misses_percentages(self):
+        llm = FakeLLM(self.design(self.segments(("Todos", 100, "15-50"))))
+        diseno = design_audience(self.BRIEF, llm=llm)
+        self.assertEqual(2, len(llm.calls))
+        self.assertEqual(1, len(diseno.avisos))
+
+    def universe(self):
+        diseno = design_audience(self.BRIEF, llm=FakeLLM(self.good_design()))
+        return Universo("dist", "Test", self.BRIEF, 200, perfiles=diseno.perfiles, distribuciones=diseno.distribuciones)
+
+    def test_expansion_hits_every_target_and_respects_archetype_ages(self):
+        universo = self.universe()
+        people = expand_universe(universo)
+        summary = {(r["Característica"], r["Valor"]): r["Logrado %"] for r in distribution_summary(universo, people)}
+        self.assertEqual({("Región", "CABA"): 20.0, ("Región", "Interior"): 80.0,
+                          ("Edad", "18-29"): 50.0, ("Edad", "30+"): 50.0}, summary)
+        for person in people:
+            self.assertIn(person.rasgos["Región"], ("CABA", "Interior"))
+            # Los estudiantes solo entran en 18-29; los productores completan ese 50%.
+            expected = ("18-20",) if person.perfil == "Estudiantes" else ("25-29", "30-50")
+            self.assertIn(person.edad_rango, expected)
+        self.assertEqual([p.to_dict() for p in people], [p.to_dict() for p in expand_universe(universo)])
+
+    def test_distributions_and_traits_survive_json_round_trip(self):
+        import json
+        universo = self.universe()
+        loaded = Universo.from_dict(json.loads(json.dumps(universo.to_dict())))
+        self.assertEqual(universo.distribuciones, loaded.distribuciones)
+        person = expand_universe(universo)[0]
+        self.assertEqual(person.rasgos, PersonaSintetica.from_dict(json.loads(json.dumps(person.to_dict()))).rasgos)
+
+    def test_traits_reach_the_participant_prompt(self):
+        from app.services.study_response_service import build_system_prompt
+        person = expand_universe(self.universe())[0]
+        self.assertIn(person.rasgos["Región"], build_system_prompt(person.to_dict()))
+
+    def test_identity_of_personas_without_traits_is_unchanged(self):
+        from app.storage.evidence_repository import identity_for
+        persona = {"persona_id": "P_000001", "perfil": "A", "rol": "x"}
+        self.assertEqual(identity_for("u", persona), identity_for("u", {**persona, "rasgos": {}}))
+        self.assertNotEqual(identity_for("u", persona), identity_for("u", {**persona, "rasgos": {"Región": "CABA"}}))

@@ -35,6 +35,9 @@ PROFILE_KEYS = (
 def identity_for(universe_id: str, persona: dict) -> str:
     """Changed profiles get a new identity; P_000001 never collides across panels."""
     profile = {key: persona.get(key, "") for key in PROFILE_KEYS}
+    if persona.get("rasgos"):
+        # Solo si existen, para no cambiar la identidad de personas guardadas antes.
+        profile["rasgos"] = persona["rasgos"]
     fingerprint = hashlib.sha256(canonical(profile).encode()).hexdigest()
     return str(uuid5(NAMESPACE_URL, f"predikpedia:panel:{universe_id}:{persona['persona_id']}:{fingerprint}"))
 

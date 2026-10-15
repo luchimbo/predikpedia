@@ -1,0 +1,475 @@
+{
+  "id": "universe_clientes_de_pc_midi_center_arquetipos_20261015_102635",
+  "nombre": "Clientes de PC MIDI Center (arquetipos)",
+  "descripcion": "De CABA son un 18%\n\nDe Buenos Aires son un 43%\n\nDel interior son un 39%\n\nel 27 % tiene entre 18 y 29 años\n\nel 40 % tiene entre 30 y 39 años\n\nel 25% tiene entre 40 y 49 años\n\nel 8% tiene más de 50 años\n\n25% estudiantes de musica joven (15 a 20 años) - Todo arturia, controladores midi, minilab, essentials, minifuse, sintetizadores no se llevan, audio-technica auriculares\n25% músicos y productores de musica (30 a 50 años) - baterías, sintetizadores, placas audiofuse, minifuse 4, placas de sonido arturia\n10% madres y padres jovenes 30 a 40 años con hijos en edad escolar (5 a 15 años) - melódicas, guitarra, ukelele, órganos y pianos\n15% principiantes en la musica adultos más de 30 años - órgano y piano meike, arturia controladores midi, minilab, essentials, minifuse\n5% cliente viejo, que ya conocen PC MIDI Center, tienen más de 50 años (algunos son músicos y otros hobbystas, porque hay algunos que viven de la música y otros que no) - placa de sonido midiplus, controlador midi midiplus, muy midiplus y por ahí alctron (auriculares), confían en midiplus porque conocen pc midi center \n15% personas que buscan un regalo (tíos, abuelos que le compran algo a su ser querido) - cámaras, órganos, ukelele, guitarra\n5% Entra todo, puede ser cualquiera.",
+  "cantidad_personas": 1000,
+  "prompt_perfil": "De CABA son un 18%\n\nDe Buenos Aires son un 43%\n\nDel interior son un 39%\n\nel 27 % tiene entre 18 y 29 años\n\nel 40 % tiene entre 30 y 39 años\n\nel 25% tiene entre 40 y 49 años\n\nel 8% tiene más de 50 años\n\n25% estudiantes de musica joven (15 a 20 años) - Todo arturia, controladores midi, minilab, essentials, minifuse, sintetizadores no se llevan, audio-technica auriculares\n25% músicos y productores de musica (30 a 50 años) - baterías, sintetizadores, placas audiofuse, minifuse 4, placas de sonido arturia\n10% madres y padres jovenes 30 a 40 años con hijos en edad escolar (5 a 15 años) - melódicas, guitarra, ukelele, órganos y pianos\n15% principiantes en la musica adultos más de 30 años - órgano y piano meike, arturia controladores midi, minilab, essentials, minifuse\n5% cliente viejo, que ya conocen PC MIDI Center, tienen más de 50 años (algunos son músicos y otros hobbystas, porque hay algunos que viven de la música y otros que no) - placa de sonido midiplus, controlador midi midiplus, muy midiplus y por ahí alctron (auriculares), confían en midiplus porque conocen pc midi center \n15% personas que buscan un regalo (tíos, abuelos que le compran algo a su ser querido) - cámaras, órganos, ukelele, guitarra\n5% Entra todo, puede ser cualquiera.",
+  "perfiles": [
+    {
+      "nombre": "Estudiantes Música Joven",
+      "descripcion": "Jóvenes de 15 a 20 años cursando estudios musicales, enfocados en equipos básicos de Arturia y accesorios de audio.",
+      "porcentaje": 25.0,
+      "atributos": {
+        "edad_rango": [
+          "15-20"
+        ],
+        "rol": [
+          "Estudiante de música"
+        ],
+        "industria": [
+          "Educación musical"
+        ],
+        "principal_pain": [
+          "Falta de equipo básico para empezar a producir."
+        ],
+        "motivador": [
+          "Aprender y crear música con herramientas accesibles."
+        ],
+        "objecion_base": [
+          "Costo de los equipos, aunque buscan opciones económicas."
+        ],
+        "sensibilidad_precio": [
+          "Alta"
+        ],
+        "comportamiento": [
+          "Impulsivo, busca recomendaciones de compañeros y profes."
+        ],
+        "canal_preferido": [
+          "Tiendas online, redes sociales, recomendaciones boca a boca."
+        ],
+        "objetivo": [
+          "Tener su primer set de producción musical para la facu/escuela."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Estudiante Principiante",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "15-20",
+            "rol": "Estudiante de música",
+            "industria": "Educación musical",
+            "principal_pain": "Falta de equipo básico para empezar a producir.",
+            "motivador": "Aprender y crear música con herramientas accesibles.",
+            "objecion_base": "Costo de los equipos, aunque buscan opciones económicas.",
+            "sensibilidad_precio": "Alta",
+            "comportamiento": "Impulsivo, busca recomendaciones de compañeros y profes.",
+            "canal_preferido": "Tiendas online, redes sociales, recomendaciones boca a boca.",
+            "objetivo": "Tener su primer set de producción musical para la facu/escuela.",
+            "notas": "Compran Arturia Minilab, Essentials, Minifuse. Buscan auriculares Audio-Technica. No compran sintetizadores. Porcentaje implícito: 100% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Músicos Productores",
+      "descripcion": "Profesionales o entusiastas de la música entre 30 y 50 años, que invierten en equipamiento para producción y ejecución.",
+      "porcentaje": 25.0,
+      "atributos": {
+        "edad_rango": [
+          "30-50"
+        ],
+        "rol": [
+          "Músico / Productor",
+          "Músico Sesionista"
+        ],
+        "industria": [
+          "Música",
+          "Música en vivo / Grabación"
+        ],
+        "principal_pain": [
+          "Necesidad de mejorar la calidad del sonido y expandir sus herramientas creativas.",
+          "Equipamiento poco confiable o que no se adapta a las exigencias de presentaciones/sesiones."
+        ],
+        "motivador": [
+          "Lograr un sonido profesional y agilizar el workflow de producción.",
+          "Contar con herramientas robustas y versátiles para diferentes proyectos."
+        ],
+        "objecion_base": [
+          "Investigan mucho antes de comprar, buscan relación calidad-precio.",
+          "Priorizan durabilidad y rendimiento sobre precio. Dudan de la fiabilidad de marcas nuevas."
+        ],
+        "sensibilidad_precio": [
+          "Media"
+        ],
+        "comportamiento": [
+          "Analítico, compara especificaciones y reviews.",
+          "Pragmático, valora la recomendación de colegas con experiencia."
+        ],
+        "canal_preferido": [
+          "Tiendas especializadas, reviews online, foros de música.",
+          "Tiendas físicas, recomendaciones de confianza."
+        ],
+        "objetivo": [
+          "Actualizar o complementar su estudio de grabación.",
+          "Invertir en equipo que garantice su desempeño profesional."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Productor Home Studio",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "30-50",
+            "rol": "Músico / Productor",
+            "industria": "Música",
+            "principal_pain": "Necesidad de mejorar la calidad del sonido y expandir sus herramientas creativas.",
+            "motivador": "Lograr un sonido profesional y agilizar el workflow de producción.",
+            "objecion_base": "Investigan mucho antes de comprar, buscan relación calidad-precio.",
+            "sensibilidad_precio": "Media",
+            "comportamiento": "Analítico, compara especificaciones y reviews.",
+            "canal_preferido": "Tiendas especializadas, reviews online, foros de música.",
+            "objetivo": "Actualizar o complementar su estudio de grabación.",
+            "notas": "Compran baterías, sintetizadores, placas Audiofuse, Minifuse 4, placas de sonido Arturia. Porcentaje implícito: 60% de este subsegmento."
+          }
+        },
+        {
+          "nombre": "Músico Sesionista Buscando Fiabilidad",
+          "peso": 0.6,
+          "atributos": {
+            "edad_rango": "30-50",
+            "rol": "Músico Sesionista",
+            "industria": "Música en vivo / Grabación",
+            "principal_pain": "Equipamiento poco confiable o que no se adapta a las exigencias de presentaciones/sesiones.",
+            "motivador": "Contar con herramientas robustas y versátiles para diferentes proyectos.",
+            "objecion_base": "Priorizan durabilidad y rendimiento sobre precio. Dudan de la fiabilidad de marcas nuevas.",
+            "sensibilidad_precio": "Media",
+            "comportamiento": "Pragmático, valora la recomendación de colegas con experiencia.",
+            "canal_preferido": "Tiendas físicas, recomendaciones de confianza.",
+            "objetivo": "Invertir en equipo que garantice su desempeño profesional.",
+            "notas": "Compran placas Audiofuse, Minifuse 4, sintetizadores Arturia. Porcentaje implícito: 40% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Padres Jóvenes con Hijos Músicos",
+      "descripcion": "Padres de entre 30 y 40 años con hijos en edad escolar, que buscan instrumentos básicos para iniciarlos en la música.",
+      "porcentaje": 10.0,
+      "atributos": {
+        "edad_rango": [
+          "30-40"
+        ],
+        "rol": [
+          "Padre/Madre"
+        ],
+        "industria": [
+          "Familia"
+        ],
+        "principal_pain": [
+          "No saber qué instrumento es mejor para empezar o cómo elegir uno de buena calidad para sus hijos."
+        ],
+        "motivador": [
+          "Fomentar la educación musical de sus hijos y que disfruten aprendiendo."
+        ],
+        "objecion_base": [
+          "No quieren gastar mucho en algo que quizás el niño no continúe. Buscan algo duradero y fácil de usar."
+        ],
+        "sensibilidad_precio": [
+          "Alta"
+        ],
+        "comportamiento": [
+          "Busca asesoramiento en tiendas o por internet, prioriza la relación precio-calidad."
+        ],
+        "canal_preferido": [
+          "Tiendas de música, recomendaciones de otros padres, tiendas online generales."
+        ],
+        "objetivo": [
+          "Comprar un instrumento accesible y apto para principiantes para sus hijos."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Padre Iniciador",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "30-40",
+            "rol": "Padre/Madre",
+            "industria": "Familia",
+            "principal_pain": "No saber qué instrumento es mejor para empezar o cómo elegir uno de buena calidad para sus hijos.",
+            "motivador": "Fomentar la educación musical de sus hijos y que disfruten aprendiendo.",
+            "objecion_base": "No quieren gastar mucho en algo que quizás el niño no continúe. Buscan algo duradero y fácil de usar.",
+            "sensibilidad_precio": "Alta",
+            "comportamiento": "Busca asesoramiento en tiendas o por internet, prioriza la relación precio-calidad.",
+            "canal_preferido": "Tiendas de música, recomendaciones de otros padres, tiendas online generales.",
+            "objetivo": "Comprar un instrumento accesible y apto para principiantes para sus hijos.",
+            "notas": "Compran melódicas, guitarras, ukeleles, órganos y pianos. Porcentaje implícito: 100% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Principiantes Adultos",
+      "descripcion": "Adultos mayores de 30 años que recién comienzan su camino en la música, buscando instrumentos fáciles de aprender y económicos.",
+      "porcentaje": 15.0,
+      "atributos": {
+        "edad_rango": [
+          "30+"
+        ],
+        "rol": [
+          "Principiante"
+        ],
+        "industria": [
+          "Hobby / Interés personal"
+        ],
+        "principal_pain": [
+          "Inseguridad sobre cómo empezar y miedo a gastar en algo que no dominarán."
+        ],
+        "motivador": [
+          "Cumplir el deseo de aprender a tocar un instrumento en la adultez."
+        ],
+        "objecion_base": [
+          "Buscan tutoriales y precios accesibles. Dudan de su capacidad de aprendizaje."
+        ],
+        "sensibilidad_precio": [
+          "Alta"
+        ],
+        "comportamiento": [
+          "Investigador, busca tutoriales en YouTube y comparativas de precios."
+        ],
+        "canal_preferido": [
+          "Tiendas online, YouTube, foros de música."
+        ],
+        "objetivo": [
+          "Adquirir su primer instrumento y aprender las bases de forma amena."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Adulto con Nuevo Hobby",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "30+",
+            "rol": "Principiante",
+            "industria": "Hobby / Interés personal",
+            "principal_pain": "Inseguridad sobre cómo empezar y miedo a gastar en algo que no dominarán.",
+            "motivador": "Cumplir el deseo de aprender a tocar un instrumento en la adultez.",
+            "objecion_base": "Buscan tutoriales y precios accesibles. Dudan de su capacidad de aprendizaje.",
+            "sensibilidad_precio": "Alta",
+            "comportamiento": "Investigador, busca tutoriales en YouTube y comparativas de precios.",
+            "canal_preferido": "Tiendas online, YouTube, foros de música.",
+            "objetivo": "Adquirir su primer instrumento y aprender las bases de forma amena.",
+            "notas": "Compran órgano y piano Meike, controladores MIDI Arturia, Minilab, Essentials, Minifuse. Porcentaje implícito: 100% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Cliente Viejo PC MIDI Center",
+      "descripcion": "Clientes de más de 50 años, leales a PC MIDI Center, que conocen la marca y confían en ella para equipamiento.",
+      "porcentaje": 5.0,
+      "atributos": {
+        "edad_rango": [
+          "50+"
+        ],
+        "rol": [
+          "Hobbysta",
+          "Músico profesional (activo o retirado)"
+        ],
+        "industria": [
+          "No especificado",
+          "Música"
+        ],
+        "principal_pain": [
+          "Busca equipamiento funcional y confiable sin complicaciones.",
+          "Necesita equipamiento fiable para seguir tocando o grabando sin problemas técnicos."
+        ],
+        "motivador": [
+          "Disfrutar de su hobby musical con equipos que ya conoce y le dan seguridad.",
+          "Mantener la calidad de su sonido y workflow con equipos de confianza."
+        ],
+        "objecion_base": [
+          "Confianza ciega en la marca y el conocimiento previo de PC MIDI Center.",
+          "Fidelidad a marcas y tiendas que le han dado buen servicio a lo largo del tiempo."
+        ],
+        "sensibilidad_precio": [
+          "Media"
+        ],
+        "comportamiento": [
+          "Repetidor, compra lo que ya conoce o le recomiendan desde el canal de confianza.",
+          "Conservador, prefiere lo probado y conocido."
+        ],
+        "canal_preferido": [
+          "Tienda física PC MIDI Center, teléfono.",
+          "Tienda física PC MIDI Center, recomendaciones directas."
+        ],
+        "objetivo": [
+          "Adquirir equipamiento MIDI para seguir disfrutando de su tiempo libre.",
+          "Renovar o complementar su equipamiento con marcas de probada eficacia."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Hobbysta Leal",
+          "peso": 0.5,
+          "atributos": {
+            "edad_rango": "50+",
+            "rol": "Hobbysta",
+            "industria": "No especificado",
+            "principal_pain": "Busca equipamiento funcional y confiable sin complicaciones.",
+            "motivador": "Disfrutar de su hobby musical con equipos que ya conoce y le dan seguridad.",
+            "objecion_base": "Confianza ciega en la marca y el conocimiento previo de PC MIDI Center.",
+            "sensibilidad_precio": "Media",
+            "comportamiento": "Repetidor, compra lo que ya conoce o le recomiendan desde el canal de confianza.",
+            "canal_preferido": "Tienda física PC MIDI Center, teléfono.",
+            "objetivo": "Adquirir equipamiento MIDI para seguir disfrutando de su tiempo libre.",
+            "notas": "Compran placa de sonido Midiplus, controlador Midi Midiplus. Porcentaje implícito: 50% de este subsegmento."
+          }
+        },
+        {
+          "nombre": "Músico Profesional Jubilado/Semi-retirado",
+          "peso": 0.5,
+          "atributos": {
+            "edad_rango": "50+",
+            "rol": "Músico profesional (activo o retirado)",
+            "industria": "Música",
+            "principal_pain": "Necesita equipamiento fiable para seguir tocando o grabando sin problemas técnicos.",
+            "motivador": "Mantener la calidad de su sonido y workflow con equipos de confianza.",
+            "objecion_base": "Fidelidad a marcas y tiendas que le han dado buen servicio a lo largo del tiempo.",
+            "sensibilidad_precio": "Media",
+            "comportamiento": "Conservador, prefiere lo probado y conocido.",
+            "canal_preferido": "Tienda física PC MIDI Center, recomendaciones directas.",
+            "objetivo": "Renovar o complementar su equipamiento con marcas de probada eficacia.",
+            "notas": "Compran placa de sonido Midiplus, controlador Midi Midiplus, auriculares Alctron. Porcentaje implícito: 50% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Buscadores de Regalos",
+      "descripcion": "Personas que compran instrumentos o equipos musicales como obsequio para familiares o amigos, a menudo sin conocimiento técnico.",
+      "porcentaje": 15.0,
+      "atributos": {
+        "edad_rango": [
+          "No especificado"
+        ],
+        "rol": [
+          "Comprador de regalos"
+        ],
+        "industria": [
+          "No especificado"
+        ],
+        "principal_pain": [
+          "No saber qué regalar o si el regalo será del agrado del destinatario."
+        ],
+        "motivador": [
+          "Sorprender y dar un regalo útil y apreciado."
+        ],
+        "objecion_base": [
+          "Buscan algo llamativo y que parezca de calidad, pero sin un presupuesto fijo. Eligen lo que les recomiendan o lo que ven más completo."
+        ],
+        "sensibilidad_precio": [
+          "Media"
+        ],
+        "comportamiento": [
+          "Dependiente de la recomendación del vendedor o de la apariencia del producto."
+        ],
+        "canal_preferido": [
+          "Tiendas de música, recomendaciones de personal de ventas."
+        ],
+        "objetivo": [
+          "Encontrar el regalo perfecto que el destinatario disfrute."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Familiar Sorpresa",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "No especificado",
+            "rol": "Comprador de regalos",
+            "industria": "No especificado",
+            "principal_pain": "No saber qué regalar o si el regalo será del agrado del destinatario.",
+            "motivador": "Sorprender y dar un regalo útil y apreciado.",
+            "objecion_base": "Buscan algo llamativo y que parezca de calidad, pero sin un presupuesto fijo. Eligen lo que les recomiendan o lo que ven más completo.",
+            "sensibilidad_precio": "Media",
+            "comportamiento": "Dependiente de la recomendación del vendedor o de la apariencia del producto.",
+            "canal_preferido": "Tiendas de música, recomendaciones de personal de ventas.",
+            "objetivo": "Encontrar el regalo perfecto que el destinatario disfrute.",
+            "notas": "Compran cámaras (interpretado como cámaras de video/fotos, no musical), órganos, ukeleles, guitarras. Porcentaje implícito: 100% de este subsegmento."
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Otros",
+      "descripcion": "Un segmento residual que abarca cualquier tipo de cliente que no encaja claramente en las categorías previas.",
+      "porcentaje": 5.0,
+      "atributos": {
+        "edad_rango": [
+          "No especificado"
+        ],
+        "rol": [
+          "Potencial cliente"
+        ],
+        "industria": [
+          "No especificado"
+        ],
+        "principal_pain": [
+          "No especificado."
+        ],
+        "motivador": [
+          "No especificado."
+        ],
+        "objecion_base": [
+          "No especificado."
+        ],
+        "sensibilidad_precio": [
+          "No especificado"
+        ],
+        "comportamiento": [
+          "No especificado."
+        ],
+        "canal_preferido": [
+          "No especificado."
+        ],
+        "objetivo": [
+          "No especificado."
+        ]
+      },
+      "arquetipos": [
+        {
+          "nombre": "Cliente Genérico Variado",
+          "peso": 1.0,
+          "atributos": {
+            "edad_rango": "No especificado",
+            "rol": "Potencial cliente",
+            "industria": "No especificado",
+            "principal_pain": "No especificado.",
+            "motivador": "No especificado.",
+            "objecion_base": "No especificado.",
+            "sensibilidad_precio": "No especificado",
+            "comportamiento": "No especificado.",
+            "canal_preferido": "No especificado.",
+            "objetivo": "No especificado.",
+            "notas": "Este segmento representa el 5% restante y puede incluir cualquier perfil no cubierto por los segmentos anteriores. Porcentaje implícito: 100% de este subsegmento."
+          }
+        }
+      ]
+    }
+  ],
+  "origen": "descripcion",
+  "fuente": "",
+  "created_at": "2026-10-15T13:26:35+00:00",
+  "evidence_source_ids": [],
+  "research_snapshot_id": "",
+  "distribuciones": [
+    {
+      "nombre": "Región",
+      "valores": {
+        "CABA": 18.0,
+        "Buenos Aires": 43.0,
+        "Interior": 39.0
+      }
+    },
+    {
+      "nombre": "Edad",
+      "valores": {
+        "18-29": 27.0,
+        "30-39": 40.0,
+        "40-49": 25.0,
+        "50+": 8.0
+      }
+    }
+  ]
+}
