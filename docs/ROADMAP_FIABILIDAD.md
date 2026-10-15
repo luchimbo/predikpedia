@@ -132,6 +132,11 @@ Supuesto: tus resultados reales son tipo encuesta (pregunta cerrada + % por opci
   en la UI: falta un segundo control de ese tipo. Ver `docs/CONTROL_POLITICO_INDEPENDIENTE.md`.
   En LAPOP 2026 (cinco niveles, con identidad política) k=3 empeora de 12,19 a 16,48 pp y el modelo sin corregir
   no supera a repartir parejo: en escalas ordinales el problema pendiente es que evita las opciones extremas.
+- Comparación de flujos (14/10/2026, ICG septiembre): el flujo de evidencia pública no pudo crear la audiencia
+  (0 de 125 hallazgos válidos; la regla de público y región bloquea a la población general). Dos audiencias del
+  flujo anterior dan 9,11 y 8,88 pp, igual que las personas reales de la encuesta. Ver `docs/COMPARACION_EVIDENCIA_PUBLICA.md`.
+  Con el flujo corregido (población general, sin la respuesta entre las fuentes) la audiencia se crea y da 8,91 pp:
+  igual que el flujo anterior.
 
 ### Archivos clave
 - `app/domain/models.py`: campos nuevos opcionales y `Benchmark`.

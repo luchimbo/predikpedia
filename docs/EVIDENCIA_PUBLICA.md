@@ -47,6 +47,9 @@ Las reglas del servicio de calidad verifican que:
 
 - La fuente fue leída y el fragmento citado está en el texto recuperado.
 - Hay fragmentos que acreditan público y región. La correspondencia lexical es conservadora: puede rechazar formulaciones equivalentes; el usuario puede inspeccionar las citas y añadir otra fuente.
+  - La región también se acredita si la cita principal la nombra o si la fuente la nombra (título o texto). Es más débil que una cita: el modelo tiene que haber marcado el hallazgo como directo, y una cita de región que no está en la fuente nunca se pasa por alto.
+  - Si el público es toda la población de la región ("población adulta de Argentina", "argentinos mayores de edad", "votantes de Argentina"), un dato de esa región ya es del público: las fuentes nacionales casi nunca repiten "población adulta". Un subgrupo ("adultos que usan billeteras virtuales") sigue necesitando su propia cita.
+- Los aspectos describen al público y su situación. El plan no incluye encuestas de la misma pregunta: esa respuesta es lo que se simula y suele reservarse para validar.
 - La clasificación y el alcance no convierten una aproximación en un dato directo.
 - La fecha está respaldada, es compatible con el escenario y cumple la vigencia del aspecto cuando corresponde.
 - El origen y método citados existen. Se requiere un origen con método documentado o corroboración de orígenes y contenidos distintos; copias no agregan evidencia independiente.
@@ -59,7 +62,7 @@ Estos controles evalúan trazabilidad y pertinencia; no certifican la veracidad 
 
 ## Audiencias y participantes
 
-Los atributos generados requieren referencias a hallazgos aprobados y correspondencia lexical con sus citas. Los detalles sin respaldo se reemplazan por `No especificado`. Los nombres de grupos y arquetipos sin respaldo usan etiquetas neutrales. Si el diseño queda sin atributos sustentados, falla y conserva el expediente: no hay fallback a personas genéricas.
+Los atributos generados requieren referencias a hallazgos aprobados y correspondencia lexical con sus citas. El modelo escribe cada atributo como una frase corta tomada de una cita, junto con sus ids (cortos: `h1`, `h2`…); si omite los vínculos, se piden en un segundo pedido breve. Al analizar cada fuente, el modelo no recibe el contexto de los participantes, para que no lo copie como si fuera una cita. Los detalles sin respaldo se reemplazan por `No especificado`. Los nombres de grupos y arquetipos sin respaldo usan etiquetas neutrales. Si el diseño queda sin atributos sustentados, falla y conserva el expediente: no hay fallback a personas genéricas.
 
 En exploración, grupos y arquetipos usan pesos iguales, identificados como decisiones de simulación. En estimación de proporciones, los grupos requieren porcentajes documentados; los pesos internos de arquetipos siguen siendo decisiones de simulación. Las combinaciones de atributos no equivalen a microdatos observados.
 

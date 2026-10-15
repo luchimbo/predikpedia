@@ -13,7 +13,7 @@ from app.domain.research_models import ResearchBrief, ResearchDocument, Research
 from app.services.llm_service import LLMError, LLMService
 from app.services.public_research_service import PublicResearchService, validate_research_run, benchmark_overlaps_research
 from app.services.public_search_service import PublicSearch, normalize_url, validate_public_url
-from app.services.research_quality_service import diagnose
+from app.services.research_quality_service import diagnose, general_population
 from app.services.simulation_service import run_simulation
 from app.storage.evidence_repository import EvidenceRepository
 from app.storage.research_repository import ResearchRepository
@@ -117,6 +117,35 @@ class QualityTests(TestCase):
             with self.subTest(changes=changes):
                 project.findings = [finding(**changes)]
                 self.assertFalse(diagnose(project, [document()])["can_build"])
+
+    def test_general_population_is_backed_by_a_regional_statistic(self):
+        statistic = "La tasa de desocupación en Argentina llegó al 7,9% en el segundo trimestre."
+        doc = replace(document(), text=TEXT + chr(10) + statistic)
+        project = ready_project()
+        project.brief = replace(project.brief, audience="Población adulta (18 años o más) de Argentina")
+        project.findings = [finding(quote=statistic, population_quote="", region_quote=statistic)]
+        self.assertTrue(diagnose(project, [doc])["can_build"])
+        # A statistic that never names the region, in a source that is not about it, is not evidence about it.
+        unnamed = "La tasa de desocupación llegó al 7,9% en el segundo trimestre del año."
+        doc = replace(document(), text=TEXT.replace("Argentina", "la región") + chr(10) + unnamed)
+        project.findings = [finding(quote=unnamed, population_quote="", region_quote="")]
+        self.assertFalse(diagnose(project, [doc])["can_build"])
+        # National sources rarely repeat the country in every sentence: a source about it is enough.
+        doc = replace(doc, title="El desempleo en Argentina subió en el segundo trimestre")
+        self.assertTrue(diagnose(project, [doc])["can_build"])
+
+    def test_subgroup_audience_still_needs_its_own_population_quote(self):
+        project = ready_project()
+        project.findings = [finding(population_quote="")]
+        self.assertFalse(diagnose(project, [document()])["can_build"])
+
+    def test_general_population_detection(self):
+        for audience, expected in (("Población adulta (18 años o más) de Argentina", True),
+                                   ("Argentinos mayores de edad", True), ("Votantes de Argentina", True),
+                                   ("Músicos principiantes", False),
+                                   ("Adultos de Argentina que usan billeteras virtuales", False)):
+            with self.subTest(audience=audience):
+                self.assertEqual(expected, general_population(ResearchBrief("Pregunta", audience, "Argentina", as_of="2026-10-09")))
 
     def test_missing_and_unread_documents_do_not_count(self):
         for docs in ([], [replace(document(), status="unusable", text="snippet de buscador")]):
@@ -246,6 +275,17 @@ class ResearchServiceTests(TestCase):
         service.analyze(project)
         self.assertEqual(3, len(model.calls))
 
+    def test_document_analysis_does_not_see_the_participant_situation(self):
+        project = ready_project(situation="Los salarios perdieron 40% de poder de compra.", stimulus="Guion del anuncio")
+        project.findings, project.audit = [], {}
+        self.repo.save_document(document())
+        model = ScriptedModel({"findings": [finding()]}, {"gaps": [], "contradictions": [], "limitations": [], "suggested_scope": ""})
+        PublicResearchService(self.repo, engine=model).analyze(project)
+        sent = model.calls[0]["user_prompt"]
+        self.assertNotIn("poder de compra", sent)
+        self.assertNotIn("Guion del anuncio", sent)
+        self.assertIn(project.brief.question, sent)
+
     def test_audit_is_global_and_consolidates_repeated_gaps_across_chunks(self):
         project = ready_project()
         project.findings = [finding(id=f"f{i}") for i in range(45)]
@@ -269,6 +309,27 @@ class ResearchServiceTests(TestCase):
         search.search.assert_not_called()
         self.assertIn("price", project.required_inputs)
         self.assertFalse(project.diagnosis["can_build"])
+
+    def test_polls_of_the_question_itself_never_block_the_audience(self):
+        project = ResearchProject(brief=brief())
+        dims = ready_project().dimensions + [
+            {"id": "opinion_publica", "label": "Opinión pública", "reason": "Cómo evalúan la gestión",
+             "critical": True, "max_age_days": 30, "queries": ["Encuestas de opinión pública Argentina"]}]
+        service = PublicResearchService(self.repo, engine=ScriptedModel({"dimensions": dims, "required_inputs": []}))
+        service.plan(project)
+        critical = {d["id"]: d["critical"] for d in project.dimensions}
+        self.assertEqual({"needs": True, "knowledge": False, "opinion_publica": False}, critical)
+
+    def test_missing_poll_of_the_question_is_not_a_central_gap(self):
+        project = ready_project()
+        project.audit = {}
+        self.repo.save_document(document())
+        audit = {"gaps": [{"reason": "Faltan encuestas de opinión pública sobre la gestión", "critical": True}],
+                 "contradictions": [], "limitations": [], "suggested_scope": ""}
+        project.events = [{"type": "analyzed", "document_id": "doc"}]
+        PublicResearchService(self.repo, engine=ScriptedModel(audit)).analyze(project)
+        self.assertFalse(project.audit["gaps"][0]["critical"])
+        self.assertTrue(project.diagnosis["can_build"])
 
     def test_local_library_is_reevaluated_before_search_and_sufficient_cache_skips_it(self):
         project = ready_project()
@@ -306,6 +367,34 @@ class ResearchServiceTests(TestCase):
         self.assertTrue(all(p.rol == "No especificado" for p in personas))
         self.assertEqual("balanced_simulation", self.repo.get_snapshot(sid)["composition"])
         self.assertEqual(sid, Universo.from_dict(universe.to_dict()).research_snapshot_id)
+
+    def test_missing_grounding_is_requested_in_a_second_short_call(self):
+        project = ready_project()
+        self.repo.save_document(document())
+        payload = design()
+        links = {"grounding": payload.pop("grounding")}
+        model = ScriptedModel(payload, links)
+        universe, personas, _ = PublicResearchService(self.repo, engine=model).build_audience(project, "Grupo", 5)
+        self.assertEqual(2, len(model.calls))
+        self.assertEqual("Aprender a reducir ruido", universe.perfiles[0].arquetipos[0].atributos["objetivo"])
+
+    def test_quoted_attributes_with_short_ids_are_grounded(self):
+        project = ready_project()
+        self.repo.save_document(document())
+        payload = {"segmentos": [{"nombre": "Principiantes", "porcentaje": 100, "arquetipos": [{
+            "nombre": "Aprendiz", "peso": 1, "atributos": {
+                "objetivo": {"valor": "reducir ruido al grabar", "refs": ["h1"]},
+                "sensibilidad_precio": {"valor": "precio bajo", "refs": []}}}]}]}
+        model = ScriptedModel(payload)
+        universe, _, snapshot_id = PublicResearchService(self.repo, engine=model).build_audience(project, "Grupo", 5)
+        self.assertEqual(1, len(model.calls))
+        self.assertIn('"id": "h1"', model.calls[0]["user_prompt"])
+        attrs = universe.perfiles[0].arquetipos[0].atributos
+        self.assertEqual("reducir ruido al grabar", attrs["objetivo"])
+        self.assertEqual("No especificado", attrs["sensibilidad_precio"])
+        self.assertEqual("No especificado", attrs["rol"])
+        provenance = self.repo.get_snapshot(snapshot_id)["profile_provenance"]
+        self.assertEqual(["f"], next(iter(provenance.values()))["finding_ids"])
 
     def test_frozen_question_and_stimulus_are_enforced_and_refs_are_recorded(self):
         project = ready_project()

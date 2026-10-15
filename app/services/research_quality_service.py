@@ -24,6 +24,34 @@ def scope_matches(text, target, *, region=False):
     return bool(terms) and matched >= (len(terms) if region else ceil(len(terms) / 2))
 
 
+# Palabras que describen a toda la población, sin recortar un subgrupo.
+GENERAL_TERMS = {"poblacion", "general", "adulta", "adultas", "adulto", "adultos", "persona", "personas", "gente",
+                 "habitante", "habitantes", "ciudadano", "ciudadanos", "ciudadania", "residente", "residentes",
+                 "mayor", "mayores", "edad", "ano", "anos", "mas", "votante", "votantes", "elector", "electores",
+                 "hogar", "hogares", "total", "publico", "toda", "todo", "todas", "todos", "sociedad"}
+FILLER = {"de", "del", "la", "las", "los", "el", "en", "con", "y", "o", "que", "a"}
+
+
+def general_population(brief):
+    """True when the audience is everyone in the region, e.g. "población adulta de Argentina"."""
+    region = [t for t in re.findall(r"[a-z]+", normalized(brief.region)) if len(t) >= 4]
+    rest = [t for t in re.findall(r"[a-z]+", normalized(brief.audience))
+            if t not in FILLER and t not in GENERAL_TERMS
+            and not any(t.startswith(r[:max(4, len(r) - 2)]) for r in region)]
+    return not rest
+
+
+def document_about_region(document, region):
+    """The source names the region (title or text). Weaker than a quote: the model must also mark it direct."""
+    terms = [t for t in re.findall(r"[a-z]+", normalized(region)) if len(t) >= 4]
+    if not terms:
+        return False
+    if scope_matches(document.title, region, region=True):
+        return True
+    words = re.findall(r"[a-z]+", normalized(document.text))
+    return all(any(w.startswith(t[:max(4, len(t) - 2)]) for w in words) for t in terms)
+
+
 def validate_finding(finding, document, brief, dimension):
     issues = []
     if not document or document.status != "read":
@@ -32,10 +60,25 @@ def validate_finding(finding, document, brief, dimension):
         issues.append("El fragmento de respaldo no existe en el documento.")
     if finding.get("classification") not in {"documented", "individual_report", "approximation", "assumption"}:
         issues.append("Falta clasificar el hallazgo.")
+    scope_ok = {}
     for field, target in (("population_quote", brief.audience), ("region_quote", brief.region)):
         quote = finding.get(field, "")
-        if not contains_quote(document.text, quote) or not scope_matches(quote, target, region=field == "region_quote"):
-            issues.append("No se acredita correspondencia con el público y la región.")
+        scope_ok[field] = contains_quote(document.text, quote) and scope_matches(quote, target, region=field == "region_quote")
+    # The backing sentence itself may name the region ("la desocupación en Argentina..."), or the whole
+    # source is about it: national news rarely repeats the country in every sentence, and the model often
+    # copies only the bare place name as region_quote, which is too short to verify.
+    region_quote = str(finding.get("region_quote") or "")
+    # A region quote that is not in the source is a fabricated scope and is never overridden.
+    if not scope_ok["region_quote"] and normalized(region_quote) in normalized(document.text):
+        scope_ok["region_quote"] = any(contains_quote(document.text, finding.get(field, "")) and
+                                       scope_matches(finding.get(field, ""), brief.region, region=True)
+                                       for field in ("quote", "population_quote")) or document_about_region(document, brief.region)
+    # For the whole population of a region, a sourced statistic about that region is already about the
+    # audience; national news rarely restates "adult population". Subgroups still need their own quote.
+    if general_population(brief) and scope_ok["region_quote"]:
+        scope_ok["population_quote"] = True
+    if not all(scope_ok.values()):
+        issues.append("No se acredita correspondencia con el público y la región.")
     if finding.get("scope") != "direct" or finding.get("classification") in {"approximation", "assumption"}:
         issues.append("La evidencia es aproximada.")
     if finding.get("contradiction"):
