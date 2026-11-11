@@ -37,3 +37,6 @@ token_usage_log.json
 
 # Datos con licencia que prohíbe redistribuir (Latinobarómetro): solo locales
 data/privado/
+
+# Muestras exactas de corridas reanudables
+/data/*/muestras/

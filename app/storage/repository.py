@@ -7,38 +7,54 @@ Fallback a filesystem local si SUPABASE_URL no está configurado (desarrollo).
 
 import json
 import os
+from contextvars import ContextVar
+from tempfile import NamedTemporaryFile
 from datetime import datetime, timezone
 from typing import List, Optional
 
 from app.domain.models import Benchmark, Estudio, ExpansionSnapshot, RespuestaEstudio, Universo
 
-_USE_SUPABASE = bool(
+_SUPABASE_CONFIGURED = bool(
     os.getenv("SUPABASE_URL") or os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 )
 
-if _USE_SUPABASE:
+if _SUPABASE_CONFIGURED:
     from app.storage import supabase_storage as _sb
 
 # ── Estado de sesión (user_id activo) ────────────────────────────────────────
 
-_current_user_id: Optional[str] = None
+_current_user = ContextVar("storage_user", default="")
+_local_storage = ContextVar("local_storage", default=False)
 
 
 def set_active_user(user_id: str) -> None:
-    global _current_user_id
-    _current_user_id = user_id
+    _current_user.set(user_id)
 
 
 def use_local_storage() -> None:
-    """Fuerza el almacenamiento en archivos para ejecuciones locales."""
-    global _USE_SUPABASE
-    _USE_SUPABASE = False
+    _local_storage.set(True)
+
+
+def uses_supabase() -> bool:
+    return _SUPABASE_CONFIGURED and not _local_storage.get()
 
 
 def _uid() -> str:
-    if not _current_user_id:
+    user_id = _current_user.get()
+    if not user_id:
         raise RuntimeError("No active user set. Call set_active_user(uid) first.")
-    return _current_user_id
+    return user_id
+
+
+def _owned_remote_path(path: str) -> str:
+    if not path.startswith("supabase://"):
+        raise ValueError("Ruta de almacenamiento inválida.")
+    owner, _, relative_path = path.removeprefix("supabase://").partition("/")
+    if owner != _uid() or not relative_path or any(
+        part in {"", ".", ".."} for part in relative_path.split("/")
+    ) or chr(92) in relative_path:
+        raise ValueError("Ruta de almacenamiento inválida.")
+    return relative_path
 
 
 # ── Fallback filesystem (desarrollo local) ───────────────────────────────────
@@ -48,8 +64,16 @@ from app.config import config
 
 def _write_json_local(path: str, payload):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+    with NamedTemporaryFile(mode="w", encoding="utf-8", dir=os.path.dirname(path), delete=False) as f:
+        temporary = f.name
+        try:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+            f.close()
+            os.replace(temporary, path)
+        finally:
+            if os.path.exists(temporary):
+                f.close()
+                os.unlink(temporary)
 
 
 def _read_json_local(path: str):
@@ -73,7 +97,7 @@ def _sorted_json_files_local(directory: str) -> List[str]:
 
 def save_universe(universo: Universo) -> str:
     payload = universo.to_dict()
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.upload_json(_uid(), f"universos/{universo.id}.json", payload)
         return f"supabase://{_uid()}/universos/{universo.id}.json"
     path = os.path.join(str(config.universes_dir), f"{universo.id}.json")
@@ -82,16 +106,15 @@ def save_universe(universo: Universo) -> str:
 
 
 def load_universe(path: str) -> Universo:
-    if _USE_SUPABASE and path.startswith("supabase://"):
-        parts = path.replace("supabase://", "").split("/", 1)
-        data = _sb.download_json(parts[0], parts[1])
+    if uses_supabase():
+        data = _sb.download_json(_uid(), _owned_remote_path(path))
     else:
         data = _read_json_local(path)
     return Universo.from_dict(data)
 
 
 def list_universes() -> List[Universo]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         paths = _sb.list_files(_uid(), "universos")
         # exclude expansiones subfolder entries
         paths = [p for p in paths if not p.startswith("universos/expansiones")]
@@ -109,7 +132,7 @@ def list_universes() -> List[Universo]:
 
 
 def find_universe(universe_id: str) -> Optional[Universo]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         data = _sb.download_json(_uid(), f"universos/{universe_id}.json")
         return Universo.from_dict(data) if data else None
     path = os.path.join(str(config.universes_dir), f"{universe_id}.json")
@@ -127,7 +150,7 @@ def save_expansion(universe_id: str, snapshot: ExpansionSnapshot) -> str:
         timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
     filename = f"{universe_id}_{timestamp}.json"
     payload = snapshot.to_dict()
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.upload_json(_uid(), f"universos/expansiones/{filename}", payload)
         return f"supabase://{_uid()}/universos/expansiones/{filename}"
     path = os.path.join(str(config.expansions_dir), filename)
@@ -136,7 +159,7 @@ def save_expansion(universe_id: str, snapshot: ExpansionSnapshot) -> str:
 
 
 def list_expansions(universe_id: Optional[str] = None) -> List[str]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         paths = _sb.list_files(_uid(), "universos/expansiones")
         if universe_id:
             paths = [p for p in paths if os.path.basename(p).startswith(f"{universe_id}_")]
@@ -149,9 +172,8 @@ def list_expansions(universe_id: Optional[str] = None) -> List[str]:
 
 
 def load_expansion(path: str) -> ExpansionSnapshot:
-    if _USE_SUPABASE and path.startswith("supabase://"):
-        parts = path.replace("supabase://", "").split("/", 1)
-        data = _sb.download_json(parts[0], parts[1])
+    if uses_supabase():
+        data = _sb.download_json(_uid(), _owned_remote_path(path))
     else:
         data = _read_json_local(path)
     return ExpansionSnapshot.from_dict(data)
@@ -169,7 +191,7 @@ def find_latest_expansion(universe_id: str) -> Optional[dict]:
 
 def save_study(estudio: Estudio) -> str:
     payload = estudio.to_dict()
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.upload_json(_uid(), f"estudios/{estudio.id}.json", payload)
         return f"supabase://{_uid()}/estudios/{estudio.id}.json"
     path = os.path.join(str(config.studies_dir), f"{estudio.id}.json")
@@ -178,16 +200,15 @@ def save_study(estudio: Estudio) -> str:
 
 
 def load_study(path: str) -> Estudio:
-    if _USE_SUPABASE and path.startswith("supabase://"):
-        parts = path.replace("supabase://", "").split("/", 1)
-        data = _sb.download_json(parts[0], parts[1])
+    if uses_supabase():
+        data = _sb.download_json(_uid(), _owned_remote_path(path))
     else:
         data = _read_json_local(path)
     return Estudio.from_dict(data)
 
 
 def list_studies() -> List[Estudio]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         paths = _sb.list_files(_uid(), "estudios")
         paths = sorted(paths, reverse=True)
         results = []
@@ -203,7 +224,7 @@ def list_studies() -> List[Estudio]:
 
 
 def find_study(study_id: str) -> Optional[Estudio]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         data = _sb.download_json(_uid(), f"estudios/{study_id}.json")
         return Estudio.from_dict(data) if data else None
     path = os.path.join(str(config.studies_dir), f"{study_id}.json")
@@ -217,7 +238,7 @@ def find_study(study_id: str) -> Optional[Estudio]:
 
 def save_study_results(study_id: str, respuestas: List[RespuestaEstudio]) -> str:
     payload = [r.to_dict() for r in respuestas]
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.upload_json(_uid(), f"resultados/{study_id}.json", payload)
         return f"supabase://{_uid()}/resultados/{study_id}.json"
     path = os.path.join(str(config.results_dir), f"{study_id}.json")
@@ -225,21 +246,23 @@ def save_study_results(study_id: str, respuestas: List[RespuestaEstudio]) -> str
     return path
 
 
-def load_study_results(study_id: str) -> List[RespuestaEstudio]:
-    if _USE_SUPABASE:
-        data = _sb.download_json(_uid(), f"resultados/{study_id}.json")
+def load_study_results(study_id: str, *, strict: bool = False) -> List[RespuestaEstudio]:
+    if uses_supabase():
+        data = _sb.download_json(_uid(), f"resultados/{study_id}.json", strict=strict)
     else:
         path = os.path.join(str(config.results_dir), f"{study_id}.json")
         if not os.path.exists(path):
             return []
         data = _read_json_local(path)
-    if not data or not isinstance(data, list):
+    if not isinstance(data, list):
+        if strict:
+            raise ValueError("El archivo de respuestas no es válido.")
         return []
     return [RespuestaEstudio.from_dict(item) for item in data]
 
 
 def list_results() -> List[str]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         paths = _sb.list_files(_uid(), "resultados")
         paths = sorted(paths, reverse=True)
         return [f"supabase://{_uid()}/{p}" for p in paths]
@@ -251,7 +274,7 @@ def list_results() -> List[str]:
 
 def save_benchmark(benchmark: Benchmark) -> str:
     payload = benchmark.to_dict()
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.upload_json(_uid(), f"benchmarks/{benchmark.id}.json", payload)
         return f"supabase://{_uid()}/benchmarks/{benchmark.id}.json"
     path = os.path.join(str(config.benchmarks_dir), f"{benchmark.id}.json")
@@ -260,7 +283,7 @@ def save_benchmark(benchmark: Benchmark) -> str:
 
 
 def list_benchmarks() -> List[Benchmark]:
-    if _USE_SUPABASE:
+    if uses_supabase():
         results = []
         for rel in sorted(_sb.list_files(_uid(), "benchmarks"), reverse=True):
             data = _sb.download_json(_uid(), rel)
@@ -274,9 +297,29 @@ def list_benchmarks() -> List[Benchmark]:
 
 
 def delete_benchmark(benchmark_id: str) -> None:
-    if _USE_SUPABASE:
+    if uses_supabase():
         _sb.delete_file(_uid(), f"benchmarks/{benchmark_id}.json")
         return
     path = os.path.join(str(config.benchmarks_dir), f"{benchmark_id}.json")
     if os.path.exists(path):
         os.remove(path)
+
+
+def save_study_sample(study: Estudio, personas: list[dict]) -> None:
+    payload = {"study": study.to_dict(), "personas": personas}
+    relative = f"muestras/{study.id}.json"
+    if uses_supabase():
+        _sb.upload_json(_uid(), relative, payload)
+    else:
+        _write_json_local(str(config.data_dir / relative), payload)
+
+
+def load_study_sample(study: Estudio) -> list[dict]:
+    relative = f"muestras/{study.id}.json"
+    if uses_supabase():
+        payload = _sb.download_json(_uid(), relative, strict=True)
+    else:
+        payload = _read_json_local(str(config.data_dir / relative))
+    if payload["study"] != study.to_dict():
+        raise ValueError("La configuración del estudio cambió desde el guardado de la muestra.")
+    return payload["personas"]

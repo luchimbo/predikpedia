@@ -177,6 +177,7 @@ class Universo:
     evidence_source_ids: List[str] = field(default_factory=list)
     research_snapshot_id: str = ""
     distribuciones: List[DistribucionGeneral] = field(default_factory=list)
+    source_digest: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -206,6 +207,7 @@ class Universo:
             perfiles=perfiles,
             origen=str(data.get("origen", "descripcion")).strip() or "descripcion",
             fuente=str(data.get("fuente", "")).strip(),
+            source_digest=str(data.get("source_digest") or ""),
             created_at=str(data.get("created_at", _now_iso())),
             evidence_source_ids=list(data.get("evidence_source_ids") or []),
             research_snapshot_id=str(data.get("research_snapshot_id") or ""),
@@ -242,6 +244,9 @@ class Estudio:
     modo_cerrada: str = "eleccion"
     research_snapshot_id: str = ""
     local_only: bool = False
+    resumable: bool = False
+    paired_study_id: str = ""
+    variant: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -270,6 +275,9 @@ class Estudio:
             modo_cerrada=str(data.get("modo_cerrada") or "eleccion"),
             research_snapshot_id=str(data.get("research_snapshot_id") or ""),
             local_only=data.get("local_only") is True,
+            resumable=data.get("resumable") is True,
+            paired_study_id=str(data.get("paired_study_id") or ""),
+            variant=str(data.get("variant") or ""),
         )
 
 
@@ -362,6 +370,7 @@ class Benchmark:
     fecha: str = ""  # Fecha de campo de la encuesta real, texto libre
     estudio_id: str = ""  # Estudio con el que se cargó; vacío = sirve para cualquiera
     created_at: str = field(default_factory=_now_iso)
+    source_digest: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -383,6 +392,7 @@ class Benchmark:
             n_por_segmento={str(k): int(v) for k, v in (data.get("n_por_segmento") or {}).items()},
             segmento_columna=str(data.get("segmento_columna", "")),
             fuente=str(data.get("fuente", "")),
+            source_digest=str(data.get("source_digest") or ""),
             fecha=str(data.get("fecha", "")),
             estudio_id=str(data.get("estudio_id", "")),
             created_at=str(data.get("created_at", _now_iso())),

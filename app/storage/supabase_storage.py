@@ -41,7 +41,7 @@ def upload_json(user_id: str, relative_path: str, data: dict | list) -> None:
     )
 
 
-def download_json(user_id: str, relative_path: str) -> Optional[dict | list]:
+def download_json(user_id: str, relative_path: str, *, strict: bool = False) -> Optional[dict | list]:
     """Descarga y parsea un JSON desde Supabase Storage. Retorna None si no existe."""
     client = _get_client()
     path = f"{user_id}/{relative_path}"
@@ -49,6 +49,8 @@ def download_json(user_id: str, relative_path: str) -> Optional[dict | list]:
         response = client.storage.from_(BUCKET).download(path)
         return json.loads(response.decode("utf-8"))
     except Exception:
+        if strict:
+            raise
         return None
 
 

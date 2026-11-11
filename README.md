@@ -5,7 +5,7 @@ Plataforma de **research sintético**: armás audiencias de personas sintéticas
 ## Cómo está armado
 
 ```
-Usuario ──► Portal Next.js (Vercel) ──login Supabase──► redirect ?uid=<user_id>
+Usuario ──► Portal Next.js (Vercel) ──login Supabase──► credencial firmada de 60 s
                                                           │
                                                           ▼
                                    App Streamlit (Render) — predikpedia.py
@@ -15,8 +15,8 @@ Usuario ──► Portal Next.js (Vercel) ──login Supabase──► redirect
 ```
 
 - **App principal (Streamlit):** `predikpedia.py` + paquete `app/`. Se despliega en Render (`render.yaml`).
-- **Portal (Next.js 15 + Supabase Auth):** `app/page.tsx`, `app/login`, `app/register`, `app/dashboard`, `middleware.ts`. Autentica al usuario y lo redirige a la app Streamlit (`NEXT_PUBLIC_STREAMLIT_URL`) con su `uid`.
-- **Persistencia:** Supabase Storage (`predikpedia-data/{user_id}/...`) si `SUPABASE_URL` está definido; si no, o si se abre Streamlit directo sin `uid`, usa el filesystem local en `data/<usuario>/` (por defecto `data/demo_user/`).
+- **Portal (Next.js 15 + Supabase Auth):** `app/page.tsx`, `app/login`, `app/register`, `app/dashboard`, `middleware.ts`. Autentica al usuario y lo redirige a la app Streamlit (`NEXT_PUBLIC_STREAMLIT_URL`) con una credencial emitida tras verificar la sesión.
+- **Persistencia:** Supabase Storage (`predikpedia-data/{user_id}/...`) en modo portal. En desarrollo, Streamlit usa el filesystem local en `data/<usuario>/` (por defecto `data/demo_user/`).
 
 ## Pantallas
 
@@ -50,7 +50,7 @@ El flujo tiene tres etapas: **crear una audiencia → correr un estudio → anal
    - `study_response_service` arma un *system prompt* con perfil, notas y contexto operativo. Integra una política de coherencia que permite dudas o desinterés, pide no inventar presupuestos ni experiencias y distingue el estímulo de hechos demostrados.
    - Pide un **JSON** con `response_text`, `sentiment`, `intent`, `main_objection`, `main_driver`, `confidence`, `price_sensitivity` y `quote`. Intención admite `no_se`, `no_aplica` e `indiferente`; driver y objeción pueden quedar vacíos.
    - Valida campos y categorías antes de guardar `RespuestaEstudio`. Si el modelo falla o el contrato es inválido, registra `[ERROR: ...]` y sigue. Las citas ajenas a la respuesta se sustituyen por un fragmento del texto.
-4. Se guardan checkpoints cada diez respuestas y al terminar.
+4. En encuestas independientes nuevas de una respuesta por persona se congela la muestra y se guarda cada respuesta. Desde Resultados se puede reanudar lo pendiente o reintentar las fallidas. Las otras modalidades guardan cada diez respuestas y al terminar. El flujo A/B usa dos encuestas enlazadas y compara a quienes respondieron ambas variantes.
 5. Se persisten el estudio (`estudios/<id>.json`) y sus respuestas (`resultados/<id>.json`). Nuevas corridas registran `simulation_version="realism_v2"`; anteriores cargan como `legacy`. Resultados muestra primero la ronda tras interacción y permite comparar con la respuesta inicial; si todavía no hay respuestas finales válidas, muestra la inicial. Las encuestas independientes y las herramientas de validación mantienen respuestas sin intercambio entre participantes.
 
 ### 3. Resultados (reglas y análisis opcional con IA)
@@ -124,7 +124,7 @@ copy .env.example .env   # completar las claves
 .\.venv\Scripts\streamlit.exe run predikpedia.py
 ```
 
-Al abrir Streamlit directo (sin `?uid=`), la app usa almacenamiento local en `data/demo_user/`. Para otro usuario local, definir `PREDIKPEDIA_DEFAULT_USER`.
+Al abrir Streamlit en modo local, la app usa almacenamiento local en `data/demo_user/`. Para otro usuario local, definir `PREDIKPEDIA_DEFAULT_USER`.
 
 Portal Next.js:
 
@@ -143,9 +143,9 @@ Necesita `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `NEXT_PUB
 | `LLM_SCHEDULE_TIMEZONE`, `LLM_LOCAL_START`, `LLM_LOCAL_END` | Solo para el modo opcional `schedule` (por defecto 09:30–17:30, Buenos Aires). |
 | `LLM_LOCAL_BASE_URL`, `LLM_LOCAL_MODEL`, `LLM_LOCAL_API_KEY` | Endpoint compatible con OpenAI de Ollama (directo en la LAN o vía relay/túnel). |
 | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Respaldo si Ollama tarda más de 60 segundos o falla (por defecto `google/gemini-2.5-flash-lite`). |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | Persistencia remota. Sin ellas, se usa almacenamiento local. |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | Persistencia remota requerida en modo portal. |
 | `PREDIKPEDIA_DATA_DIR` | Carpeta de datos local (sobrescribe `settings.json`). |
-| `PREDIKPEDIA_DEFAULT_USER` | Usuario local al abrir Streamlit sin `uid` (por defecto `demo_user`). |
+| `PREDIKPEDIA_DEFAULT_USER` | Usuario para el modo local (por defecto `demo_user`). |
 
 Ver `.env.example` y `.env.relay.example`.
 
@@ -174,8 +174,17 @@ Iniciá con `scripts/start_private_app.ps1` y configurá un modelo de texto inst
 ## Deploy
 
 - **App Streamlit:** Render, con la configuración de `render.yaml`. Las variables marcadas `sync: false` se cargan a mano en el panel de Render.
-- **Portal:** Vercel (Next.js). Solo maneja login y redirección; no controla el router de LLM.
+- **Portal:** Vercel (Next.js). Verifica el login y emite la credencial de acceso a Streamlit.
 
 ## Archivos legacy
 
 `Projects/`, `Archivo Predikpédico/` y `outputs/` contienen datos y corridas de versiones anteriores (MiroModi). La app actual no los usa: la lógica vigente vive en `app/` y los datos, en `data/` o Supabase.
+
+
+### Activar el acceso autenticado en producción
+
+1. Configurá un valor aleatorio de al menos 32 caracteres como `PREDIKPEDIA_HANDOFF_SECRET` en Render y Vercel. Usá exactamente el mismo valor en ambos y mantenelo como variable privada del servidor.
+2. Configurá `PREDIKPEDIA_PORTAL_URL` en Render con la URL HTTPS del portal y verificá las variables de Supabase Storage. `PREDIKPEDIA_REQUIRE_PORTAL_AUTH=1` activa la protección en Render. Configurá `NEXT_PUBLIC_STREAMLIT_URL` en Vercel con la URL HTTPS de Render.
+3. En una misma ventana de mantenimiento, desplegá primero Streamlit en Render y enseguida el portal en Vercel. El acceso desde el portal anterior se interrumpe entre ambos despliegues. Después, verificá el acceso con dos cuentas de prueba y el enlace de regreso al portal desde una sesión sin credencial.
+
+El bloqueo de recuperación coordina las sesiones de una sola instancia de Streamlit. Si se agrega escalado horizontal, se necesita un bloqueo compartido antes de habilitar la recuperación entre instancias.

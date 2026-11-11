@@ -8,6 +8,7 @@ respuestas se guardan a medida que llegan, así que cortar la ejecución
 (recargar, cambiar de página) no pierde lo ya respondido.
 """
 
+from dataclasses import replace
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
@@ -19,6 +20,7 @@ from app.components.shell import render_empty_state, render_page_intro, render_s
 from app.domain.models import Estudio, RespuestaEstudio, Universo
 from app.services.llm_service import LLMService
 from app.services.simulation_service import planned_tasks, run_simulation
+from app.services.study_recovery import continue_survey, prepare_survey
 from app.services.study_response_service import normalize_option
 from app.services.universe_service import build_expansion_snapshot, expand_universe
 from app.state import go_to_page
@@ -102,6 +104,9 @@ def _render_mode_options(sample_size: int) -> Dict[str, Any]:
 
 def _execute_study(estudio: Estudio, personas: List[Dict[str, Any]], engine: LLMService) -> List[RespuestaEstudio]:
     """Ejecuta el estudio guardando las respuestas cada pocas tareas."""
+    if estudio.resumable:
+        prepare_survey(estudio, personas)
+        return _continue_study(estudio, engine)
     save_study(estudio)
     respuestas: List[RespuestaEstudio] = []
 
@@ -119,6 +124,36 @@ def _execute_study(estudio: Estudio, personas: List[Dict[str, Any]], engine: LLM
     run_simulation(estudio, personas, engine, store=session_store(), on_response=on_response)
     save_study_results(estudio.id, respuestas)
     return respuestas
+
+
+def _continue_study(estudio: Estudio, engine: LLMService, *, retry_errors: bool = False):
+    progress = st.progress(0.0)
+
+    def update(done, total):
+        progress.progress(done / total, text=f"Respuestas procesadas: {done} de {total}")
+
+    answers = continue_survey(estudio, engine, store=session_store(), retry_errors=retry_errors, on_progress=update)
+    progress.empty()
+    return answers
+
+
+def render_study_recovery(study: Estudio, *, pending: int, failed: int):
+    if not study.resumable or not (pending or failed):
+        return
+    engine = LLMService(api_key=st.session_state.get("saved_api_key") or None, local_only=study.local_only)
+    if study.local_only and session_store() is None:
+        st.info("Abrí el estudio en el equipo donde se guardó el expediente para recuperar respuestas.")
+        return
+    ready = engine.is_ready()
+    resume = pending > 0 and st.button("Reanudar estudio", key=f"resume_{study.id}", disabled=not ready)
+    retry = failed > 0 and st.button("Reintentar fallidas", key=f"retry_{study.id}", disabled=not ready)
+    if resume or retry:
+        try:
+            _continue_study(study, engine, retry_errors=bool(retry))
+        except Exception:
+            st.error("No se pudo recuperar el estudio. Revisá el almacenamiento y si hay otra sesión ejecutándolo.")
+        else:
+            st.rerun()
 
 
 def render_estudios_page():
@@ -198,6 +233,10 @@ def render_estudios_page():
         st.warning("Esta audiencia usa evidencia privada. Abrí la app en el equipo de origen con scripts/start_private_app.ps1 para continuar.")
         return
 
+    if universo.evidence_source_ids:
+        engine = LLMService(local_only=True)
+        llm_ready = engine.is_ready()
+
     # ── 2. Pregunta ──────────────────────────────────────────────
     render_section_title("2. ¿Qué querés saber?")
     pregunta = st.text_area(
@@ -206,7 +245,17 @@ def render_estudios_page():
         height=100,
         placeholder="Ej: ¿Qué te haría cambiar de proveedor de harina? ¿Qué te frena hoy?",
     )
-    tipo = st.radio(
+    ab_test = st.toggle("Comparar A/B", key="est_ab", disabled=bool(research_snapshot_id))
+    if research_snapshot_id:
+        ab_test = False
+        st.caption("Este expediente fija un estímulo. Podés comparar estudios de evidencia pública desde Resultados.")
+    variant_a = variant_b = ""
+    if ab_test:
+        left, right = st.columns(2)
+        variant_a = left.text_area("Estímulo A", key="est_variant_a").strip()
+        variant_b = right.text_area("Estímulo B", key="est_variant_b").strip()
+        st.caption("Cada persona responde una vez por variante con la misma pregunta y opciones.")
+    tipo = "cerrada" if ab_test else st.radio(
         "Tipo de respuesta",
         ["abierta", "cerrada"],
         format_func={"abierta": "Abierta (cada uno responde con sus palabras)",
@@ -253,9 +302,11 @@ def render_estudios_page():
             key=f"est_limite_{universo.id}",
             help="Más personas = resultados más estables, pero tarda más.",
         )
-        config = _render_mode_options(int(limite))
+        config = ({"mode": "survey", "automatic": False, "follow_up": [],
+                   "memory_enabled": False, "social_seed": 42}
+                  if ab_test else _render_mode_options(int(limite)))
         rpp = 1
-        if config["mode"] == "survey":
+        if not ab_test and config["mode"] == "survey":
             rpp = int(st.number_input(
                 "Respuestas por persona",
                 min_value=1,
@@ -268,7 +319,7 @@ def render_estudios_page():
     mode = config["mode"]
     plan = Estudio(id="", universo_id=universo.id, universo_nombre=universo.nombre, titulo="", pregunta="",
                    contexto="", respuestas_por_persona=rpp, mode=mode, follow_up_questions=config["follow_up"])
-    total = planned_tasks(plan, int(limite))
+    total = planned_tasks(plan, int(limite)) * (2 if ab_test else 1)
 
     # ── 3. Ejecutar ──────────────────────────────────────────────
     render_section_title("3. Ejecutar")
@@ -283,6 +334,9 @@ def render_estudios_page():
         st.warning("No hay un modelo de IA disponible. Revisá la configuración antes de ejecutar.")
 
     if st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary", disabled=not llm_ready):
+        if ab_test and (not variant_a or not variant_b or variant_a.casefold() == variant_b.casefold()):
+            st.error("Escribí dos estímulos distintos para comparar.")
+            return
         if not pregunta.strip():
             st.error("Escribí la pregunta del estudio.")
             return
@@ -326,10 +380,20 @@ def render_estudios_page():
             opciones=opciones,
             temperature=STUDY_TEMPERATURE,
             research_snapshot_id=research_snapshot_id,
-            local_only=bool(research_snapshot_id),
+            local_only=bool(research_snapshot_id or universo.evidence_source_ids),
+            resumable=mode == "survey" and rpp == 1,
         )
         try:
-            respuestas = _execute_study(estudio, personas, engine)
+            if ab_test:
+                partner = replace(estudio, id=_new_study_id(universo.id), variant="B", paired_study_id=estudio.id,
+                                  titulo=f"{estudio.titulo} · B", contexto=f"{estudio.contexto}\n\nEstímulo:\n{variant_b}".strip())
+                estudio = replace(estudio, variant="A", paired_study_id=partner.id,
+                                  titulo=f"{estudio.titulo} · A", contexto=f"{estudio.contexto}\n\nEstímulo:\n{variant_a}".strip())
+                prepare_survey(estudio, personas)
+                prepare_survey(partner, personas)
+                respuestas = _continue_study(estudio, engine) + _continue_study(partner, engine)
+            else:
+                respuestas = _execute_study(estudio, personas, engine)
         except Exception as exc:
             st.error(f"Error al ejecutar el estudio: {exc}")
             return

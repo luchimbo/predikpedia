@@ -5,6 +5,12 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run predikpedia.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
     envVars:
+      - key: PREDIKPEDIA_REQUIRE_PORTAL_AUTH
+        value: "1"
+      - key: PREDIKPEDIA_HANDOFF_SECRET
+        sync: false
+      - key: PREDIKPEDIA_PORTAL_URL
+        sync: false
       - key: OPENROUTER_API_KEY
         sync: false
       - key: OPENROUTER_MODEL

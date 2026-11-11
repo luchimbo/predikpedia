@@ -18,13 +18,13 @@ import streamlit as st
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel, render_stat_card
 from app.services.analysis_service import (
     build_executive_report,
-    error_mask,
     insights_by_profile,
     representative_responses,
     social_comparison,
     valid_responses,
 )
 from app.services.calibration_service import simulated_distributions
+from app.services.variant_comparison import compare_variants
 from app.services.llm_service import LLMError, LLMService
 from app.state import go_to_page
 from app.storage.repository import list_studies, load_study_results
@@ -189,7 +189,10 @@ Respondé en español.
 def _run_ai_analysis(estudio, resultados_df: pd.DataFrame) -> str:
     """Ejecuta el análisis con IA usando todas las respuestas, dividiendo en chunks si es necesario."""
     try:
-        engine = LLMService(local_only=bool(estudio.research_snapshot_id or estudio.local_only))
+        if estudio.research_snapshot_id or estudio.local_only:
+            engine = LLMService(local_only=True)
+        else:
+            engine = LLMService(api_key=st.session_state.get("saved_api_key") or None)
         if not engine.is_ready():
             return "Error: Configurá Ollama para analizar este estudio." if engine.local_only else "Error: No hay API key configurada. Configurala en Configuración."
         
@@ -347,7 +350,8 @@ def render_resultados_page():
         key="res_study_id",
         format_func=lambda sid: f"{by_id[sid].titulo or by_id[sid].pregunta[:60] or 'Sin título'} · {by_id[sid].universo_nombre}",
     )
-    _render_study_summary(by_id[study_id])
+    study = by_id[study_id]
+    _render_study_summary(study, partner=by_id.get(study.paired_study_id))
 
     if by_id[study_id].research_snapshot_id:
         from app.components.evidence import session_store
@@ -389,34 +393,56 @@ def render_resultados_page():
         render_biblioteca_tab()
 
 
-def _render_study_summary(estudio):
+def _render_variant_comparison(study, partner):
+    a, b = (study, partner) if study.variant == "A" else (partner, study)
+    try:
+        comparison = compare_variants(a, b, load_study_results(a.id), load_study_results(b.id))
+    except ValueError:
+        st.warning("No se pudo verificar el par de variantes.")
+        return
+    render_section_title("Comparación A/B")
+    st.caption(f"A: {comparison['valid_a']} de {a.respuestas_planeadas} · "
+               f"B: {comparison['valid_b']} de {b.respuestas_planeadas} · "
+               f"{comparison['pairs']} personas con respuesta válida en ambas variantes")
+    if not comparison["pairs"]:
+        st.info("La comparación estará disponible cuando ambas variantes tengan respuestas de las mismas personas.")
+    else:
+        st.dataframe(comparison["rows"], hide_index=True, use_container_width=True)
+        for label, key in [("A", "objections_a"), ("B", "objections_b")]:
+            objections = comparison[key]
+            if objections:
+                st.write(f"Objeciones de {label} · " + " · ".join(f"{text} ({n})" for text, n in objections))
+    st.button(f"Ver variante {partner.variant}", key=f"show_variant_{partner.id}",
+              on_click=lambda: st.session_state.update(res_study_id=partner.id))
+
+
+def _render_study_summary(estudio, *, partner=None):
     """Resumen de un estudio: números, reacciones, motivos, grupos y citas."""
     st.markdown(f"**Pregunta:** {estudio.pregunta}")
     st.caption(f"Audiencia: {estudio.universo_nombre} · {estudio.created_at} · "
                f"{MODES.get(estudio.mode, estudio.mode)} · {estudio.simulation_version}")
 
+    from app.pages.estudios import render_study_recovery
+    from app.pages.validacion import render_validation_summary
+
     resultados = load_study_results(estudio.id)
-    if not resultados:
-        render_empty_state(
-            "Este estudio no tiene respuestas",
-            "Puede que se haya cortado antes de recibir la primera respuesta. Probá ejecutarlo de nuevo.",
-        )
-        return
-
     all_df = pd.DataFrame([r.to_dict() for r in resultados])
-    errores = int(error_mask(all_df).sum())
     resultados_df = valid_responses(all_df)
+    valid = len(resultados_df)
+    failed = len(resultados) - valid
+    planned = estudio.respuestas_planeadas
+    pending = max(0, planned - len(resultados))
+    coverage = f"{valid} de {planned} respuestas válidas" if planned else f"{len(resultados)} respuestas guardadas · {valid} válidas"
+    details = [f"{count} {label}" for count, label in [(failed, "fallidas"), (pending, "pendientes")] if count]
+    st.caption(" · ".join([coverage, *details]))
+    render_study_recovery(estudio, pending=pending, failed=failed)
+    render_validation_summary(estudio, all_df)
+    if partner:
+        _render_variant_comparison(estudio, partner)
 
-    planeadas = int(getattr(estudio, "respuestas_planeadas", 0) or 0)
-    if planeadas and len(all_df) < planeadas:
-        st.warning(
-            f"El estudio quedó incompleto: se guardaron {len(all_df)} de {planeadas} respuestas "
-            "(se cortó antes de terminar)."
-        )
-    if errores:
-        st.warning(
-            f"{errores} respuesta(s) fallaron por un error del modelo y no se cuentan en el análisis."
-        )
+    if not resultados:
+        st.info("Todavía no hay respuestas guardadas para este estudio.")
+        return
     if resultados_df.empty:
         render_empty_state(
             "No hay respuestas válidas",

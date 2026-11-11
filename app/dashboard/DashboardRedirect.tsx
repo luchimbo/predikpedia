@@ -1,18 +1,16 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 interface DashboardRedirectProps {
   streamlitUrl: string
-  userId: string
 }
 
-export default function DashboardRedirect({ streamlitUrl, userId }: DashboardRedirectProps) {
+export default function DashboardRedirect({ streamlitUrl }: DashboardRedirectProps) {
   const [progress, setProgress] = useState(0)
   const [statusText, setStatusText] = useState('Iniciando handshake del sistema...')
   const [isOnline, setIsOnline] = useState(false)
   const [elapsedTime, setElapsedTime] = useState(0)
-  const redirectingRef = useRef(false)
 
   // Polling to check if Streamlit is online
   useEffect(() => {
@@ -57,14 +55,27 @@ export default function DashboardRedirect({ streamlitUrl, userId }: DashboardRed
       setProgress(100)
       setStatusText('Conexión establecida. Redirigiendo al dashboard...')
       
-      if (!redirectingRef.current) {
-        redirectingRef.current = true
-        const timer = setTimeout(() => {
-          window.location.href = `${streamlitUrl}?uid=${userId}`
-        }, 800)
-        return () => clearTimeout(timer)
+      const controller = new AbortController()
+      const connect = async () => {
+        try {
+          const response = await fetch('/api/streamlit-session', { method: 'POST', signal: controller.signal })
+          if (response.status === 401) {
+            window.location.replace('/login')
+            return
+          }
+          if (!response.ok) throw new Error('Session unavailable')
+          const { token } = await response.json()
+          const url = new URL(streamlitUrl)
+          url.searchParams.set('session', token)
+          window.location.replace(url)
+        } catch {
+          if (!controller.signal.aborted) {
+            setStatusText('No pudimos iniciar tu sesión. Recargá esta página para reintentar.')
+          }
+        }
       }
-      return
+      void connect()
+      return () => controller.abort()
     }
 
     // Otherwise, simulate progress up to 90%
@@ -81,7 +92,7 @@ export default function DashboardRedirect({ streamlitUrl, userId }: DashboardRed
     }, 800)
 
     return () => clearInterval(progressInterval)
-  }, [isOnline, streamlitUrl, userId])
+  }, [isOnline, streamlitUrl])
 
   // Update terminology text based on progress
   useEffect(() => {

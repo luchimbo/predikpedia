@@ -582,7 +582,6 @@ render_public_research()
 
     def test_create_and_handoff_keeps_question_defaults_and_ollama_policy(self):
         from streamlit.testing.v1 import AppTest
-        from app.services.universe_service import build_expansion_snapshot
         project = ready_project()
         self.repo.save(project)
         service = PublicResearchService(self.repo, engine=ScriptedModel(design()))
@@ -597,11 +596,12 @@ else:
     render_estudios_page()
 '''
         saved = []
-        studies, responses = [], []
+        studies, responses, samples = [], [], {}
         answer = {"response_text": "Necesito reducir ruido.", "sentiment": "neutral", "intent": "explorar",
                   "main_driver": "", "main_objection": "", "confidence": "low", "price_sensitivity": "none", "quote": "Necesito reducir ruido."}
         response_engine = ScriptedModel(answer, answer)
         response_engine.is_ready = lambda: True
+        response_engine.local_only = True
         with mock.patch("app.components.public_research.session_store", return_value=self.store), \
              mock.patch("app.pages.estudios.session_store", return_value=self.store), \
              mock.patch("app.components.evidence.session_store", return_value=self.store), \
@@ -612,8 +612,12 @@ else:
              mock.patch("app.components.public_research.save_expansion"), \
              mock.patch("app.pages.estudios.find_latest_expansion", return_value=None), \
              mock.patch("app.pages.estudios.save_expansion"), \
-             mock.patch("app.pages.estudios.save_study", side_effect=studies.append), \
-             mock.patch("app.pages.estudios.save_study_results", side_effect=lambda sid, rows: responses.__setitem__(slice(None), rows)), \
+             mock.patch.multiple("app.services.study_recovery",
+                 save_study=mock.Mock(side_effect=studies.append),
+                 save_study_results=mock.Mock(side_effect=lambda sid, rows: responses.__setitem__(slice(None), rows)),
+                 save_study_sample=mock.Mock(side_effect=lambda study, sample: samples.update({study.id: sample})),
+                 load_study_sample=mock.Mock(side_effect=lambda study: samples[study.id]),
+                 load_study_results=mock.Mock(side_effect=lambda *args, **kwargs: list(responses))), \
              mock.patch("app.pages.estudios.LLMService", return_value=response_engine) as engine_factory, \
              mock.patch("app.pages.resultados.list_studies", side_effect=lambda: studies), \
              mock.patch("app.pages.resultados.load_study_results", side_effect=lambda sid: responses), \

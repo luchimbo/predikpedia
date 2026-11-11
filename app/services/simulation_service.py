@@ -34,7 +34,13 @@ def planned_tasks(study: Estudio, count: int) -> int:
 
 
 def run_simulation(study: Estudio, personas: list[dict], engine, *, store: EvidenceRepository | None = None,
-                   on_response: Callable | None = None, should_stop: Callable | None = None) -> list[RespuestaEstudio]:
+                   on_response: Callable | None = None, should_stop: Callable | None = None,
+                   survey_pending_ids: set[str] | None = None) -> list[RespuestaEstudio]:
+    if survey_pending_ids is not None and (
+        not study.resumable or study.mode != "survey" or study.respuestas_por_persona != 1
+        or not survey_pending_ids.issubset({p.get("persona_id") for p in personas})
+    ):
+        raise ValueError("La recuperación requiere una encuesta de una respuesta por persona.")
     research_snapshot = None
     if study.research_snapshot_id:
         from app.services.public_research_service import validate_research_run
@@ -88,7 +94,7 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
                                    "evidence": evidence, "history": history,
                                    **({"personas": personas, "research_snapshot_id": study.research_snapshot_id}
                                       if research_snapshot else {})})
-        if store.run_responses(study.id):
+        if survey_pending_ids is None and store.run_responses(study.id):
             raise ValueError("Esta corrida ya tiene respuestas guardadas. Creá un estudio nuevo para no volver a consultar agentes.")
     answers, baseline = [], {}
     stopped = False
@@ -132,14 +138,18 @@ def run_simulation(study: Estudio, personas: list[dict], engine, *, store: Evide
             answer = RespuestaEstudio(**attributes, respuesta="[ERROR: El participante no devolvió una respuesta válida]", sintesis="Error de LLM",
                                       error="El participante no devolvió una respuesta válida")
         if store:
-            store.checkpoint(answer.to_dict(), remember=study.memory_enabled and study.mode != "survey")
+            store.checkpoint(answer.to_dict(), remember=study.memory_enabled and study.mode != "survey",
+                             replace=survey_pending_ids is not None)
         answers.append(answer)
         if on_response:
-            on_response(answer, len(answers), planned_tasks(study, len(personas)))
+            total = len(survey_pending_ids) if survey_pending_ids is not None else planned_tasks(study, len(personas))
+            on_response(answer, len(answers), total)
         return answer
 
     for persona in personas:
         pid = persona["persona_id"]
+        if survey_pending_ids is not None and pid not in survey_pending_ids:
+            continue
         local_history = list(history[pid])
         questions = [study.pregunta, *study.follow_up_questions] if study.mode == "interview" else [study.pregunta] * (study.respuestas_por_persona if study.mode == "survey" else 1)
         for index, question in enumerate(questions, 1):

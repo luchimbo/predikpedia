@@ -6,7 +6,9 @@ real (benchmark) y muestra el error en puntos porcentuales, total y por grupo.
 Es la medición que dice si un cambio en la simulación la acerca o la aleja de la realidad.
 """
 
+import re
 from datetime import datetime
+from hashlib import sha256
 from typing import Dict, Optional
 from uuid import uuid4
 
@@ -25,7 +27,7 @@ from app.services.calibration_service import (
 )
 from app.services.population_import_service import PopulationImportError, read_table
 from app.services.study_response_service import normalize_option
-from app.storage.repository import delete_benchmark, list_benchmarks, load_study_results, save_benchmark
+from app.storage.repository import delete_benchmark, find_universe, list_benchmarks, load_study_results, save_benchmark
 
 NEW = "__nuevo__"
 DISCARD = "(descartar)"
@@ -33,10 +35,30 @@ MAX_VALUES_TO_MAP = 40
 
 
 def _compatible(benchmark: Benchmark, estudio: Estudio) -> bool:
-    """Mismo estudio, o las mismas opciones (sin importar tildes ni orden)."""
-    if benchmark.estudio_id == estudio.id:
-        return True
-    return sorted(map(normalize_option, benchmark.opciones)) == sorted(map(normalize_option, estudio.opciones))
+    return (normalize_option(benchmark.pregunta) == normalize_option(estudio.pregunta)
+            and sorted(map(normalize_option, benchmark.opciones)) == sorted(map(normalize_option, estudio.opciones)))
+
+
+def _benchmark_selection(estudio: Estudio):
+    benchmarks = {b.id: b for b in list_benchmarks() if _compatible(b, estudio)}
+    key = f"val_bench_{estudio.id}"
+    next_key = f"val_bench_next_{estudio.id}"
+    selected = st.session_state.get(next_key, st.session_state.get(key))
+    if selected not in [*benchmarks, NEW]:
+        selected = next(
+            (key for key, benchmark in benchmarks.items() if not benchmark_independence_issue(estudio, benchmark)),
+            next(iter(benchmarks), NEW),
+        )
+    return benchmarks, selected
+
+
+PHASE_LABELS = {"individual": "Respuesta individual inicial", "after_interaction": "Respuesta tras interacción"}
+
+
+def _comparison_phase(estudio: Estudio):
+    if estudio.mode == "social":
+        return st.session_state.get(f"val_phase_{estudio.id}", "individual")
+    return None
 
 
 def _new_benchmark_id() -> str:
@@ -62,7 +84,8 @@ def _render_from_file(estudio: Estudio) -> Optional[Benchmark]:
     if uploaded is None:
         return None
     try:
-        df = read_table(uploaded.getvalue(), uploaded.name)
+        content = uploaded.getvalue()
+        df = read_table(content, uploaded.name)
     except PopulationImportError as exc:
         st.error(str(exc))
         return None
@@ -99,6 +122,7 @@ def _render_from_file(estudio: Estudio) -> Optional[Benchmark]:
             manual[value] = "" if picked == DISCARD else picked
 
     meta = _meta_inputs(estudio, f"val_file_meta_{estudio.id}")
+    meta["fuente"] = meta["fuente"] or uploaded.name
     try:
         benchmark, descartados = benchmark_from_rows(
             df, option_col, estudio.opciones, segment_column=segment_col,
@@ -107,6 +131,7 @@ def _render_from_file(estudio: Estudio) -> Optional[Benchmark]:
     except ValueError as exc:
         st.error(str(exc))
         return None
+    benchmark.source_digest = sha256(content).hexdigest()
     if descartados:
         st.caption("Descartadas: " + ", ".join(f"«{k or '(vacío)'}» ({v})" for k, v in descartados.items()))
     st.caption(f"{benchmark.n} respuestas válidas · margen de la encuesta real ±{max_margin_of_error(benchmark.n):.1f} pp")
@@ -150,24 +175,57 @@ def _fmt_pp(value: float) -> str:
     return "—" if value == float("inf") else f"±{value:.1f}"
 
 
+def benchmark_independence_issue(estudio: Estudio, benchmark: Benchmark) -> str:
+    if not estudio.research_snapshot_id:
+        audience = find_universe(estudio.universo_id)
+        if audience and audience.origen == "datos_reales":
+            audience_file = re.sub(r" \(\d+ filas\)$", "", audience.fuente).strip()
+            if not benchmark.fuente.strip():
+                return "Identificá la fuente de la encuesta real para verificar su independencia."
+            same_file = (audience.source_digest == benchmark.source_digest
+                         if audience.source_digest and benchmark.source_digest
+                         else audience_file and normalize_option(audience_file) in normalize_option(benchmark.fuente))
+            if same_file:
+                return "Esta referencia se usó para construir la audiencia. Elegí otra fuente independiente para validar."
+        return ""
+    from app.components.evidence import session_store
+    from app.storage.research_repository import ResearchRepository
+    from app.services.public_research_service import benchmark_overlaps_research
+
+    store = session_store()
+    snapshot = ResearchRepository(store).get_snapshot(estudio.research_snapshot_id) if store else None
+    if not snapshot or not benchmark.fuente.strip():
+        return "Abrí el expediente local e identificá la fuente de la encuesta real para verificar su independencia."
+    if benchmark_overlaps_research(snapshot, benchmark):
+        return "Esta referencia se usó para construir la audiencia. Elegí otra fuente independiente para validar."
+    return ""
+
+
+def render_validation_summary(estudio: Estudio, all_df: pd.DataFrame) -> None:
+    if not estudio.opciones or all_df.empty:
+        return
+    benchmarks, selected = _benchmark_selection(estudio)
+    benchmark = benchmarks.get(selected)
+    if not benchmark or benchmark_independence_issue(estudio, benchmark):
+        return
+    phase = _comparison_phase(estudio)
+    total = compare_with_benchmark(all_df, benchmark, phase)["total"]
+    if total:
+        phase_label = f" · {PHASE_LABELS[phase]}" if phase else ""
+        st.caption(f"Diferencia frente a {benchmark.nombre} (simulación − encuesta real){phase_label}")
+        st.dataframe([{"Opción": row["opcion"], "Diferencia (pp)": round(row["diferencia"], 1)}
+                      for row in total["filas"]], hide_index=True, use_container_width=True)
+
+
 def _render_comparison(estudio: Estudio, all_df: pd.DataFrame, benchmark: Benchmark) -> None:
-    if estudio.research_snapshot_id:
-        from app.components.evidence import session_store
-        from app.storage.research_repository import ResearchRepository
-        from app.services.public_research_service import benchmark_overlaps_research
-        store = session_store()
-        snapshot = ResearchRepository(store).get_snapshot(estudio.research_snapshot_id) if store else None
-        if not snapshot:
-            st.warning("Abrí el expediente local para verificar la independencia de la referencia real.")
-            return
-        if benchmark_overlaps_research(snapshot, benchmark):
-            st.error("Esta referencia se usó para construir la audiencia. Elegí otra fuente independiente para validar.")
-            return
-        st.caption("La independencia requiere otra encuesta o fuente: repetir una corrida no crea una referencia nueva.")
+    issue = benchmark_independence_issue(estudio, benchmark)
+    if issue:
+        st.warning(issue)
+        return
     phase = None
     if estudio.mode == "social":
-        labels = {"individual": "Respuesta individual inicial", "after_interaction": "Respuesta tras interacción"}
-        phase = st.selectbox("Ronda a comparar", list(labels), format_func=labels.get, key=f"val_phase_{estudio.id}")
+        phase = st.selectbox("Ronda a comparar", list(PHASE_LABELS), format_func=PHASE_LABELS.get,
+                             key=f"val_phase_{estudio.id}")
     result = compare_with_benchmark(all_df, benchmark, phase)
     total = result["total"]
     if total is None:
@@ -228,13 +286,11 @@ def render_validacion_tab(estudio: Estudio) -> None:
         st.info("Este estudio todavía no tiene respuestas.")
         return
 
-    benchmarks = [b for b in list_benchmarks() if _compatible(b, estudio)]
-    by_id = {b.id: b for b in benchmarks}
+    by_id, selected = _benchmark_selection(estudio)
     key = f"val_bench_{estudio.id}"
-    if f"val_bench_next_{estudio.id}" in st.session_state:
-        st.session_state[key] = st.session_state.pop(f"val_bench_next_{estudio.id}")
-    if st.session_state.get(key) not in [*by_id, NEW]:
-        st.session_state[key] = benchmarks[0].id if benchmarks else NEW
+    st.session_state.pop(f"val_bench_next_{estudio.id}", None)
+    if st.session_state.get(key) != selected:
+        st.session_state[key] = selected
     selected = st.selectbox(
         "Resultado real",
         [*by_id, NEW],

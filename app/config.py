@@ -9,12 +9,16 @@ Prioridad de resolución de data_dir:
 
 import json
 import os
+from contextvars import ContextVar
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).parent.parent.resolve()
 SETTINGS_FILE = REPO_ROOT / "settings.json"
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
+
+
+_session_dir: ContextVar[Path | None] = ContextVar('data_dir', default=None)
 
 
 class PredikpediaConfig:
@@ -32,7 +36,7 @@ class PredikpediaConfig:
         # 1. Leer de ENV
         env_dir = os.getenv("PREDIKPEDIA_DATA_DIR", "")
         if env_dir:
-            self.data_dir = Path(env_dir).resolve()
+            self._base_dir = Path(env_dir).resolve()
         # 2. Leer de settings.json
         elif SETTINGS_FILE.exists():
             try:
@@ -40,32 +44,51 @@ class PredikpediaConfig:
                     settings = json.load(f)
                 configured = settings.get("data_dir", "")
                 if configured:
-                    self.data_dir = Path(configured).resolve()
+                    self._base_dir = Path(configured).resolve()
                 else:
-                    self.data_dir = DEFAULT_DATA_DIR
+                    self._base_dir = DEFAULT_DATA_DIR
             except Exception:
-                self.data_dir = DEFAULT_DATA_DIR
+                self._base_dir = DEFAULT_DATA_DIR
         # 3. Default
         else:
-            self.data_dir = DEFAULT_DATA_DIR
+            self._base_dir = DEFAULT_DATA_DIR
 
-        # Subdirectorios
-        self.universes_dir = self.data_dir / "universos"
-        self.expansions_dir = self.universes_dir / "expansiones"
-        self.studies_dir = self.data_dir / "estudios"
-        self.results_dir = self.data_dir / "resultados"
-        self.benchmarks_dir = self.data_dir / "benchmarks"
-        self.ledger_file = self.data_dir / "credits_ledger.json"
+    @property
+    def data_dir(self):
+        return _session_dir.get() or self._base_dir
 
-    def set_user(self, user_id: str):
-        """Cambia las rutas de datos al subdirectorio del usuario."""
-        self.data_dir = REPO_ROOT / "data" / user_id
-        self.universes_dir = self.data_dir / "universos"
-        self.expansions_dir = self.universes_dir / "expansiones"
-        self.studies_dir = self.data_dir / "estudios"
-        self.results_dir = self.data_dir / "resultados"
-        self.benchmarks_dir = self.data_dir / "benchmarks"
-        self.ledger_file = self.data_dir / "credits_ledger.json"
+    @property
+    def universes_dir(self):
+        return self.data_dir / "universos"
+
+    @property
+    def expansions_dir(self):
+        return self.universes_dir / "expansiones"
+
+    @property
+    def studies_dir(self):
+        return self.data_dir / "estudios"
+
+    @property
+    def results_dir(self):
+        return self.data_dir / "resultados"
+
+    @property
+    def benchmarks_dir(self):
+        return self.data_dir / "benchmarks"
+
+    @property
+    def ledger_file(self):
+        return self.data_dir / "credits_ledger.json"
+
+    def set_user(self, user_id: str, *, create: bool = True):
+        """Bind the paths to the current execution context."""
+        _session_dir.set(REPO_ROOT / "data" / user_id)
+        if create:
+            self.ensure_directories()
+
+    def set_session_dir(self, path: str):
+        _session_dir.set(Path(path).resolve())
         self.ensure_directories()
 
     def ensure_directories(self):

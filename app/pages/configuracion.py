@@ -4,8 +4,6 @@ app/pages/configuracion.py — Página de Configuración.
 Migrado desde ui_settings.py, sin presets electorales ni triangulación micro.
 """
 
-import os
-
 import streamlit as st
 
 from app.components.shell import render_page_intro, render_section_title, render_stat_card
@@ -13,7 +11,7 @@ from app.config import config
 from app.navigation import resolve_provider_label
 from app.services.credits_service import CreditsService
 from app.services.llm_service import LLMService
-from app.state import go_to_page
+from app.storage.repository import uses_supabase
 
 
 def render_configuracion_page(*, credits_engine):
@@ -52,7 +50,6 @@ def render_configuracion_page(*, credits_engine):
         )
         if api_key_input != saved_key:
             st.session_state["saved_api_key"] = api_key_input
-            os.environ["OPENROUTER_API_KEY"] = api_key_input
             st.rerun()
 
         m1, m2 = st.columns(2)
@@ -69,10 +66,10 @@ def render_configuracion_page(*, credits_engine):
         st.caption("Configurá dónde se guardan los datos de la aplicación.")
 
         current_dir = str(config.data_dir)
-        new_dir = st.text_input("Directorio de datos", value=current_dir, key="cfg_data_dir")
+        new_dir = st.text_input("Directorio de datos", value=current_dir, key="cfg_data_dir", disabled=uses_supabase())
 
-        if new_dir != current_dir:
-            config.save_settings(data_dir=new_dir)
+        if not uses_supabase() and new_dir.strip() and new_dir != current_dir:
+            st.session_state["local_data_dir"] = new_dir
             st.success(f"Ruta actualizada: {new_dir}")
             st.rerun()
 

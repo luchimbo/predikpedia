@@ -8,6 +8,7 @@ Paso 2: Revisar y guardar
 import re
 from dataclasses import replace
 from datetime import datetime
+from hashlib import sha256
 from typing import List
 
 import pandas as pd
@@ -94,7 +95,7 @@ def _generate(nombre: str, descripcion: str, cantidad: int, usar_ia: bool):
     if usar_ia:
         with st.spinner("Armando los segmentos de tu audiencia..."):
             try:
-                diseno = design_audience(descripcion)
+                diseno = design_audience(descripcion, LLMService(api_key=st.session_state.get("saved_api_key") or None))
                 perfiles, distribuciones = diseno.perfiles, diseno.distribuciones
                 if diseno.avisos:
                     st.session_state["aud_design_warning"] = " ".join(diseno.avisos)
@@ -322,6 +323,7 @@ def _render_upload_form():
         except PopulationImportError as exc:
             st.error(str(exc))
             return
+        universo.source_digest = sha256(upload["data"]).hexdigest()
         st.session_state["aud_temp_universo"] = universo
         st.session_state["aud_temp_personas"] = personas
         st.session_state["aud_temp_snapshot"] = build_expansion_snapshot(universo, personas)

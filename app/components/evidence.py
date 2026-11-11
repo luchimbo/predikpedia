@@ -11,8 +11,7 @@ from app.storage.evidence_repository import EvidenceRepository
 
 
 def session_store() -> EvidenceRepository | None:
-    # The existing portal's uid query is not proof of authentication. Private
-    # source review is enabled only on an explicitly loopback-bound server.
+    # Private source review is restricted to a loopback-bound server.
     if not st.session_state.get("private_storage_available", False):
         return None
     return EvidenceRepository(st.session_state["data_owner_id"])

@@ -210,12 +210,17 @@ class CompatibilityAndStorageTests(TestCase):
         self.assertEqual("", r.opcion_elegida)
 
     def test_benchmark_roundtrip_in_local_storage(self):
-        with tempfile.TemporaryDirectory() as tmp, \
-                patch.object(config, "benchmarks_dir", Path(tmp)), \
-                patch.object(repository, "_USE_SUPABASE", False):
+        from contextvars import copy_context
+
+        def exercise(tmp):
+            config.set_session_dir(tmp)
+            repository.use_local_storage()
             bench = benchmark_from_counts({"Milei": 6, "Kicillof": 4}, ["Milei", "Kicillof"], id="b1", nombre="R")
             repository.save_benchmark(bench)
             loaded = repository.list_benchmarks()
             self.assertEqual([bench.to_dict()], [b.to_dict() for b in loaded])
             repository.delete_benchmark("b1")
             self.assertEqual([], repository.list_benchmarks())
+
+        with tempfile.TemporaryDirectory() as tmp:
+            copy_context().run(exercise, tmp)

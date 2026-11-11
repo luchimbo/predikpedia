@@ -210,11 +210,14 @@ class EvidenceRepository:
                 raise ValueError("Ese estudio ya tiene otro plan guardado. Creá una nueva corrida.")
             db.execute("INSERT OR IGNORE INTO runs VALUES (?, ?, ?)", (study_id, canonical(plan), now_iso()))
 
-    def checkpoint(self, response: dict, *, remember: bool) -> None:
+    def checkpoint(self, response: dict, *, remember: bool, replace: bool = False) -> None:
         """Response and simulated memory are committed together; errors never become memories."""
         from app.services.evidence_service import redact_contacts
         with self.connect() as db:
-            db.execute("INSERT OR IGNORE INTO run_responses VALUES (?, ?, ?)",
+            statement = ("INSERT INTO run_responses VALUES (?, ?, ?) "
+                         "ON CONFLICT(response_id) DO UPDATE SET payload_json=excluded.payload_json"
+                         if replace else "INSERT OR IGNORE INTO run_responses VALUES (?, ?, ?)")
+            db.execute(statement,
                        (response["response_id"], response["estudio_id"], canonical(response)))
             valid = bool(response["respuesta"].strip()) and not response["respuesta"].startswith("[ERROR:")
             if remember and valid:

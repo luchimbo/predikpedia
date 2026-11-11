@@ -11,7 +11,7 @@ export default async function DashboardPage() {
 
   // Render loading and wake-up interface before redirecting to Streamlit
   if (STREAMLIT_URL !== '#') {
-    return <DashboardRedirect streamlitUrl={STREAMLIT_URL} userId={user.id} />
+    return <DashboardRedirect streamlitUrl={STREAMLIT_URL} />
   }
 
   return (
