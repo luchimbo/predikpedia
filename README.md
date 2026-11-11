@@ -188,3 +188,26 @@ Iniciá con `scripts/start_private_app.ps1` y configurá un modelo de texto inst
 3. En una misma ventana de mantenimiento, desplegá primero Streamlit en Render y enseguida el portal en Vercel. El acceso desde el portal anterior se interrumpe entre ambos despliegues. Después, verificá el acceso con dos cuentas de prueba y el enlace de regreso al portal desde una sesión sin credencial.
 
 El bloqueo de recuperación coordina las sesiones de una sola instancia de Streamlit. Si se agrega escalado horizontal, se necesita un bloqueo compartido antes de habilitar la recuperación entre instancias.
+
+
+### Estudios locales en segundo plano
+
+Abrí Streamlit y arrancá el worker en otra terminal desde el mismo checkout.
+
+```powershell
+& '.\.venv\Scripts\python.exe' tools/run_study_worker.py
+```
+
+En Estudios, elegí **Encuesta independiente** con una respuesta por persona, o **Comparar A/B**, y usá **Ejecutar en segundo plano**. Podés cerrar Streamlit. El worker sigue procesando y reanuda desde el último checkpoint si lo reiniciás. **Actualizar estado** vuelve a leer la cola en Inicio y Resultados. Si usás otra carpeta de datos o usuario, pasá `--data-dir` y `--user` para que ambos procesos usen el mismo espacio.
+
+El worker carga las credenciales del entorno y de `.env`. Los estudios con evidencia necesitan el mismo usuario, `PREDIKPEDIA_PRIVATE_DIR` y Ollama en el equipo de origen.
+
+### Historial local de precisión
+
+Los controles congelados de Latinobarómetro 2023 y LAPOP 2026 se ejecutan con `--suite`. Indicá la raíz que contiene los insumos privados, un proveedor y un modelo explícitos. El ejemplo usa Ollama y la URL configurada en el entorno del proceso.
+
+```powershell
+& '.\.venv\Scripts\python.exe' -X utf8 tools/run_benchmark_experiment.py --suite --provider local --model qwen2.5:32b-predikpedia-ctx8192 --label 'Versión candidata'
+```
+
+Agregá `--inputs-root` si los datos están en otro checkout. `--replay-historical` verifica y evalúa las respuestas guardadas sin consultar el modelo. El historial agregado y su tabla Markdown quedan en `.private/control_suite/`. La primera evaluación completa con el mismo manifiesto se usa como referencia. Las ejecuciones parciales quedan en el historial con su cobertura.

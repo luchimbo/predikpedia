@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "temperature": 1.0,
+  "mode": "probabilidades",
+  "cases": [
+    {
+      "id": "lb2023",
+      "label": "Latinobarómetro Argentina 2023",
+      "universe_id": "universe_lb2023_ar_holdout_v1_20261006",
+      "n": 200,
+      "allowed_profile_columns": [
+        "clase_social_subjetiva",
+        "edad",
+        "ideologia",
+        "nivel_educativo",
+        "partido_que_votaria",
+        "region",
+        "sexo",
+        "situacion_economica_pais_vs_hace_un_anio"
+      ],
+      "historical_study_id": "study_exp_20261006_170849_1f7bc3",
+      "expansion": {
+        "path": "data/privado/universos/expansiones/universe_lb2023_ar_holdout_v1_20261006_2026-10-06T20-06-07+00-00.json",
+        "sha256": "9a64f6a0ed0433f8649a53d6cd196a096797d4c31dc72140df1f5703bbcc3bec"
+      },
+      "benchmark": {
+        "path": "data/privado/benchmarks/bench_lb2023_ar_holdout_v1_20261006.json",
+        "sha256": "c19337304ded12a4a8e501a658800efa8373b1e860539533bb44e3738f16bf82"
+      },
+      "context": {
+        "path": "tools/contextos/argentina_lb2023_control.txt",
+        "sha256": "1be74837e597a5850041a97597bc20c5d7c9ebeb54dcf617ce00cf5ec9270ed7"
+      }
+    },
+    {
+      "id": "lapop2026",
+      "label": "LAPOP Argentina 2026",
+      "universe_id": "universe_lapop2026_ar_holdout_v1_20261006",
+      "n": 200,
+      "allowed_profile_columns": [
+        "edad",
+        "ideologia",
+        "nivel_educativo",
+        "partido_con_el_que_simpatiza",
+        "region",
+        "sexo"
+      ],
+      "historical_study_id": "study_exp_20261013_164554_7113bf",
+      "expansion": {
+        "path": "data/privado/universos/expansiones/universe_lapop2026_ar_holdout_v1_20261006_2026-10-06T20-06-15+00-00.json",
+        "sha256": "7217985ffedf6589c78d771fffef9d3976d7e5640f69354d7e0635743e5311e4"
+      },
+      "benchmark": {
+        "path": "data/privado/benchmarks/bench_lapop2026_ar_holdout_v1_20261006.json",
+        "sha256": "2610396fa7e4d73eebf689aa9db3fc5f32a245801b9b287bf3f017470667f67d"
+      },
+      "context": {
+        "path": "tools/contextos/argentina_lapop2026_control.txt",
+        "sha256": "ac81a17cc1c08dbff3e0e72b8d7f47711ea28b3b4b4a6e3af69bf343c15b4de8"
+      }
+    }
+  ]
+}

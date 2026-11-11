@@ -200,4 +200,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["--suite"]:
+        from tools.control_suite import main as run_suite
+
+        raise SystemExit(run_suite(sys.argv[2:]))
     main()

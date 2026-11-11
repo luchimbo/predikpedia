@@ -40,3 +40,7 @@ data/privado/
 
 # Muestras exactas de corridas reanudables
 /data/*/muestras/
+
+# Cola y evaluaciones locales
+/data/*/study_queue.sqlite3*
+/.private/

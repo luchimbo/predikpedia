@@ -15,11 +15,13 @@ from uuid import uuid4
 
 import streamlit as st
 
+from app.components.study_queue import render_job
 from app.components.evidence import session_store
 from app.components.shell import render_empty_state, render_page_intro, render_section_title, render_soft_panel
 from app.domain.models import Estudio, RespuestaEstudio, Universo
 from app.services.llm_service import LLMService
 from app.services.simulation_service import planned_tasks, run_simulation
+from app.services.study_queue import enqueue, study_jobs, worker_online
 from app.services.study_recovery import continue_survey, prepare_survey
 from app.services.study_response_service import normalize_option
 from app.services.universe_service import build_expansion_snapshot, expand_universe
@@ -30,6 +32,7 @@ from app.storage.repository import (
     save_expansion,
     save_study,
     save_study_results,
+    uses_supabase,
 )
 
 DEFAULT_SAMPLE = 50
@@ -138,18 +141,26 @@ def _continue_study(estudio: Estudio, engine: LLMService, *, retry_errors: bool 
 
 
 def render_study_recovery(study: Estudio, *, pending: int, failed: int):
+    job = study_jobs().get(study.id)
+    if job:
+        render_job(study, job, worker_online(), refresh=True)
+        if job.status in {"queued", "running"}:
+            return
     if not study.resumable or not (pending or failed):
         return
     engine = LLMService(api_key=st.session_state.get("saved_api_key") or None, local_only=study.local_only)
     if study.local_only and session_store() is None:
         st.info("Abrí el estudio en el equipo donde se guardó el expediente para recuperar respuestas.")
         return
-    ready = engine.is_ready()
+    ready = bool(job) or engine.is_ready()
     resume = pending > 0 and st.button("Reanudar estudio", key=f"resume_{study.id}", disabled=not ready)
     retry = failed > 0 and st.button("Reintentar fallidas", key=f"retry_{study.id}", disabled=not ready)
     if resume or retry:
         try:
-            _continue_study(study, engine, retry_errors=bool(retry))
+            if job:
+                enqueue([study.id], retry_errors=bool(retry))
+            else:
+                _continue_study(study, engine, retry_errors=bool(retry))
         except Exception:
             st.error("No se pudo recuperar el estudio. Revisá el almacenamiento y si hay otra sesión ejecutándolo.")
         else:
@@ -333,7 +344,12 @@ def render_estudios_page():
     if not llm_ready:
         st.warning("No hay un modelo de IA disponible. Revisá la configuración antes de ejecutar.")
 
-    if st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary", disabled=not llm_ready):
+    run_now = st.button("Ejecutar estudio", key="est_run", use_container_width=True, type="primary", disabled=not llm_ready)
+    run_later = False
+    if not uses_supabase() and mode == "survey" and rpp == 1:
+        run_later = st.button("Ejecutar en segundo plano", key="est_enqueue",
+                              help="El worker local procesa la cola aunque cierres la pestaña.")
+    if run_now or run_later:
         if ab_test and (not variant_a or not variant_b or variant_a.casefold() == variant_b.casefold()):
             st.error("Escribí dos estímulos distintos para comparar.")
             return
@@ -391,7 +407,13 @@ def render_estudios_page():
                                   titulo=f"{estudio.titulo} · A", contexto=f"{estudio.contexto}\n\nEstímulo:\n{variant_a}".strip())
                 prepare_survey(estudio, personas)
                 prepare_survey(partner, personas)
-                respuestas = _continue_study(estudio, engine) + _continue_study(partner, engine)
+                if run_later:
+                    enqueue([estudio.id, partner.id])
+                else:
+                    respuestas = _continue_study(estudio, engine) + _continue_study(partner, engine)
+            elif run_later:
+                prepare_survey(estudio, personas)
+                enqueue([estudio.id])
             else:
                 respuestas = _execute_study(estudio, personas, engine)
         except Exception as exc:
@@ -399,7 +421,7 @@ def render_estudios_page():
             return
 
         credits_engine = st.session_state.get("credits_engine")
-        if credits_engine:
+        if credits_engine and not run_later:
             credits_engine.consume("Simulación de estudio (1 agente)", quantity=len(respuestas))
 
         st.session_state["res_study_id"] = estudio.id

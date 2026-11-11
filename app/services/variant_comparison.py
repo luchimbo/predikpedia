@@ -2,6 +2,7 @@
 from collections import Counter
 
 from app.services.calibration_service import distribution
+from app.services.model_usage import model_usage
 from app.services.study_recovery import response_is_valid
 
 
@@ -38,6 +39,8 @@ def compare_variants(study_a, study_b, answers_a, answers_b):
         return counts.most_common(3)
 
     return {
+        "model_usage_a": model_usage(x.llm_metadata for x, _ in pairs),
+        "model_usage_b": model_usage(y.llm_metadata for _, y in pairs),
         "rows": rows, "pairs": len(pairs), "valid_a": len(a), "valid_b": len(b),
         "objections_a": objections(x for x, _ in pairs),
         "objections_b": objections(y for _, y in pairs),

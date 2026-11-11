@@ -6,6 +6,7 @@ from typing import Sequence
 
 import streamlit as st
 
+from app.components.study_queue import render_recent_jobs
 from app.components.shell import render_page_intro, render_stat_card
 
 
@@ -89,6 +90,8 @@ def render_home_page(
         if st.button("Configuración", key="home_sec_settings", use_container_width=True):
             st.session_state.current_page = "Configuración"
             st.rerun()
+
+    render_recent_jobs(studies)
 
     # Tablas recientes
     st.divider()

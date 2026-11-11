@@ -24,6 +24,7 @@ from app.services.analysis_service import (
     valid_responses,
 )
 from app.services.calibration_service import simulated_distributions
+from app.services.model_usage import model_usage, usage_rows
 from app.services.variant_comparison import compare_variants
 from app.services.llm_service import LLMError, LLMService
 from app.state import go_to_page
@@ -393,6 +394,11 @@ def render_resultados_page():
         render_biblioteca_tab()
 
 
+def _render_model_usage(counts, fallback):
+    st.dataframe(usage_rows(counts), hide_index=True)
+    st.caption(f"Respuestas con proveedor de respaldo registrado: {fallback}")
+
+
 def _render_variant_comparison(study, partner):
     a, b = (study, partner) if study.variant == "A" else (partner, study)
     try:
@@ -408,6 +414,19 @@ def _render_variant_comparison(study, partner):
         st.info("La comparación estará disponible cuando ambas variantes tengan respuestas de las mismas personas.")
     else:
         st.dataframe(comparison["rows"], hide_index=True, use_container_width=True)
+        counts_a, _ = comparison["model_usage_a"]
+        counts_b, _ = comparison["model_usage_b"]
+        with st.expander("Modelos utilizados en los pares A/B"):
+            left, right = st.columns(2)
+            with left:
+                st.markdown("**Variante A**")
+                _render_model_usage(*comparison["model_usage_a"])
+            with right:
+                st.markdown("**Variante B**")
+                _render_model_usage(*comparison["model_usage_b"])
+        if counts_a != counts_b:
+            st.warning("La mezcla de modelos o la cobertura de su registro difiere entre A y B. "
+                       "El modelo utilizado puede haber influido en la diferencia entre variantes.")
         for label, key in [("A", "objections_a"), ("B", "objections_b")]:
             objections = comparison[key]
             if objections:
@@ -471,6 +490,9 @@ def _render_study_summary(estudio, *, partner=None):
     if resultados_df.empty:
         st.info("No hay respuestas válidas para esta selección.")
         return
+
+    with st.expander("Modelos utilizados"):
+        _render_model_usage(*model_usage(resultados_df["llm_metadata"]))
 
     # ── Números ──────────────────────────────────────────────────
     cols = st.columns(3)
